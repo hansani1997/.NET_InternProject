@@ -1,0 +1,40 @@
+﻿@if (Transaction != null)
+{
+    <hr />
+
+    <h6> Details </h6>
+    <hr />
+    <MudSimpleTable Dense="true" Hover="true" Bordered="false" Striped="true" Style="overflow-x: auto;">
+        <thead>
+            <tr>
+                <td>Item</td>
+                <td>Trn Qty</td>
+                <td>Peices</td>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Transaction.InvoiceLineItems)
+            {
+                <tr>
+                    <td>@item.TransactionItem.ItemName</td>
+                    <td>@item.TransactionQuantity</td>
+                    <td>@item.Quantity2</td>
+                </tr>
+            }
+        </tbody>
+        <hr />
+
+    </MudSimpleTable>
+
+    @if (InvoiceResponse != null)
+    {
+        if (!InvoiceResponse.IsAlreadyCheckedOut)
+        {
+            <MudButton OnClick="OnCheckoutClick" Color="Color.Primary" Disabled="disableButton">Check Out</MudButton>
+        }
+        else
+        {
+            <span>Already Checked Out On  @InvoiceResponse.CheckOutDate.ToString("dd/MMM/yyyy") (@InvoiceResponse.GINTransactionNumber)</span>
+        }
+    }
+}

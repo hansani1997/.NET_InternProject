@@ -1,0 +1,40 @@
+﻿@page "/waitList"
+@using bluelotus360.Com.MauiSupports.Models;
+
+<MudText Typo="Typo.h3">Sync List Related to Current Company</MudText>
+<MudDataGrid Items="_items" T="RequestQueueItem" MultiSelection="false" SelectedItemChanged="@selectItem" >
+    <Columns>
+        <HierarchyColumn T="RequestQueueItem" />
+        <TemplateColumn T="RequestQueueItem" Field="ID" Title="ID" />
+        <TemplateColumn T="RequestQueueItem" Field="url" Title="Document" />
+        <TemplateColumn T="RequestQueueItem" Field="timeStamp" Title="Time Entered" />
+        <TemplateColumn T="RequestQueueItem" Field="isSynced" Title="Sync Status">
+            <CellTemplate>
+                @if(context.Item.isSynced == 0)
+                {
+                    <MudText Typo="Typo.body1">Not Synced</MudText>
+                }else{
+                    <MudText Typo="Typo.body1">Successfully Synced</MudText>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+        <TemplateColumn T="RequestQueueItem" Title="Actions">
+            <CellTemplate>
+                @if(context.Item.isSynced == 0)
+                {
+                    <MudButton @onclick="()=>syncNow(context.Item)">Syncronize</MudButton>
+                }
+            </CellTemplate>
+        </TemplateColumn>
+    </Columns>
+    <ChildRowContent>
+        <MudCard>
+            <MudCardContent>
+                <MudText class="inline-3">@context.Item.requestBody</MudText>
+            </MudCardContent>
+        </MudCard>
+    </ChildRowContent>
+    <PagerContent>
+        <MudDataGridPager T="RequestQueueItem" />
+    </PagerContent>
+</MudDataGrid>

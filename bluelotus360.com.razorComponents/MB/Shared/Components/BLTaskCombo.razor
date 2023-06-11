@@ -1,0 +1,21 @@
+﻿<MudItem xs="@UIElement.GetXsWidth()" sm="@UIElement.GetSmWidth()" md="@UIElement.GetMdWidth()" lg=@UIElement.GetLgWidth() xl=@UIElement.GetXlgWidth() Class=@css_class >
+    @if (_taskResponse == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        <MudAutocomplete T="TaskResponse"
+                     Label="@UIElement.ElementCaption" SearchFunc="@OnComboSearch"
+                     Class="@UIElement.CssClass"
+                     Value="selectedtaskResponse"
+                     ValueChanged="OnComboValueChanged" Text="@GetComboDisplayText()"
+                     Variant="UIDefaults.DefaultControlVariants" DebounceInterval="700"
+                     ResetValueOnEmptyText="true"
+                     AdornmentIcon="@IconSvgCode"
+                     Placeholder="@((UIElement.DefaultValue??""))"
+                     ShowProgressIndicator="true"
+                     Strict=false
+                     @ref="@_refTaskCombo" />
+    }
+</MudItem>

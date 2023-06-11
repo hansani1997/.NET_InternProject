@@ -1,0 +1,16 @@
+﻿<MudItem xs="12" Class=@css_class md="12">
+    @if (blMenus == null)
+    {
+            <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        <MudAutocomplete T="MenuItem"
+                     SearchFunc="@OnComboSearch"
+                     ValueChanged="OnComboValueChangedTel"
+                     Value="selectedMenu"
+                     Variant="UIDefaults.DefaultControlVariants"
+                     Placeholder="Search Menu" AdornmentIcon="@Icons.Material.Filled.Search" Adornment="Adornment.Start" />
+
+    }
+</MudItem>

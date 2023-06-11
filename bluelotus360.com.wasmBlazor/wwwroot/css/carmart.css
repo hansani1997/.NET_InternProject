@@ -1,0 +1,267 @@
+﻿:root {
+    --bl-gray: #EEEEEE;
+    --primary-blue: #053B71;
+    --blue-lite: #E1E7EE;
+    --green: #4D963B;
+    --red: #F0351C;
+    --grey: #F4F5F8;
+    --grey2: #E1E7EE;
+    --grey3: #F2F2F2;
+    --grey4: #AEAEAE;
+    --text-blue: #053B71;
+    --text-lite: #546079;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-blue);
+}
+
+h5 {
+    font-weight: 700;
+    font-size: 18px;
+    line-height: 20px;
+}
+
+.primary-btn {
+    background: var(--primary-blue);
+    border-radius: 6px;
+    color: #ffffff;
+    text-transform: none;
+}
+
+    .primary-btn:hover {
+        background: var(--primary-blue);
+        border-radius: 6px;
+        color: #ffffff;
+    }
+
+.info-btn {
+    background: #FFFFFF;
+    border: 0.5px solid #053B71;
+    border-radius: 6px;
+    color: var(--text-blue);
+    text-transform: none;
+}
+
+.btn-txt-trun span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    justify-content: flex-start;
+    display: inline-block;
+    width: fit-content;
+}
+
+.top-button-bar {
+    display: flex;
+    justify-content: flex-start;
+    border-bottom: 1px solid var(--grey);
+    padding-bottom: 3px;
+}
+
+.tab-scroll {
+    height: calc(100vh - 170px);
+    overflow-y: scroll;
+    padding:0 30px;
+}
+.carmart-top-tab .mud-tabs-toolbar-wrapper {
+    width: 100%;
+}
+
+    .carmart-top-tab .mud-tabs-toolbar-wrapper > .mud-tooltip-root {
+        width: 25%;
+        padding: 3px;
+    }
+
+        .carmart-top-tab .mud-tabs-toolbar-wrapper > .mud-tooltip-root > div {
+            display: flex;
+            flex-direction: column;
+            min-width: 100%;
+            text-transform: none;
+        }
+
+            .carmart-top-tab .mud-tabs-toolbar-wrapper > .mud-tooltip-root > div:nth-child(2) {
+                flex: 1;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                color: var(--text-lite);
+            }
+
+
+
+.overview-top-panel {
+    background-color: var(--grey);
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+
+.search-detail-list-item {
+    display: flex;
+    border: 1px solid #d9d9d9;
+    padding: 12px;
+    cursor: pointer;
+}
+
+    .search-detail-list-item > div {
+        flex-direction: column;
+    }
+
+        .search-detail-list-item > div span {
+            font-size: 14px;
+            line-height: 28px;
+            text-align: center;
+            letter-spacing: 0.3px;
+            color: var(--text-blue);
+        }
+
+        .search-detail-list-item > div p {
+            font-size: 14px;
+            line-height: 28px;
+            text-align: center;
+            letter-spacing: 0.3px;
+            color: #000000;
+        }
+
+        .search-detail-list-item > div strong {
+            font-size: 2.2em;
+            text-align: center;
+            color: #000000;
+        }
+
+.veh-cus-info {
+    margin-top: 25px;
+}
+
+
+.job-history {
+    margin-top: 20px;
+    justify-content: center;
+}
+
+    .job-history h5 {
+        text-align: center;
+    }
+
+    .job-history table tr th {
+        color: var(--text-blue);
+    }
+
+    .job-history table tr th, .job-history table tr td {
+        text-align: center;
+    }
+
+.create-new-work-order > div:nth-child(1) {
+    background-color: var(--grey2);
+    text-align: center;
+    height: 37px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.create-new-work-order h5 {
+    text-transform: uppercase;
+}
+
+.create-new-work-order .order-creation-section {
+    height: 500px;
+    border: 0.5px solid #053B71;
+}
+
+.create-new-work-order .image-section {
+    height: 500px;
+    border: 0.5px solid #053B71;
+}
+.footer-button-section {
+    position: absolute;
+    bottom:45px;
+    left: 10px;
+    right: 10px;
+
+}
+
+.simple-estimate > div:nth-child(1) {
+    background-color: var(--grey2);
+    height: 37px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.summery-panel {
+    position:relative;
+    margin-top:50px;
+    background: #E1E7EE;
+    border-radius: 5px;
+    padding: 10px;
+    width: 100%;
+    height: 500px;
+}
+.total-summery-bar {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
+    height: 30px;
+    background: #FFFFFF;
+    border: 1px solid #979797;
+    border-radius: 5px;
+    padding: 6px 20px;
+    display:flex;
+    justify-content:space-between;
+}
+.summery-right-panel {
+    margin-top: 50px;
+    width: 100%;
+    height: 500px;
+    margin:auto;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    
+}
+
+    .summery-right-panel .sub {
+        height: 100px;
+        width: 40%;
+        margin-bottom:25px;
+        
+    }
+
+.invoice-top-offset {
+    height: 37px;
+    background: #E1E7EE;
+    margin-bottom: 25px;
+}
+.total-amount-section {
+    padding:5px;
+    background: #E1E7EE;
+    border-radius: 5px;
+    margin-bottom:10px;
+}
+
+.popup-footer-carmart {
+    position: fixed;
+    bottom: -40px;
+    width: 100%;
+    background: white;
+    left: 0;
+    right: 0;
+    padding: 12px 0px;
+}
+@media (max-width:599px) {
+    .carmart-top-tab .mud-tabs-toolbar-wrapper > .mud-tooltip-root > div {
+        font-size: 0;
+    }
+}
+
+.chips {
+    background: #E1E7EE;
+}
+
+.insurence-btn-section {
+    padding: 5px;
+    background: #A9A9A9;
+    border-radius: 5px;
+    margin-bottom: 10px;
+}

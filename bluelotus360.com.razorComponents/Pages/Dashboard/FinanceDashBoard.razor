@@ -1,0 +1,259 @@
+﻿@page "/dashboard/Finance_DB_Mobile"
+@using ApexCharts;
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <UIBuilder FormObject="formDefinition"
+                   DataObject="request"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_refBuilder" />
+
+     <MudGrid Class="mx-0 mt-5 w-100">
+         <MudItem xs="12" md="6">
+            <MudCard>
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                        <MudText class="inline-2">ACTUAL VS BUDGETED INCOME</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="MudBlazor.Color.Default" />
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @if (response_for_actual_vs_budgeted_income_Response !=null && response_for_actual_vs_budgeted_income_Response.Count() > 0)
+                    {
+                        <ApexChart @ref=_detailsChart
+                           TItem="ActualVsBudgetedIncomeResponse"
+                           Options="opt1"
+                           Debug>
+
+                            <ApexPointSeries TItem="ActualVsBudgetedIncomeResponse"
+                                     Items="response_for_actual_vs_budgeted_income_Response"
+                                     Name="Actual Income"
+                                     SeriesType="SeriesType.Bar"
+                                     XValue="@(e => e.YYYY_MM)"
+                                     YValue="@(e => Convert.ToDecimal(e.Income))"
+                                     OrderByDescending="e=>e.X" />
+
+                            <ApexPointSeries TItem="ActualVsBudgetedIncomeResponse"
+                                     Items="response_for_actual_vs_budgeted_income_Response"
+                                     Name="Budgeted Income"
+                                     SeriesType="SeriesType.Bar"
+                                     XValue="@(e => e.YYYY_MM)"
+                                     YValue="@(e => Convert.ToDecimal(e.BgtIncome))"
+                                     OrderByDescending="e=>e.X" />
+
+                        </ApexChart>
+                    }
+                        else
+                    {
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                            @*<MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />*@
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block; max-height: 250px;" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                <g transform="rotate(180 50 50)">
+                                    <rect x="15" y="15" width="10" height="40" fill="#ebebeb">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.4s"></animate>
+                                    </rect>
+                                    <rect x="35" y="15" width="10" height="40" fill="#f0f0f0">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.2s"></animate>
+                                    </rect>
+                                    <rect x="55" y="15" width="10" height="40" fill="#ebebeb">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.6s"></animate>
+                                    </rect>
+                                    <rect x="75" y="15" width="10" height="40" fill="#f0f0f0">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-1s"></animate>
+                                    </rect>
+                                </g>
+                            </svg>
+                        </MudPaper>
+                    }
+                   </MudCardContent>
+                      
+                    
+                </MudCard>
+         </MudItem>
+ 
+        <MudItem xs="12" md="6">
+            <MudCard>
+                <MudCardHeader>
+                        <CardHeaderContent>
+                        <MudText Class="inline-2">GROSS PROFIT & NET PROFIT MARGIN </MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="MudBlazor.Color.Default" />
+                        </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                     @if (gnm.Count() > 0)
+                    {
+                        
+                          <ApexChart @ref=_gnmChart TItem="GPft_NetPft_Margin_Response"
+                                  OnDataPointSelection=OnClickChartAsync
+                                  Options="@options">
+
+                                   <ApexPointSeries TItem="GPft_NetPft_Margin_Response"
+                                         Items="gnm"
+                                         Name=""
+                                         SeriesType="SeriesType.Bar"
+                                         XValue="@(e => e.XAx)"
+                                         YValue="@(e =>Math.Abs(Convert.ToDecimal(e.Gnm)))" />
+                              </ApexChart>
+                       
+                    }
+                     else
+            {
+                <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                   @*<MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true"/>*@
+                        <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block; max-height: 250px;" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                            <g transform="rotate(180 50 50)">
+                                <rect x="15" y="15" width="10" height="40" fill="#ebebeb">
+                                    <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.4s"></animate>
+                                </rect>
+                                <rect x="35" y="15" width="10" height="40" fill="#f0f0f0">
+                                    <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.2s"></animate>
+                                </rect>
+                                <rect x="55" y="15" width="10" height="40" fill="#ebebeb">
+                                    <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.6s"></animate>
+                                </rect>
+                                <rect x="75" y="15" width="10" height="40" fill="#f0f0f0">
+                                    <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-1s"></animate>
+                                </rect>
+                            </g>
+                        </svg>
+                </MudPaper>
+            }
+                </MudCardContent>
+            </MudCard>
+         </MudItem>
+
+        <MudItem Class="mt-3" xs="12" md="6">
+            <MudPaper>
+             @if (debtors_ages.Count() > 0)
+                {
+                    <MudPaper Class="align-center justify-center mud-width-full py-md-8">
+                        <ApexChart @ref=_ageChart TItem="Debtors_Creditors_Age_Analysis"
+                           Title="DEBTORS AGE ANALYSIS "
+                           OnDataPointSelection=DataPointsSelectedForDebtorAgeAnalysis
+                           Options="@opt2"
+                           Debug>
+
+                            <ApexPointSeries TItem="Debtors_Creditors_Age_Analysis"
+                                     Items="debtors_ages"
+                                     Name=""
+                                     SeriesType="SeriesType.Donut"
+                                     XValue="@(e => e.Hdr)"
+                                     YValue="@(e => Convert.ToDecimal(e.Amt))"
+                                     OrderByDescending="e=>e.X" />
+
+
+
+                        </ApexChart>
+                    </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+             </MudPaper>
+            </MudItem>
+
+        <MudItem Class="mt-3" xs="12" md="6">
+            <MudPaper>
+                @if (creditors_ages.Count() > 0)
+                {
+                    <MudPaper Class="align-center justify-center mud-width-full py-md-8">
+                        <ApexChart @ref=_ageChart TItem="Debtors_Creditors_Age_Analysis"
+                           Title="CREDITORS AGE ANALYSIS "
+                           OnDataPointSelection=DataPointsSelectedForCreditorAgeAnalysis
+                           Options="@opt3"
+                           Debug>
+
+                            <ApexPointSeries TItem="Debtors_Creditors_Age_Analysis"
+                                     Items="creditors_ages"
+                                     Name=""
+                                     SeriesType="SeriesType.Donut"
+                                     XValue="@(e => e.Hdr)"
+                                     YValue="@(e => Convert.ToDecimal(e.Amt))"
+                                     OrderByDescending="e=>e.X" />
+
+
+
+                        </ApexChart>
+                    </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+              </MudPaper>
+            </MudItem>
+
+        <MudItem Class="mt-3" xs="12" md="6">
+            <MudPaper>
+                @if (debtors_ages_overdue.Count() > 0)
+                {
+                    <MudPaper Class="align-center justify-center mud-width-full py-md-8">
+                        <ApexChart @ref=_ageChart TItem="Debtors_Creditors_Age_Analysis"
+                           Title="DEBTORS AGE ANALYSIS OVERDUE"
+                           OnDataPointSelection=DataPointsSelectedForDebtorAgeOverdueAnalysis
+                           Options="@opt4"
+                           Debug>
+
+                            <ApexPointSeries TItem="Debtors_Creditors_Age_Analysis"
+                                     Items="debtors_ages_overdue"
+                                     Name=""
+                                     SeriesType="SeriesType.Pie"
+                                     XValue="@(e => e.Hdr)"
+                                     YValue="@(e => Convert.ToDecimal(e.Amt))"
+                                     OrderByDescending="e=>e.X" />
+                        </ApexChart>
+                    </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+                </MudPaper>
+        </MudItem>
+   
+        <MudItem Class="mt-3" xs="12" md="6">
+            <MudPaper>
+                @if (creditors_ages_overdue.Count() > 0)
+                {
+                    <MudPaper Class="align-center justify-center mud-width-full py-md-8">
+                        <ApexChart @ref=_ageChart TItem="Debtors_Creditors_Age_Analysis"
+                           Title="CREDITORS AGE ANALYSIS OVERDUE"
+                           OnDataPointSelection=DataPointsSelectedForCreditorAgeOverdueAnalysis
+                           Options="@opt5"
+                           Debug>
+
+                            <ApexPointSeries TItem="Debtors_Creditors_Age_Analysis"
+                                     Items="creditors_ages_overdue"
+                                     Name=""
+                                     SeriesType="SeriesType.Pie"
+                                     XValue="@(e => e.Hdr)"
+                                     YValue="@(e => Convert.ToDecimal(e.Amt))"
+                                     OrderByDescending="e=>e.X" />
+
+
+
+                        </ApexChart>
+                    </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+                </MudPaper>
+        </MudItem>
+     </MudGrid>
+}

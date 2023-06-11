@@ -1,0 +1,66 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+
+<MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions" Style="max-width:1000px;">
+
+    <TitleContent>
+        @PopupTitle
+    </TitleContent>
+    <DialogContent>
+        
+        <MudPaper>
+
+            @if (formDefinition != null)
+            {
+                <div class="px-3">
+                    <UIRenderere FromSection="formDefinition" DataObject="transaction" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                </div>
+
+            }
+            <hr />
+        </MudPaper>
+         <div class="tdef">
+        <MudTable Items="@FoundTransactions.LineItems" Hover="true" Breakpoint="Breakpoint.Sm" Loading="false"
+                      LoadingProgressColor="Color.Info"
+                      CustomFooter="true" Dense="true"
+                      FixedHeader="true"
+                      FixedFooter="true"
+                      Height="400px">
+                <HeaderContent>
+
+                    <MudTh Style="text-align:right">Trn No</MudTh>
+                    <MudTh Style="text-align:right">Doc No</MudTh>
+                    <MudTh Style="text-align:right">Location</MudTh>
+                    <MudTh Style="text-align:right">Amount</MudTh>
+                    <MudTh Style="text-align:right">Prefix</MudTh>
+                    <MudTh Style="text-align:right">Action</MudTh>
+
+                </HeaderContent>
+
+                <RowTemplate>
+                    <MudTd DataLabel="Trn No">@context.TransactionNumber</MudTd>
+                    <MudTd DataLabel="Doc No">@context.DocumentNumber</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Location">@context.Location.CodeName</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Transaction Rate">@context.Amount.ToString("N2")</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Prefix">@context.Prefix</MudTd>
+                    @if (UIElement.DefaultValue.Equals("0"))
+                    {
+                            <MudTd Style="text-align:right" DataLabel="Actions">
+                                <div class="" Style="text-align:right">
+                                    <MudIconButton Icon="@Icons.Material.Filled.OpenInFull" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2" Color="Color.Error" OnClick="()=>OpenTransaction(context)" />
+                                </div>
+
+
+                            </MudTd>
+                    }
+
+                </RowTemplate>
+
+
+
+            </MudTable>
+        </div>
+        
+
+    </DialogContent>
+</MudDialog>
+

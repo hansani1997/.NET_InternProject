@@ -1,0 +1,19 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<NavMenu> _localizer
+@using System.Security.Claims
+
+<MudNavMenu Class="mud-width-full"> 
+    <div class="d-flex justify-content-between ml-1">
+        <MudIconButton   Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle.InvokeAsync(null))" />
+        
+    </div>
+    <MudNavLink Href="/" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Home">Home</MudNavLink>
+	<MiniSideMenu Menu="Menus" IconDictionary="icon_dict"/>
+</MudNavMenu>
+
+<style>
+    .mud-drawer-header {     
+            padding: 0!important;
+    }
+
+  
+</style>

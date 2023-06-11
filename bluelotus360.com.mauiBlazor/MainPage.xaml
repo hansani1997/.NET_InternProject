@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:bluelotus360.com.mauiBlazor"
+             x:Class="bluelotus360.com.mauiBlazor.MainPage"
+             xmlns:externComp="clr-namespace:bluelotus360.com.razorComponents.Layout;assembly=bluelotus360.com.razorComponents"
+             BackgroundColor="{DynamicResource PageBackgroundColor}">
+
+  
+        <BlazorWebView x:Name="blazorWebView" HostPage="wwwroot/index.html">
+            <BlazorWebView.RootComponents>
+                <RootComponent Selector="#app" ComponentType="{x:Type externComp:BLMain}" />
+            </BlazorWebView.RootComponents>
+        </BlazorWebView>
+
+</ContentPage>

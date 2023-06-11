@@ -1,0 +1,10 @@
+﻿<MudItem xs="12" class=@css_class md="@UIElement.Width">
+	<MudItem>
+		<lable>@UIElement.ElementCaption</lable>
+		<MudRadioGroup T="int" @bind-SelectedOption="@Amount" @onclick="@(OnBLMultiRadioChange)">
+			<MudRadio Option="1" Color="Color.Secondary">Yes</MudRadio>
+			<MudRadio Option="0" Color="Color.Primary">No</MudRadio>
+			<MudRadio Option="2">N/A</MudRadio>
+		</MudRadioGroup>
+	</MudItem>
+</MudItem>

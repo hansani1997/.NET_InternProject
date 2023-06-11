@@ -1,0 +1,21 @@
+﻿@*@namespace ZXingBlazor.Components *@
+
+<div class="d-flex emc">
+
+
+
+
+<BlazorBarcodeScanner.ZXing.JS.BarcodeReader 
+    Title=""
+    StartCameraAutomatically="true"
+    ShowStart="false"
+    ShowReset="false"
+    ShowToggleTorch = "false"
+    ShowVideoDeviceList="false"
+    ShowResult="false"
+    VideoWidth="640"
+    VideoHeight="360"
+    OnBarcodeReceived="LocalReceivedBarcodeText"
+    @ref="_reader"
+ />
+ </div>

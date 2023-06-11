@@ -1,0 +1,245 @@
+﻿@*@page "/order/quotation"*@
+@using bluelotus360.com.razorComponents.MB.Shared.Components.Popups.Order
+
+@if (FormDefinition != null && FormDefinition.Children.Count > 0)
+{
+        @if (isItemPopupShown)
+    {
+        <div class="dxflex">
+            <div class="formdef">
+                <MudContainer Style="overflow-y: scroll; max-height:450px;padding:16px;" Class="dc2">
+                    <MudList Clickable="false">
+                        @foreach (var item in validator.UserMessages.UserMessages)
+                        {
+                            <MudListItem Style="Color:darkred" Text="@item.Message" Icon="@Icons.Material.Filled.Error" />
+                        }
+                    </MudList>
+                    <UIRenderere FromSection="editUIElement" DataObject="order.SelectedOrderItem" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                </MudContainer>
+
+            </div>
+            <div class="tdef mt-5">
+            </div>
+        </div>
+    }
+
+    <div class="dxflex @(isItemPopupShown || isClickSaveButton||isEditPopupShown ? "d-none":"")">
+        <div class="formdef mt-5 mb-3">
+            <UIBuilder FormObject="FormDefinition" DataObject="order" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+        </div>
+        <div class="tdef mt-5">
+
+            @*@if (salesOrderGrid != null && order.OrderItems != null)
+            {
+                <BLTelGrid FormObject="salesOrderGrid"
+                   DataObject="order.OrderItems.Where(x=>x.IsActive==1).ToList()"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   Height="400px"
+                   @ref="_blTb" />
+            }*@
+
+
+            <MudTable Items="@order.OrderItems" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@tableloading"
+        LoadingProgressColor="Color.Info" CustomFooter="true" Dense="true" FixedHeader="true" FixedFooter="true" Height="400px" Style="padding:16px" >
+        <HeaderContent>
+        <MudTh>#</MudTh>
+        <MudTh>Image</MudTh>
+        <MudTh>Item Name</MudTh>
+        <MudTh>Order Location</MudTh>
+        <MudTh Style="text-align:right">Confirmed</MudTh>
+        <MudTh Style="text-align:right">IsTransfer</MudTh>
+        <MudTh Style="text-align:right">Trn Rate</MudTh>
+        <MudTh Style="text-align:right">Trn Qty</MudTh>
+        <MudTh Style="text-align:right">Req Qty</MudTh>
+
+        <MudTh Style="text-align:right">Dis(%)</MudTh>
+        <MudTh Style="text-align:right">Dis Amt</MudTh>
+        <MudTh Style="text-align:right">VAT</MudTh>
+        <MudTh Style="text-align:right">SVAT</MudTh>
+        <MudTh Style="text-align:right">Line Total</MudTh>
+
+        <MudTh Style="text-align:right">Actions</MudTh>
+        </HeaderContent>
+
+        <RowTemplate>
+        @if(context.IsActive==1){
+
+        <MudTd DataLabel="#">@context.LineNumber</MudTd>
+        <MudTd DataLabel="Image"><img src="https://bl360x.com/BLECOMTEST/images/product_images/@(context.TransactionItem.ItemName.Trim()).jpg" style="width:75px" /></MudTd>
+
+        <MudTd DataLabel="Item Name">@context.TransactionItem.ItemName</MudTd>
+        <MudTd DataLabel="Location">@context.OrderLineLocation</MudTd>
+        <MudTd Style="text-align:right" DataLabel="Confirmed">
+        @if (context.IsTransferConfirmed == 0)
+        {
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary" Class="ma-0">No</MudButton>
+        }
+        @if (context.IsTransferConfirmed == 1)
+        {
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Success" Class="ma-0">Yes</MudButton>
+        }
+        @if (context.IsTransferConfirmed == 2)
+        {
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" Class="ma-0">N/A</MudButton>
+        }
+
+        </MudTd>
+        <MudTd Style="text-align:right" DataLabel="Is Transfer">
+        @if (context.IsTransfer == 0)
+        {
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary" Class="ma-0">No</MudButton>
+        }
+        @if (context.IsTransfer == 1)
+        {
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Success" Class="ma-0">Yes</MudButton>
+        }
+        @if (context.IsTransfer == 2)
+        {
+        <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" Class="ma-0">N/A</MudButton>
+        }
+
+        </MudTd>
+        <MudTd Style="text-align:right" DataLabel="Transaction Rate">@context.TransactionRate.ToString("N2")</MudTd>
+        <MudTd Style="text-align:right" DataLabel="Quantity">@context.TransactionQuantity.ToString("N2")</MudTd>
+        <MudTd Style="text-align:right" DataLabel="RequestedQty">@context.RequestedQuantity.ToString("N2")</MudTd>
+
+        <MudTd Style="text-align:right" DataLabel="Dis(%)">@context.DiscountPercentage.ToString("N2")</MudTd>
+        <MudTd Style="text-align:right" DataLabel="Dis Amts">@context.GetLineDiscount().ToString("N2")</MudTd>
+        <MudTd Style="text-align:right" DataLabel="Vat">@context.GetItemTaxType1().ToString("N2")</MudTd>
+        <MudTd Style="text-align:right" DataLabel="SVat">@context.GetItemTaxType4().ToString("N2")</MudTd>
+        <MudTd Style="text-align:right" DataLabel="Line Total">@context.GetLineTotalWithTax().ToString("N2")</MudTd>
+        <MudTd Style="text-align:right" DataLabel="Actions">
+        <div class="d-flex">
+
+        <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" OnClick="()=>{OnOrderItemEdit(context.LineNumber-1);}" Color="Color.Info" />
+        <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2" OnClick="()=>OnOrderItemDelete(context)" Color="Color.Error" />
+        </div>
+
+
+        </MudTd>
+        }
+
+        </RowTemplate>
+
+        <FooterContent>
+        <MudTFootRow Class="alert-primary">
+        <MudTd colspan="6">Total</MudTd>
+
+        <MudTd Style="text-align:right">@order.GetOrderRateTotal().ToString("N2")</MudTd>
+        <MudTd Style="text-align:right">@order.GetQuantityTotal().ToString("N2")</MudTd>
+        <MudTd Style="text-align:right">@order.GetRequestedQuantityTotal().ToString("N2")</MudTd>
+        <MudTd></MudTd>
+        <MudTd Style="text-align:right">@order.GetOrderDiscountTotal().ToString("N2")</MudTd>
+        <MudTd Style="text-align:right">@order.GetTotalTaxType1().ToString("N2")</MudTd>
+        <MudTd Style="text-align:right">@order.GetTotalTaxType4().ToString("N2")</MudTd>
+        <MudTd Style="text-align:right">@order.GetOrderTotalWithTaxes().ToString("N2")</MudTd>
+        <MudTd></MudTd>
+        </MudTFootRow>
+        </FooterContent>
+        </MudTable>
+
+        </div>
+
+    </div>
+
+    <AddNewAddress OnAddressCreated="OnCustomerCreateSuccess" @ref="_refNewAddressCreation" />
+    
+    <FindOrder ComboDataObject="new object()"
+                UIElement="@findOrderUI"
+                InteractionLogics="@_interactionLogic"
+                ObjectHelpers="@_objectHelpers"
+                PopupTitle="Find Order"
+                WindowIsVisible="@FindOrderShown"
+                ElementKey="ElementKey"
+                OnOpenClick="LoadOrder"
+                OnCloseButtonClick="HideAllPopups" />
+
+<GetFromQuoatation ComboDataObject="new object()"
+                       UIElement="@getFromQuoteUI"
+                       InteractionLogics="@_interactionLogic"
+                       ObjectHelpers="@_objectHelpers"
+                       PopupTitle="Get From Quotation"
+                       WindowIsVisible="@FindGetFromQuoteShown"
+                       ElementKey="ElementKey"
+                       OnOpenClick="LoadOrderFromQuotation"
+                       OnCloseButtonClick="HideAllPopups" />
+
+    @if (ReportShown)
+    {
+        <div class="report-pop-up@(ReportShown ? "":"d-none")">
+            <MudGrid>
+                <MudItem xs=12 class="price-list-wrap">
+                    <BLReportViewer ReportSetting="_salesOrderReportOption"
+                            CloseReportDelegate="@(()=>{ReportShown=false;})" />
+                </MudItem>
+            </MudGrid>
+            <hr />
+        </div>
+    }
+
+    <MudDialog @bind-IsVisible="IsLessQuantityShown" DisableSidePadding="true">
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-3" />
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudContainer Style="max-height: 100px; overflow-y: scroll;" Class="pa-3">
+
+                <MudText Style="white-space: pre-wrap;">Some Items can't be added with full amount, because their available quantities in the related location are less than the transaction quantities</MudText>
+
+            </MudContainer>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@CloseDialogForLessQuantity" Class="px-10">Close</MudButton>
+        </DialogActions>
+    </MudDialog>
+
+    @*Edit pop up*@
+
+    <OrderItemDialog OrderItem="@order.SelectedOrderItem"
+                            ModalUIElement="@editUIElement"
+                            ButtonName="Update"
+                            HeadingPopUp="Edit"
+                            InteractionLogics="_interactionLogic"
+                            ObjectHelpers="_objectHelpers"
+                            ParentLocation="@order.OrderLocation"
+                            Validaor="validator"
+                            LineItemEdit="LineItemEdit"
+                            ClosePopUp="@(()=>{isEditPopupShown=false;})"
+                            IsEditPopShown="@isEditPopupShown"
+                            />
+
+    <MudDialog @bind-IsVisible="orderHeaderValidationShown" DisableSidePadding="true">
+        <TitleContent>
+            <MudText Typo="Typo.h6">
+                <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-3" />Error
+            </MudText>
+        </TitleContent>
+        <DialogContent>
+            <MudContainer Style="max-height: 200px; overflow-y: scroll;" Class="pa-3">
+
+                <MudList Clickable="false">
+                    @foreach (var item in validator.UserMessages.UserMessages)
+                    {
+                        <MudListItem Style="Color:darkred" Text="@item.Message" Icon="@Icons.Material.Filled.Error" />
+                    }
+                </MudList>
+
+            </MudContainer>
+        </DialogContent>
+        <DialogActions>
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@HideAllPopups" Class="px-10">Close</MudButton>
+        </DialogActions>
+    </MudDialog>
+
+    @if (validator != null && validator.UserMessages != null)
+    {
+        <UserMessageDialog Messages="@validator.UserMessages" @ref="_refUserMessage" />
+    }
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

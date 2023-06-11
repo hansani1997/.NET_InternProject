@@ -1,0 +1,117 @@
+﻿@page "/dashboard/loationvisestock"
+@using BlueLotus360.Com.UI.Definitions.MB.Shared.Components;
+@using ApexCharts;
+@using Telerik.Blazor;
+@using Telerik.DataSource;
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Dashboard;
+
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    @if (showAlert)
+    {
+         <BLAlert CloseAlert="(()=>showAlert=false)" AlertContent="Can't load chart ,please check error in below" AlertStatus="Error" />
+    }
+ @if (location_vise_stocks!=null)
+    {
+        <UIBuilder FormObject="formDefinition"
+                   DataObject="location_vise_stocks"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_refBuilder" />
+    }
+
+
+        <div class=" @(isExpansionPanelOpen?"bl-expansion-panel":"d-none")">
+                <MudExpansionPanels>
+                    <MudExpansionPanel Text="@($"Show Errors ({validator.UserMessages.UserMessages.Count()})")">
+                        @foreach (var error in validator.UserMessages.UserMessages)
+                        {
+                            <MudText Color="@MudBlazor.Color.Error">@error.Message</MudText>
+                        }
+                    </MudExpansionPanel>
+                </MudExpansionPanels>
+        </div>
+    
+    
+    @if (isChartLoading)
+    {
+        <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+   
+    <MudItem xl="12" >
+
+                        @if (isChartLoading)
+                        {
+                             <MudItem xs="12" Class="d-flex justify-content-center">
+                                 <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" />
+                            </MudItem>
+                        }
+                        else
+                        {
+                            
+                            @if (chartDetails!=null && chartDetails.Count()>0 )
+                            {
+                                 <MudPaper Class="pt-3">
+                                    <MudExpansionPanels Elevation="0">
+                                        <MudExpansionPanel Text="Table" Class="mt-3" IsInitiallyExpanded=true>
+
+                                         
+                                             @if(chartDetails!=null && locWiseStockTable!=null){
+                                                 <BLTelGrid FormObject="locWiseStockTable" 
+                                                    DataObject="chartDetails" 
+                                                    InteractionLogics="_interactionLogic" 
+                                                    ObjectHelpers="_objectHelpers" 
+						                            Height="400px"
+                                                    @ref="_blTb" />
+                                             }
+                                           
+
+                                         </MudExpansionPanel>
+                                         <MudExpansionPanel Text="Chart" >
+                                        @if(chartDetails!=null){
+
+                                            <ApexChart @ref=_detailsChart TItem="LocationViseStockResponse"
+                                                            Title="Location Vise Stocks"
+                                                            OnDataPointSelection=DataPointsSelected
+                                                            Height=500
+                                                            Debug>
+
+                                                        <ApexPointSeries TItem="LocationViseStockResponse"
+                                                             Items="chartDetails"
+                                                             Name="Stocks"
+                                                             SeriesType="SeriesType.Bar" 
+                                                             XValue="@(e => e.Location.CodeName)"
+                                                             YValue="@(e => e.Qty)"
+                                                             OrderByDescending="e=>e.X"/>
+
+                                            </ApexChart>
+                        
+                                         }
+                        
+                                
+                                         </MudExpansionPanel>
+
+                                         
+   
+                                    </MudExpansionPanels>
+                                </MudPaper>
+                                
+                            }
+                            else{
+                                <MudPaper Class="bl-chart-container-for-loc-wise-stock">
+
+                                        <EmptyChart @ref="empty_chart" IsChartEmpty=true/>
+                                </MudPaper>
+                            }
+
+              
+                        }
+
+    </MudItem>
+
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

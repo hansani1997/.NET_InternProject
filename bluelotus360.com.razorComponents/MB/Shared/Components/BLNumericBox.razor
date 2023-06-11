@@ -1,0 +1,13 @@
+﻿<MudItem xs="12" Class=@css_class md="@UIElement.Width">
+    <MudNumericField T="decimal" Value="Amount"
+                     Label="@UIElement.ElementCaption" Class=@numeric_css
+                     ValueChanged="OnBlNumercChanged" @ref="singleLineReference"
+                     @onclick="() =>{if(UIElement.IsCd01==0){ singleLineReference.SelectAsync();}}"
+                     InvertMouseWheel="true"
+                     Variant="UIDefaults.DefaultControlVariants"
+                     OnKeyUp="OnNumericBoxKeyUp"
+                     ReadOnly="IsReadOnly"
+                     Disabled="@IsComponentDisabled"
+                     HideSpinButtons=true
+                     Format="@UIElement.Format" />
+</MudItem>

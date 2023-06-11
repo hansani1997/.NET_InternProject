@@ -1,0 +1,34 @@
+﻿[
+  {
+    "outputFile": "wwwroot/plugins/SASS/StyleSheet.css",
+    "inputFile": "wwwroot/plugins/SASS/StyleSheet.scss"
+  },
+  {
+    "outputFile": "wwwroot/SASS/StyleSheet.css",
+    "inputFile": "wwwroot/SASS/StyleSheet.scss"
+  },
+  {
+    "outputFile": "wwwroot/SASS/Narshika.css",
+    "inputFile": "wwwroot/SASS/Narshika.scss"
+  },
+  {
+    "outputFile": "wwwroot/SASS/Vihangi.css",
+    "inputFile": "wwwroot/SASS/Vihangi.scss"
+  },
+  {
+    "outputFile": "wwwroot/SASS/ThemeManager.css",
+    "inputFile": "wwwroot/SASS/ThemeManager.scss"
+  },
+  {
+    "outputFile": "wwwroot/SASS/_themeManager.css",
+    "inputFile": "wwwroot/SASS/_themeManager.scss"
+  },
+  {
+    "outputFile": "wwwroot/SASS/_Variables.css",
+    "inputFile": "wwwroot/SASS/_Variables.scss"
+  },
+  {
+    "outputFile": "wwwroot/SASS/_appstyles.css",
+    "inputFile": "wwwroot/SASS/_appstyles.scss"
+  }
+]

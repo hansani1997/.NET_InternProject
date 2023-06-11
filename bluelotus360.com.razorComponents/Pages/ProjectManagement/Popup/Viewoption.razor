@@ -1,0 +1,62 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.ProjectManagement;
+
+<MudItem xs="12" Style="width:100% !important">
+    <MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions">
+        <DialogContent>
+            @if(Count > 0)
+            {
+                <MudButtonGroup Color="Color.Primary" Variant="Variant.Text" VerticalAlign="true">
+                    <MudButton @onclick="() => OnEditClick()">Edit / Overview</MudButton>
+                    <MudButton @onclick="() => OnSubTaskClick()">View Sub Tasks</MudButton>
+                </MudButtonGroup>
+            }
+            else
+            {
+                <MudButtonGroup Color="Color.Primary" Variant="Variant.Text" VerticalAlign="true">
+                    <MudButton @onclick="() => OnEditClick()">Edit / Overview</MudButton>
+                   
+                </MudButtonGroup>
+            }
+
+        </DialogContent>
+    </MudDialog>
+    
+</MudItem>
+
+@code {
+    [Parameter]
+    public EventCallback OnCloseButtonClick { get; set; }
+    [Parameter] public bool WindowIsVisible { get; set; } = true;
+    private DialogOptions dialogOptions = new() { CloseButton = true };
+    [Parameter] public long SelectedTaskKey { get; set; } 
+    [Parameter] public long NavigateElementKey { get; set; }
+    public long TaskIdentity = 0;
+    public long SubTaskIdentity = 0;
+    [Parameter] public int Count  { get; set; }
+    [Parameter] public long SelectedSubTaskKey { get; set; }
+
+    private async void OnCloseClick()
+    {
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+
+    }
+
+    private async void OnEditClick()
+    {
+        TaskIdentity = SelectedTaskKey;
+        SubTaskIdentity = 1;
+        _navigationManager.NavigateTo($"/Process/NewTask/{NavigateElementKey}/{TaskIdentity}/{SubTaskIdentity}");
+        OnCloseClick();
+        StateHasChanged();
+       
+    }
+
+    private async void OnSubTaskClick()
+    {
+
+
+    }
+}

@@ -1,0 +1,82 @@
+﻿@page "/HumanResource/EmpProfile"
+<div >
+
+</div>
+
+
+@if (isLoading)
+{
+     <MudPaper Elevation="0">
+   
+        <MudTabs Elevation="25" Color="Color.Transparent" Rounded="true" PanelClass="mt-6">
+            <MudTabPanel Text="Profile">
+                 <MudGrid>
+                    <MudItem xs="12" md="3">
+                        <MudCard Elevation="0">
+                            <MudCardContent>
+                                <div class="d-flex justify-center mb-4">
+                                    <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Height="250px" Width="250px"/>
+                                </div>
+                            </MudCardContent>
+
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" md="4">
+
+                        <MudCard Elevation="0">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    <MudSkeleton Animation="Animation.Wave" Width="40%" />
+                                    <MudSkeleton Animation="Animation.Wave" Width="60%" />
+                                </CardHeaderContent>
+                            </MudCardHeader>
+                            <MudCardContent>
+
+                                 <MudList>
+                                     
+                                    <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="250px" />
+
+                                 </MudList>
+                                
+                            </MudCardContent>
+
+                        </MudCard>       
+                    </MudItem>
+                    <MudItem xs="12" md="5">
+                        <MudSkeleton SkeletonType="SkeletonType.Rectangle" Animation="Animation.Wave" Height="336px" />
+                    </MudItem>
+                </MudGrid>
+            </MudTabPanel>
+            
+        </MudTabs>
+    
+    </MudPaper>
+    
+}
+else
+{
+   @if (formDefinition != null && formDefinition.Children.Count > 0 && _empModel!=null)
+    {
+        <MudPaper Elevation="0">
+   
+            <MudTabs Elevation="25" Color="Color.Transparent" Rounded="true" PanelClass="mt-6">
+                
+                    <MudTabPanel Text="Profile">
+                            <EmpProfile Employee="@_empModel" ImageDataUrl="@ImageDataUrl" FirstLetterOfName="@_firstLetterOfName" FirstName="@firstName"/>                       
+                    </MudTabPanel>
+                    <MudTabPanel Text="Details">
+                        <EmployeeDetails Employee="@_empModel" ElementKey="@elementKey"/>
+                    </MudTabPanel>
+                
+            </MudTabs>
+        
+        </MudPaper>
+    }
+    else
+    {
+        
+    }
+}
+
+
+

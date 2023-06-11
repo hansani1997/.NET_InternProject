@@ -1,0 +1,26 @@
+﻿@page "/Approval/StausUpdate"
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <UIBuilder FormObject="formDefinition"
+           DataObject="aprovalStatusUpdateRequest"
+           InteractionLogics="_interactionLogic"
+           ObjectHelpers="_objectHelpers" />
+
+
+    @if (approvalDetails != null && approvalStatusTable != null)
+    {
+
+        <BLTable FormObject="approvalStatusTable"
+           DataObject="approvalDetails"
+           InteractionLogics="_interactionLogic"
+           ObjectHelpers="_objectHelpers"
+           Height="400px"
+           @ref="_mudGrid" />
+    }
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}
+

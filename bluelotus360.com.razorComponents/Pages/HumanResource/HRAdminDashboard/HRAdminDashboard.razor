@@ -1,0 +1,270 @@
+﻿@page "/HumanResource/HRAdminDashboardHybrid"
+@using ApexCharts
+@using BL10.CleanArchitecture.Domain.Entities.Dashboard;
+@using System.Globalization;
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <UIBuilder FormObject="formDefinition"
+           DataObject="hrAdminDashboardRequest"
+                InteractionLogics="_interactionLogic"
+                ObjectHelpers="_objectHelpers"
+                @ref="_refBuilder"/>
+
+    <MudGrid Class="d-flex my-4 px-3">
+              <MudItem md="6" xs="12">
+                <MudCard Class="custom-card">
+                 <MudCardHeader>
+                        <CardHeaderContent>
+                        <MudText Class="inline-2">Loaction-wise Head Count</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="MudBlazor.Color.Default" />
+                        <MudIconButton Icon="@Icons.Material.Filled.StickyNote2" Color="MudBlazor.Color.Default" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Download" Color="MudBlazor.Color.Default" />
+                        </CardHeaderActions>
+                 </MudCardHeader>
+                   <MudCardContent>
+                    @if(response_for_location_wise_headcount is not null)
+                    {
+                        <ApexChart @ref=_headCountChart
+                           TItem="HRAdminDashboardHeadCountResponse"
+                           Options="opt1"
+                           Debug
+                           Height="300">
+                          
+                                <ApexPointSeries TItem="HRAdminDashboardHeadCountResponse"
+                                         Items="response_for_location_wise_headcount.MaleList"
+                                         Name="Male"
+                                         SeriesType="SeriesType.Bar"
+                                         XValue="@(e => e.CodeName)"
+                                         YValue="@(e => e.Count)"
+                                         OrderByDescending="e=>e.X" />
+
+
+                                <ApexPointSeries TItem="HRAdminDashboardHeadCountResponse"
+                                         Items="response_for_location_wise_headcount.FemaleList"
+                                         Name="Female "
+                                         SeriesType="SeriesType.Bar"
+                                         XValue="@(e => e.CodeName)"
+                                         YValue="@(e => e.Count)"
+                                         OrderByDescending="e=>e.X" />
+                           
+                         </ApexChart>
+                    }
+                    else
+                    {
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                            @*<MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />*@
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block; max-height: 250px;" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                <g transform="rotate(180 50 50)">
+                                    <rect x="15" y="15" width="10" height="40" fill="#ebebeb">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.4s"></animate>
+                                    </rect>
+                                    <rect x="35" y="15" width="10" height="40" fill="#f0f0f0">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.2s"></animate>
+                                    </rect>
+                                    <rect x="55" y="15" width="10" height="40" fill="#ebebeb">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.6s"></animate>
+                                    </rect>
+                                    <rect x="75" y="15" width="10" height="40" fill="#f0f0f0">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-1s"></animate>
+                                    </rect>
+                                </g>
+                            </svg>
+                        </MudPaper>
+                    }
+                </MudCardContent>
+                </MudCard>
+              </MudItem>
+              <MudItem md="6" xs="12">
+                <MudCard Class="custom-card">
+                  <MudCardHeader>
+                        <CardHeaderContent>
+                        <MudText class="inline-2">Attendance Summary</MudText>
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                        <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="MudBlazor.Color.Default" />
+                        <MudIconButton Icon="@Icons.Material.Filled.StickyNote2" Color="MudBlazor.Color.Default" OnClick="@AttendanceSummaryReport" />
+                        <MudIconButton Icon="@Icons.Material.Filled.Download" Color="MudBlazor.Color.Default" />
+                        </CardHeaderActions>
+                 </MudCardHeader>
+
+                 <MudCardContent>
+                        @if (attendance_summary is not null)
+                                {
+                                    <ApexChart @ref=_attendanceSummaryChart
+                                        TItem="HRAdminAttendanceSummaryResponse"
+                                       Options="opt2"
+                                       Debug
+                                       Height="300">
+
+                                        <ApexPointSeries 
+                                            TItem="HRAdminAttendanceSummaryResponse"
+                                                 Items="attendance_summary.OnTimeList"
+                                                 Name="On Time"
+                                                 SeriesType="SeriesType.Bar"
+                                                 XValue="@(e => e.Status)"
+                                                 YValue="@(e => e.Count)"
+                                                 OrderByDescending="e=>e.X"
+                                                 Color="#00E396" />
+
+                                        <ApexPointSeries TItem="HRAdminAttendanceSummaryResponse"
+                                                 Items="attendance_summary.LeaveList"
+                                                 Name="On Leave "
+                                                 SeriesType="SeriesType.Bar"
+                                                 XValue="@(e => e.Status)"
+                                                 YValue="@(e => e.Count)"
+                                                 OrderByDescending="e=>e.X"
+                                                 Color="#008FFB" />
+
+                                        <ApexPointSeries TItem="HRAdminAttendanceSummaryResponse"
+                                                 Items="attendance_summary.LateList"
+                                                 Name="Late"
+                                                 SeriesType="SeriesType.Bar"
+                                                 XValue="@(e => e.Status)"
+                                                 YValue="@(e => e.Count)"
+                                                 OrderByDescending="e=>e.X" 
+                                                 Color="#FFD43B" />
+
+                                        <ApexPointSeries TItem="HRAdminAttendanceSummaryResponse"
+                                                 Items="attendance_summary.NotReportedList"
+                                                 Name="Not Reported "
+                                                 SeriesType="SeriesType.Bar"
+                                                 XValue="@(e => e.Status)"
+                                                 YValue="@(e => e.Count)"
+                                                 OrderByDescending="e=>e.X" 
+                                                 Color="#F61C29" />
+
+                                    </ApexChart>
+                        }
+                    else
+                    {
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                            @*<MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />*@
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block; max-height: 250px;" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                <g transform="rotate(180 50 50)">
+                                    <rect x="15" y="15" width="10" height="40" fill="#ebebeb">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.4s"></animate>
+                                    </rect>
+                                    <rect x="35" y="15" width="10" height="40" fill="#f0f0f0">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.2s"></animate>
+                                    </rect>
+                                    <rect x="55" y="15" width="10" height="40" fill="#ebebeb">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.6s"></animate>
+                                    </rect>
+                                    <rect x="75" y="15" width="10" height="40" fill="#f0f0f0">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-1s"></animate>
+                                    </rect>
+                                </g>
+                            </svg>
+                        </MudPaper>
+                    }
+                 </MudCardContent>
+                </MudCard>
+              </MudItem>
+            <MudItem xs="12">
+                    <MudCard Class="custom-card">
+                <MudCardHeader>
+                    <CardHeaderContent>
+                        <MudText class="inline-2">Task wise Attendance</MudText>
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+                       @* <MudIconButton Icon="@Icons.Material.Filled.Fullscreen" Color="MudBlazor.Color.Default" />
+                        <MudIconButton Icon="@Icons.Material.Filled.AddCircleOutline" Color="MudBlazor.Color.Default" />
+                        <MudIconButton Icon="@Icons.Material.Filled.PanoramaFishEye" Color="MudBlazor.Color.Default"/>
+                        <MudIconButton Icon="@Icons.Material.Filled.Download" Color="MudBlazor.Color.Default" />*@
+                    </CardHeaderActions>
+                </MudCardHeader>
+
+                <MudCardContent>
+                    @if (task_wise_attendance is not null)
+                    {
+                        <ApexChart @ref=_taskWiseAttendanceChart
+                           TItem="HRAdminTaskwiseA_ActualResponse"
+                           Options="opt3"
+                           Debug
+                            Height="300">
+
+                            <ApexPointSeries TItem="HRAdminTaskwiseA_ActualResponse"
+                                     Items="task_wise_attendance.TaskwiseList"
+                                     Name="Task"
+                                     SeriesType="SeriesType.Line"
+                                     XValue="@(e => e.EffectiveDate)"
+                                     YValue="@(e => ConvertTimeToDecimal(e.QuantityTime))"
+                                     OrderByDescending="e=>e.X" 
+                                     />
+
+                            <ApexPointSeries TItem="HRAdminTaskwiseA_ActualResponse"
+                                     Items="task_wise_attendance.AttendanceList"
+                                     Name="Attendance"
+                                     SeriesType="SeriesType.Line"
+                                     XValue="@(e => e.AttendanceDate)"
+                                     YValue="@(e => ConvertTimeToDecimal(e.TotalHours))"
+                                     OrderByDescending="e=>e.X" 
+                                     />
+
+                            <ApexPointSeries TItem="HRAdminTaskwiseA_ActualResponse"
+                                     Items="task_wise_attendance.ActualList"
+                                     Name="Budgeted Capacity"
+                                     SeriesType="SeriesType.Line"
+                                     XValue="@(e => e.AttendanceDate)"
+                                     YValue="@(e => ConvertTimeToDecimal(e.ActualHours))"
+                                     OrderByDescending="e=>e.X" 
+                                     />
+
+                        </ApexChart>
+                    }
+
+                    else
+                    {
+                        <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                            
+                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; display: block; max-height: 250px;" width="100%" height="100%" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                <g transform="rotate(180 50 50)">
+                                    <rect x="15" y="15" width="10" height="40" fill="#ebebeb">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.4s"></animate>
+                                    </rect>
+                                    <rect x="35" y="15" width="10" height="40" fill="#f0f0f0">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.2s"></animate>
+                                    </rect>
+                                    <rect x="55" y="15" width="10" height="40" fill="#ebebeb">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-0.6s"></animate>
+                                    </rect>
+                                    <rect x="75" y="15" width="10" height="40" fill="#f0f0f0">
+                                        <animate attributeName="height" values="50;70;30;50" keyTimes="0;0.33;0.66;1" dur="1s" repeatCount="indefinite" calcMode="spline" keySplines="0.5 0 0.5 1;0.5 0 0.5 1;0.5 0 0.5 1" begin="-1s"></animate>
+                                    </rect>
+                                </g>
+                            </svg>
+                        </MudPaper>
+                    }
+                </MudCardContent>
+                    </MudCard>
+            </MudItem>
+    </MudGrid>
+
+    @*@if (ReportShown)
+    {
+        <div class="report-pop-up @(ReportShown ? "":"d-none")">
+
+            <BLReportViewer ReportSetting="_reportOption" CloseReportDelegate="@(()=>{ReportShown=false;})" />
+
+            <hr />
+        </div>
+    }*@
+
+    @if (ReportShown)
+    {
+        <div class="report-pop-up @(ReportShown ? "":"d-none")">
+            <MudGrid>
+                <MudItem xs=12 class="price-list-wrap">
+                    <BLReportViewer ReportSetting="_reportOption"
+                            CloseReportDelegate="@(()=>{ReportShown=false;})" />
+                </MudItem>
+            </MudGrid>
+            <hr />
+        </div>
+    }
+}
+
+

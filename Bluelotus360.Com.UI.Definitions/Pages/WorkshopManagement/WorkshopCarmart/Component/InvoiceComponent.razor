@@ -1,0 +1,226 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Order
+@using Telerik.Blazor
+@using Telerik.DataSource
+
+@if(validator!=null){
+    <ValidationPopUp ValidationMessages="@validator.UserMessages.UserMessages" @ref="_refUserMessage" />
+}
+
+
+<GenericReciept Transaction="transaction" @ref="_refgenericReciept" OnCloseClick="OnRecipetClose" OnRecieptSaveSuccess="OnRecieptSavedSuccessfully" />
+
+
+        <div class="invoice-top-offset"></div>
+
+        <div class="d-flex mb-3">
+            @if (ReceiptSection != null)
+            {
+                <UIRenderere FromSection="ReceiptSection"
+                         DataObject="DataObject"
+                         InteractionLogics="InteractionLogic"
+                         ObjectHelpers="ObjectHelpers" />
+            }
+        </div>
+
+            @if (TotalAmountSection != null)
+            {
+                <UIRenderere FromSection="TotalAmountSection"
+                         DataObject="DataObject"
+                         InteractionLogics="InteractionLogic"
+                         ObjectHelpers="ObjectHelpers" />
+
+            }
+            @if (InvoiceHeader != null)
+            {
+                <UIRenderere FromSection="InvoiceHeader"
+                         DataObject="transaction"
+                         InteractionLogics="InteractionLogic"
+                         ObjectHelpers="ObjectHelpers" />
+            }
+
+        <div class="d-flex justify-content-end mt-2">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnAddServicesAndMaterials" Disabled="IsButtonDisabled">Add Services and Materials</MudButton>
+        </div>
+
+        @*@if (InvoiceDet != null)
+        {
+        <UIRenderere FromSection="InvoiceDet"
+        DataObject="DataObject"
+        InteractionLogics="InteractionLogic"
+        ObjectHelpers="ObjectHelpers" />
+        }*@
+
+        <div class="mt-3">
+            @if (DataObject.OrderItems != null)
+            {
+                <TelerikGrid Data=@DataObject.OrderItems.Where(x=>x.IsActive==1 && !x.IsNoteItem).ToList()
+                         EditMode="@GridEditMode.Incell"
+                         FilterMode="@GridFilterMode.FilterMenu"
+                         OnUpdate="@UpdateHandler"
+                         OnEdit="@EditHandler"
+                         OnDelete="@DeleteHandler"
+                         Pageable="true"
+                         Groupable="true"
+                         Class="invoice-grid-carmart"
+                         @ref=GridRef1>
+
+                    <GridAggregates>
+                        <GridAggregate Field="TransactionQuantity" Aggregate="@GridAggregateType.Sum" />
+                        <GridAggregate Field="TransactionRate" Aggregate="@GridAggregateType.Sum" />
+                        <GridAggregate Field="DiscountAmount" Aggregate="@GridAggregateType.Sum" />
+                        <GridAggregate Field="PrincipleAmount" Aggregate="@GridAggregateType.Sum" />
+                        <GridAggregate Field="CompanyAmount" Aggregate="@GridAggregateType.Sum" />
+                        <GridAggregate Field="CustomerAmount" Aggregate="@GridAggregateType.Sum" />
+                        <GridAggregate Field="SubTotal" Aggregate="@GridAggregateType.Sum" />
+                    </GridAggregates>
+                    <GridColumns>
+                        <GridColumn Field="IsServiceItem" Title="Code" Visible="false">
+                            <GroupHeaderTemplate>
+                                @{
+                                    bool con = context != null ? Convert.ToBoolean(context.Value) : false;
+                                    @if (con)
+                                    {
+                                        <span>Service</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Materials</span>
+                                    }
+                                }
+
+                            </GroupHeaderTemplate>
+                        </GridColumn>
+                        <GridColumn Field="TransactionItem.ItemName" Title="Name" Width="250px" />
+                        <GridColumn Field="Address2.AddressName" Title="Technician" Width="250px" />
+                        <GridColumn Field="TransactionUnit.UnitName" Title="Unit" Width="100px" />
+                        <GridColumn Field="TransactionQuantity" Title="Qty" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px">
+                            <Template>
+                            @{
+                                    var ctx = context as OrderItem;
+                                    if (ctx!=null)
+                                    {
+                                        if (ctx.Time==0)
+                                        {
+                                            <span>@ctx.TransactionQuantity.ToString("N2")</span>
+                                        }
+                                        else
+                                        {
+                                            <span>0.00</span>
+                                        }
+                                    }       
+                                
+                            
+                            }
+                                
+                            </Template>
+                            <FooterTemplate>
+                                <div style="text-align:right;">
+                                    <span>@context.Sum?.ToString("N2")</span>
+                                </div>
+
+                            </FooterTemplate>
+                        </GridColumn>
+                        <GridColumn Field="Time" Title="Time" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px">
+                            <FooterTemplate>
+                                <div style="text-align:right;">
+                                    <span>@context.Sum?.ToString("N2")</span>
+                                </div>
+
+                            </FooterTemplate>
+                        </GridColumn>
+
+                        <GridColumn Field="TransactionRate" Title="Rate" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px">
+                            <FooterTemplate>
+                                <div style="text-align:right;">
+                                    <span>@context.Sum?.ToString("N2")</span>
+                                </div>
+
+                            </FooterTemplate>
+                        </GridColumn>
+                        <GridColumn Field="DiscountPercentage" Title="Dis%" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px" />
+                        <GridColumn Field="DiscountAmount" Title="Dis Amt" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px">
+                            <FooterTemplate>
+                                <div style="text-align:right;">
+                                    <span>@context.Sum?.ToString("N2")</span>
+                                </div>
+
+                            </FooterTemplate>
+                        </GridColumn>
+
+                        <GridColumn Field="PrinciplePrecentage" Title="Princ%" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px" Visible="@(DataObject.OrderCategory1.Code.Equals("Good Will Warranty"))" />
+                        <GridColumn Field="PrincipleAmount" Title="Princ Amt" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px" Visible="@(DataObject.OrderCategory1.Code.Equals("Good Will Warranty"))">
+                            <FooterTemplate>
+                                <div style="text-align:right;">
+                                    <span>@context.Sum?.ToString("N2")</span>
+                                </div>
+
+                            </FooterTemplate>
+                        </GridColumn>
+                        <GridColumn Field="CompanyPrecentage" Title="CM%" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px" Visible="@(DataObject.OrderCategory1.Code.Equals("Good Will Warranty"))" />
+                        <GridColumn Field="CompanyAmount" Title="CM Amt" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px" Visible="@(DataObject.OrderCategory1.Code.Equals("Good Will Warranty"))">
+                            <FooterTemplate>
+                                <div style="text-align:right;">
+                                    <span>@context.Sum?.ToString("N2")</span>
+                                </div>
+
+                            </FooterTemplate>
+                        </GridColumn>
+                        <GridColumn Field="CustomerAmount" Title="Cus Amt" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px" Visible="@(DataObject.OrderCategory1.Code.Equals("Good Will Warranty"))">
+                            <FooterTemplate>
+                                <div style="text-align:right;">
+                                    <span>@context.Sum?.ToString("N2")</span>
+                                </div>
+
+                            </FooterTemplate>
+                        </GridColumn>
+                        <GridColumn Field="SubTotal" Title="Sub Total" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Width="100px">
+                            <Template>
+                                @{
+                                    var ctx = context as OrderItem;
+                                    if (ctx != null)
+                                    {
+                                        <span>@ctx.GetLineTotalWithTax().ToString("N2")</span>
+                                    }
+                                }
+                            </Template>
+                            <FooterTemplate>
+                                @{
+
+                                }
+                                <div style="text-align:right;">
+                                    <span>@context.Sum?.ToString("N2")</span>
+                                </div>
+
+                            </FooterTemplate>
+                        </GridColumn>
+                <GridCommandColumn Width="100px">
+                            <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+                        </GridCommandColumn>
+                    </GridColumns>
+                </TelerikGrid>
+            }
+        </div>
+        <div class="d-flex justify-content-end gap-3 mt-2">
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="OnSaveClick" Disabled="IsButtonDisabled">Save</MudButton>
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="OnPrintClick">Print</MudButton>
+        </div>
+
+        @if (ReportShown){
+                <div class="bl-pop-up pl-12 mx-2@(ReportShown ? "":"d-none")">
+                    <MudGrid>
+                        <MudItem xs=12 class="price-list-wrap">
+                <BLReportViewer ReportSetting="_carmartReportOption"
+                            CloseReportDelegate="@(()=>{ReportShown=false;})"/>
+                        </MudItem>
+                    </MudGrid>
+                    <hr />
+                </div>
+       }
+   
+
+<style>
+    .invoice-grid-carmart .k-indicator-container {
+        display:none;
+    }
+</style>

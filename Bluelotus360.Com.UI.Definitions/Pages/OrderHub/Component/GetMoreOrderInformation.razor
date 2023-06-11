@@ -1,0 +1,79 @@
+﻿@using Telerik.Blazor
+
+<TelerikWindow Modal="true" @bind-Visible="@WindowIsVisible"
+               Centered="true"
+               CloseOnOverlayClick="false" Class="pop-up-z-index">
+    <WindowTitle>
+        <MudButton Variant="Variant.Outlined" Color="Color.Info" Style="color:white;margin-right:1%" StartIcon="@Icons.Filled.Assignment">KOT</MudButton>
+        <MudButton Variant="Variant.Outlined" Color="Color.Info" Style="color:white" StartIcon="@Icons.Filled.Print">Print</MudButton>
+    </WindowTitle>
+    <WindowActions>
+        <WindowAction Name="Close" OnClick="OnCloseClick"/>
+    </WindowActions>
+    <WindowContent>
+        <MudSimpleTable Style="overflow-x: auto;">
+            <thead>
+                <tr>
+                    <th colspan="4">Order Reference <br /> <b>@selectedOrder.OrderReference</b> </th>
+                    <th colspan="4">Order Type <br /><b> @selectedOrder.Platforms.AccountName</b></th>
+                    <th colspan="4">Placed At <br /><b>@selectedOrder.OrderDate</b></th>
+                    <th colspan="4">Current Status <br /><b> @selectedOrder.OrderStatus.CodeName</b></th>
+                </tr>
+            </thead>
+        </MudSimpleTable>
+
+        <MudSimpleTable Style="overflow-x: auto;">
+            <thead>
+                <tr>
+                    
+                    <th colspan="4">Customer <br /> <b>@selectedOrder.Customer.Name</b> <br /><b>@selectedOrder.Customer.Phone</b><br /><b>@selectedOrder.Customer.Address</b></th>
+                    <th colspan="4">Payment type <br /><b>@selectedOrder.PaymentType</b> </th>
+                </tr>
+            </thead>
+        </MudSimpleTable>
+
+        <MudSimpleTable FixedHeader="true" Style="height:180px">
+            <thead>
+                <tr>
+                    
+                    <th><b>Product</b></th>
+                    <th class="right"><b>Quantity</b></th>
+                    <th class="right"><b>Total</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach(var order in _Order){
+                    <tr>
+                        <td>@order.OrderItem.ItemName</td>
+                        <td class="right">@order.ItemQuantity</td>
+                        <td class="right">@order.BaseTotalPrice</td>
+                    </tr>
+                }
+                
+            </tbody>
+        </MudSimpleTable>
+        
+        <MudSimpleTable Style="background:lightgrey ">
+            <thead>
+                <tr>
+                    <th colspan="4"><b>Sub Total</b> </th>
+                    <th colspan="1">@_Order.Sum(x=>x.BaseTotalPrice)</th>
+                    <th colspan="4"><b>Total</b></th>
+                    <th colspan="2">@selectedOrder.TotalWithDiscount</th>
+                </tr>
+                <tr>
+                    <th colspan="4"><b>Discount</b> </th>
+                    <th colspan="1">@selectedOrder.DiscountAmount</th>
+                </tr>
+            </thead>
+        </MudSimpleTable>
+
+
+    
+         
+      
+       
+
+    </WindowContent>
+</TelerikWindow>
+

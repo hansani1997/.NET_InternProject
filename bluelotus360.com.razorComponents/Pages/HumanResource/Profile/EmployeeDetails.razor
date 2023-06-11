@@ -1,0 +1,433 @@
+﻿<MudExpansionPanels>
+    
+    @if (Employee != null)
+    {
+                <MudExpansionPanel @bind-IsExpanded="isOpen" Class="mt-2">
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>Education</strong></MudText>
+                        </div>
+                    </TitleContent>
+
+                    <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Qualification</th>
+                                            <th>Institute</th>
+                                            <th>Commenced Date</th>
+                                            <th>Completed Date</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                        @if (Employee.EmployeeEducationDetails != null && Employee.EmployeeEducationDetails.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeeEducationDetails)
+                            {
+                                                        <tr>
+                                                           <td>@row.Qualification</td>    
+                                                           <td>@row.Institute</td>
+                                                           <td>@row.CommenceDate</td>
+                                                           <td>@row.CompletedDate</td>
+                                                        </tr>
+                            }
+                        }
+
+                                    </tbody>
+                        </MudSimpleTable>
+                    </ChildContent>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel  Class="mt-2"> 
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>Work Experience</strong></MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Company</th>
+                                            <th>Department</th>
+                                            <th>Designation</th>
+                                            <th>From Date</th>
+                                            <th>To Date</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+
+                        @if (Employee.EmployeeExperienceDetails != null && Employee.EmployeeExperienceDetails.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeeExperienceDetails)
+                            {
+                                                        <tr class="text-center">
+                                                            <td>@row.CompanyName</td> 
+                                                            <td>@row.WeDepartmentName</td>
+                                                            <td>@row.WeDesignationName</td>
+                                                            <td>@row.FromDate</td>
+                                                            <td>@row.ToDate</td>
+                                                        </tr>
+                            }
+                        }
+
+
+
+                                    </tbody>
+                    </MudSimpleTable>
+                    </ChildContent>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel   Class="mt-2">
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>Emergency Contacts</strong></MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Name</th>
+                                            <th>Relationship</th>
+                                            <th>Mobile</th>
+                                            <th>Address</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+
+                        @if (Employee.EmployeeEmergencyContactDetails != null && Employee.EmployeeEmergencyContactDetails.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeeEmergencyContactDetails)
+                            {
+                                                        <tr class="text-center">
+                                                               <td>@row.EmerName</td>
+                                                               <td>@row.EmerRelationshipName</td>
+                                                               <td>@row.EmerMobile</td>
+                                                               <td>@row.EmerAddress</td>
+
+                                                        </tr>
+                            }
+                        }
+
+
+
+                                    </tbody>
+                        </MudSimpleTable>
+                    </ChildContent>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel   Class="mt-2">
+                     <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>Promotion</strong></MudText>
+                        </div>
+                     </TitleContent>
+                     <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Designation</th>
+                                            <th>Effective From</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                        @if (Employee.EmployeePromotions != null && Employee.EmployeePromotions.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeePromotions)
+                            {
+                                                                <tr class="text-center">
+                                                                      <td>@row.ProDesignationName</td> 
+                                                                      <td>@row.ProDate</td>
+                                                                      <td>@row.ProRemarks</td>
+                                                                </tr>
+                            }
+                        }
+
+
+
+                                    </tbody>
+                        </MudSimpleTable>
+                     </ChildContent>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel Class="mt-2">
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>Transfer</strong></MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Department</th>
+                                            <th>Effective From</th>
+                                            <th>Remarks</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                        @if (Employee.EmployeeTransferDetails != null && Employee.EmployeeTransferDetails.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeeTransferDetails)
+                            {
+                                                    <tr class="text-center">
+                                                           <td>@row.CdNm</td>
+                                                           <td>@row.TrnDate</td>
+                                                           <td>@row.TrnRemarks</td>
+                                                    </tr>
+                            }
+                        }
+
+
+
+                                    </tbody>
+                    </MudSimpleTable>
+                    </ChildContent>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel Class="mt-2">
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>Basic Salary</strong></MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>From Date</th>
+                                            <th>To Date</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                        @if (Employee.EmployeeBasicSalary != null && Employee.EmployeeBasicSalary.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeeBasicSalary)
+                            {
+                                                        <tr class="text-center">
+                                                              <td>@row.BasFromDate</td> 
+                                                              <td>@row.BasToDate</td>
+                                                              <td>@row.BSAmt</td>
+                                                        </tr>
+                            }
+                        }
+
+
+
+                                    </tbody>
+                    </MudSimpleTable>
+                    </ChildContent>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel  Class="mt-2">
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>Fixed Allowances</strong></MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Allowances</th>
+                                            <th>From Date</th>
+                                            <th>To Date</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                        @if (Employee.EmployeeFixedAllowances != null && Employee.EmployeeFixedAllowances.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeeFixedAllowances)
+                            {
+                                                                    <tr class="text-center">
+                                                                          <td>@row.CdNm</td>
+                                                                          <td>@row.FromDt</td>
+                                                                          <td>@row.ToDt</td>
+                                                                          <td>@row.FxAmt</td>
+                                                                    </tr>
+                            }
+
+                        }
+
+                                    </tbody>
+                    </MudSimpleTable>
+                    </ChildContent>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel Class="mt-2">
+
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>Fixed Deductions</strong></MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Deductions</th>
+                                            <th>From Date</th>
+                                            <th>To Date</th>
+                                            <th>Amount</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                        @if (Employee.EmployeeFixedDeductions != null && Employee.EmployeeFixedDeductions.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeeFixedDeductions)
+                            {
+                                                    <tr class="text-center">
+                                                          <td>@row.DeductionName</td>
+                                                          <td>@row.DeductFromDate</td>
+                                                          <td>@row.DeductToDate</td>
+                                                          <td>@row.DeductAmt</td> 
+
+                                                    </tr>
+                            }
+                        }
+
+
+
+                                    </tbody>
+                    </MudSimpleTable>
+                    </ChildContent>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel  Class="mt-2">
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>Loan Details</strong></MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+                                    <thead>
+                                        <tr class="text-center">
+                                            <th>Loan Type</th>
+                                            <th>Date</th>
+                                            <th>Interest Rate Per Annum</th>
+                                            <th>Loan Amount</th>
+                                            <th>Paid Capital Amount</th>
+                                            <th>Paid Interest Amount</th>
+                                            <th>Balance Carried Forward</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+
+                        @if (Employee.EmployeeLoanDetails != null && Employee.EmployeeLoanDetails.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeeLoanDetails)
+                            {
+                                                        <tr class="text-center">
+
+                                                              <td>@row.CdNm</td>
+                                                              <td>@row.FromDt</td>
+                                                              <td>@row.IntrRate</td>
+                                                              <td>@row.LoanAmt</td>   
+                                                              <td>@row.PaidCapitalAmt</td>
+                                                              <td>@row.InterestPaid</td>
+                                                              <td>@row.OutStandingCapital</td>
+
+                                                        </tr>
+                            }
+                        }
+
+
+
+                                    </tbody>
+                    </MudSimpleTable>
+                    </ChildContent>
+
+                </MudExpansionPanel>
+
+                <MudExpansionPanel  Class="mt-2">
+
+                    <TitleContent>
+                        <div class="d-flex">
+                            <MudText><strong>List of PaySlips</strong></MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <MudSimpleTable Dense="true" Hover="true" Bordered="true" Striped="true" Style="overflow-x: auto;">
+
+
+                                    <tbody>
+
+                        @if (Employee.EmployeeSalaryHistory != null && Employee.EmployeeSalaryHistory.Count() > 0)
+                        {
+                            @foreach (var row in Employee.EmployeeSalaryHistory)
+                            {
+                                                        <tr>
+                                                            <td>
+                                                                <b>View pay slip for the month of @(DateTime.Parse(row.SalaryDt).ToString("MMM/yyyyy"))</b>-From @(row.FromDt) To @(row.ToDt)
+                                                            </td>
+                                                            <td>
+                                                                <MudButton Variant="Variant.Filled" StartIcon="@Icons.TwoTone.RemoveRedEye" Color="Color.Warning" OnClick="()=>{ViewSlip(row);}">View</MudButton>
+                                                            </td>
+
+                                                        </tr>
+                            }
+                            @if (PaySlipShown)
+                            {
+                                <div class="report-pop-up @(PaySlipShown ? "":"d-none")">
+                                    <MudGrid>
+                                        <MudItem xs=12 class="price-list-wrap">
+
+                                            <BLReportViewer ReportSetting="_paySlipOption"
+                                                CloseReportDelegate="@(()=>{PaySlipShown=false;})" />
+
+                                        </MudItem>
+                                    </MudGrid>
+
+
+                                </div>
+                            }
+
+
+
+                            
+
+
+
+                        }
+
+
+
+                                    </tbody>
+                    </MudSimpleTable>
+                
+                    </ChildContent>
+
+
+
+
+                </MudExpansionPanel>
+        
+    }
+</MudExpansionPanels>
+

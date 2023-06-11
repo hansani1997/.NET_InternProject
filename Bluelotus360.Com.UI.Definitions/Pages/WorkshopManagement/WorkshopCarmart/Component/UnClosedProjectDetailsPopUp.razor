@@ -1,0 +1,94 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+@using Telerik.Blazor
+
+<TelerikWindow Modal="true" @bind-Visible="@WindowIsVisible"
+               Centered="true"
+               CloseOnOverlayClick="false" Class="pop-up-z-index" MaxHeight="500px">
+
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+            <WindowAction Name="Minimize" />
+            <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+        Projects List
+    </WindowTitle>
+    <WindowContent>
+
+
+        @if (ProjectList!=null)
+        {
+            <TelerikGrid Data=@ProjectList
+                     Pageable=true
+                     PageSize="5"
+                     Navigable="true"
+                     Sortable="true"
+                     FilterMode="GridFilterMode.FilterMenu">
+
+                <GridColumns>
+                    <GridColumn Field="ProjectId" Title="Project ID" />
+                    <GridColumn Field="ProjectName" Title="Project Name" Width="195px" />
+                    <GridColumn Field="" Title="Action" TextAlign="ColumnTextAlign.Center">
+                        <Template>
+                            @{
+                                var ctx = context as ProjectResponse;
+                                if (ctx != null)
+                                {
+                                    <TelerikButton Icon="document-manager" OnClick="@(()=>{RowSelect(ctx);})" />
+                                }
+
+                            }
+                        </Template>
+                    </GridColumn>
+                </GridColumns>
+            </TelerikGrid>
+        }
+        
+
+
+    </WindowContent>
+</TelerikWindow>
+
+@code {
+    [Parameter] public EventCallback OnCloseButtonClick { get; set; }
+    [Parameter] public bool WindowIsVisible { get; set; }
+    [Parameter] public EventCallback AddCustomerComplainPopUpShow { get; set; }
+    [Parameter] public IList<ProjectResponse> ProjectList { get; set; }
+    [Parameter] public WorkOrder DataObject { get; set; }
+
+    string ProjectName = "";
+    bool HideMinMax { get; set; } = false;
+    bool IsError;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+    }
+
+    private async void OnCloseClick()
+    {
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+
+    }
+
+    private async void RowSelect(ProjectResponse pro)
+    {
+        DataObject.OrderProject = pro;
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+        if (AddCustomerComplainPopUpShow.HasDelegate)
+        {
+            await AddCustomerComplainPopUpShow.InvokeAsync();
+        }
+    }
+
+    
+}

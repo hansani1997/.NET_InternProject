@@ -1,0 +1,20 @@
+﻿@using Microsoft.AspNetCore.Components.Routing
+@using bluelotus360.com.razorComponents.Shared;
+@using Microsoft.AspNetCore.Components.Authorization;
+
+<CascadingAuthenticationState>
+    <Router AppAssembly="@typeof(BLMain).Assembly" AdditionalAssemblies="new[] {typeof(EntryPoint).Assembly}">
+    <Found Context="routeData">
+       
+        <AuthorizeRouteView RouteData="@routeData" DefaultLayout="@typeof(BLMainLayout)" />
+        <FocusOnNavigate RouteData="@routeData" Selector="h1" />
+    </Found>
+    <NotFound>
+        <LayoutView Layout="@typeof(BLMainLayout)">
+                <NotFoundView/>
+        </LayoutView>
+    </NotFound>
+</Router>
+</CascadingAuthenticationState>
+
+

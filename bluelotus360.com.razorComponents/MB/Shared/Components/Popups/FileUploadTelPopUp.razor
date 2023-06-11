@@ -1,0 +1,105 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+
+<MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions">
+
+   <TitleContent>
+
+        @PopupTitle
+        <MudSpacer/>
+        <MudIconButton Icon="@Icons.Material.TwoTone.Close" OnClick="OnCloseClick"/>
+
+    </TitleContent>
+    <DialogContent>
+        <MudList Clickable="false">
+            @foreach (var item in Validator.UserMessages.UserMessages)
+            {
+                <MudListItem Style="Color:darkred" Text="@item.Message" Icon="@Icons.Material.Filled.Error" />
+            }
+        </MudList>
+        @if (IsUploadedDocumentShown)
+        {
+            <MudPaper Elevation=0>
+                @if (uploadedFiles != null && uploadedFiles.Count() > 0)
+                {
+                    <MudList Clickable="true">
+
+                        @foreach (var item in uploadedFiles)
+                        {
+                            <MudListItem Class="uploaded-wrapper" OnClick="@(()=>{OnFilePreview(item);})">
+                                <MudStack Row="true">
+                                    <MudIcon Icon="@Icons.Material.TwoTone.InsertDriveFile" />
+                                    <MudStack Justify="Justify.Center" Spacing="0">
+                                        <MudText title="@item.Filename" Typo="Typo.body1">@item.Filename.Truncate(30,"...")</MudText>
+                                        <MudText Typo="Typo.body2">@($"{item.FileSize.ToMB()}MB")</MudText>
+                                    </MudStack>
+                                    <MudSpacer />
+                                    <MudIconButton Icon="@Icons.Material.TwoTone.FileDownload" OnClick="@(()=>OnFileDownload(item))" />
+
+                                </MudStack>
+                            </MudListItem>
+                        }
+
+                    </MudList>
+                }
+                else
+                {
+                    <div class="d-flex justify-center align-center">
+                        @if (isDocumentLoading)
+                        {
+                            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+                        }
+                        else
+                        {
+                            <MudText>No File has been uploaded!</MudText>
+                        }
+                    </div>
+
+                }
+            </MudPaper>
+             <MudPaper>
+                <Base64StringFile Base64String="@_selectedBase64string" MimeType="@(GetContentType(_selectedFileName))" />
+            </MudPaper>
+        }
+        else
+        {
+            <MudPaper @ondragenter="@SetDragClass" @ondragleave="@ClearDragClass" @ondragend="@ClearDragClass" Height="300px" Outlined="true" Class="@DragClass">
+
+                @if (IsUploading)
+                {
+                    <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                }
+
+                @if (!Clearing)
+                {
+                    <InputFile OnChange="OnInputFileChanged" multiple class="absolute mud-width-full mud-height-full overflow-hidden z-2" style="opacity:0;" />
+                }
+                <MudText Typo="Typo.h6">Drag and drop files here or click</MudText>
+                @foreach (var file in files)
+                {
+                    <MudChip Color="Color.Info" Text="@file.FileName" />
+                }
+            </MudPaper>
+
+            <MudTextField @bind-Value="Description" Label="Description" Variant="Variant.Outlined" class="mb-3"></MudTextField>
+        
+        }
+        
+
+        <MudToolBar DisableGutters="true" Class="d-flex justify-content-center gap-4">
+            <MudButton OnClick="Upload" Disabled="@(!files.Any())" Color="Color.Primary" Variant="Variant.Filled">Upload</MudButton>
+            <MudButton OnClick="Clear" Disabled="@(!files.Any())" Color="Color.Default" Variant="Variant.Filled">Clear</MudButton>
+        </MudToolBar>
+
+    </DialogContent>
+</MudDialog>
+
+
+<style>
+    .uploaded-wrapper
+    {
+        border: 1px dashed #585858;
+        border-radius: 15px;
+        padding: 6px;
+        margin-top:5px;
+    }
+</style>

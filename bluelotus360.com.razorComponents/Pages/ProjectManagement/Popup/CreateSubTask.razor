@@ -1,0 +1,928 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.Document;
+@using BL10.CleanArchitecture.Domain.Entities.ProjectManagement;
+@using BlueLotus360.CleanArchitecture.Domain.Entities.HR;
+@using Microsoft.AspNetCore.Components.Forms;
+@using bluelotus360.com.razorComponents.Extensions;
+
+
+<MudItem xs="12" Style="width:100% !important">
+    <MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions">
+        <DialogContent>
+            @if (KanbanButtonSection != null)
+            {
+                <UIRenderere DataObject="new object()" FromSection="KanbanButtonSection" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+            }
+
+            <MudItem xs="12" Style="margin-top:60px;">
+                <MudCard>
+                    @foreach (BLUIElement item in ListOfTabs)
+                    {
+                        <MudExpansionPanels MultiExpansion="false" Style="margin-top:10px !important;">
+                            <MudExpansionPanel Text="@item.ElementCaption" Style="background-color:#E7F1FF; border-radius:10px !important; border:1px solid;border-color:#E7F1FF" @onclick="() => ExpansionPanelClick(item)">
+                                @if (TaskDetails != null && TaskDetails.Children.Count > 0 && item.ElementID == "TaskDetails")
+                                {
+
+                                    <MudCard Style="padding:8% 2% !important; border-radius:10px !important">
+                                        <UIRenderere FromSection="TaskDetails" DataObject="EditTask" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                    </MudCard>
+                                }
+                                @if (AttachmentDetails != null && item.ElementID == "Attachments" && TaskKey > 11)
+                                {
+                                    <MudCard Style="padding:8% 2% !important; border-radius:10px !important">
+                                        <MudFileUpload T="IReadOnlyList<IBrowserFile>" MaximumFileCount="3" OnFilesChanged="OnInputFileChanged" Hidden="false" Class="flex-1" InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20" InputStyle="opacity:0"
+                                               @ondragenter="@SetDragClass" @ondragleave="@ClearDragClass" @ondragend="@ClearDragClass">
+                                            <ButtonTemplate>
+                                                <MudPaper Height="200px" Outlined="true" Class="@DragClass">
+                                                    <MudText Typo="Typo.h5">Drag and drop files here or click. Max file count is 3</MudText>
+                                                    @foreach (var file in fileNames)
+                                                    {
+                                                        <MudChip Color="Color.Dark" Text="@file" />
+                                                    }
+                                                </MudPaper>
+                                            </ButtonTemplate>
+                                        </MudFileUpload>
+                                        <div class="d-flex">
+                                            <MudItem xs="6">
+                                                <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="width:100% !important" @onclick="() => UploadFiles(TaskKey)">Upload</MudButton>
+                                            </MudItem>
+                                            <MudItem xs="6">
+                                                <MudButton Variant="Variant.Filled" Color="Color.Secondary" Style="width:100% !important" @onclick="() => ClearFiles()">Cancel</MudButton>
+                                            </MudItem>
+                                        </div>
+
+                                        @if (EditTask.Base64ImageDocument != null && EditTask.Base64Documents.Count > 0)
+                                        {
+                                            foreach (Base64Document item in EditTask.Base64Documents)
+                                            {
+                                                <MudItem xs="12">
+                                                    @if (item.Filename.Contains(".pdf"))
+                                                    {
+                                                        <MudCard Style="border:1px solid; margin-top:5% !important">
+                                                            <MudCardHeader Style="padding:10px !important">
+                                                                <CardHeaderAvatar>
+                                                                    <MudAvatar Style="background-color:transparent !important">
+                                                                        <MudIcon Icon="fa-solid fa-file-pdf" Size="Size.Small" Color="Color.Secondary" />
+                                                                    </MudAvatar>
+                                                                </CardHeaderAvatar>
+                                                                <CardHeaderContent>
+                                                                    <MudText Typo="Typo.body1">@item.Filename</MudText>
+                                                                    <MudText Typo="Typo.body1">@item.FileSize</MudText>
+                                                                </CardHeaderContent>
+                                                            </MudCardHeader>
+                                                            <MudCardActions>
+                                                                <MudTooltip Text="@item.UploadedBy.UserID">
+                                                                    <MudAvatar Color="Color.Secondary">@item.UploadedBy.UserID[0]</MudAvatar>
+                                                                </MudTooltip>
+
+                                                                <MudIconButton Icon="fa-solid fa-download" @onclick="() => DownloadFile(item)" Color="Color.Secondary" />
+                                                                <MudIconButton Icon="fa-solid fa-trash-can" @onclick="() => DeleteFile(item)" Color="Color.Secondary" />
+                                                            </MudCardActions>
+                                                        </MudCard>
+
+                                                    }
+                                                    else if (item.Filename.Contains(".xls"))
+                                                    {
+                                                        <MudCard Style="border:1px solid; margin-top:5% !important">
+                                                            <MudCardHeader Style="padding:10px !important">
+                                                                <CardHeaderAvatar>
+                                                                    <MudAvatar Style="background-color:transparent !important">
+                                                                        <MudIcon Icon="fa-solid fa-file-excel" Size="Size.Small" Color="Color.Secondary" />
+                                                                    </MudAvatar>
+                                                                </CardHeaderAvatar>
+                                                                <CardHeaderContent>
+                                                                    <MudText Typo="Typo.body1">@item.Filename</MudText>
+                                                                </CardHeaderContent>
+                                                            </MudCardHeader>
+                                                            <MudCardActions>
+                                                                <MudTooltip Text="@item.UploadedBy.UserID">
+                                                                    <MudAvatar Color="Color.Secondary">@item.UploadedBy.UserID[0]</MudAvatar>
+                                                                </MudTooltip>
+
+                                                                <MudIconButton Icon="fa-solid fa-download" @onclick="() => DownloadFile(item)" Color="Color.Secondary" />
+                                                                <MudIconButton Icon="fa-solid fa-trash-can" @onclick="() => DeleteFile(item)" Color="Color.Secondary" />
+                                                            </MudCardActions>
+                                                        </MudCard>
+                                                    }
+                                                    else if (item.Filename.Contains(".doc"))
+                                                    {
+                                                        <MudCard Style="border:1px solid; margin-top:5% !important">
+                                                            <MudCardHeader Style="padding:10px !important">
+                                                                <CardHeaderAvatar>
+                                                                    <MudAvatar Style="background-color:transparent !important">
+                                                                        <MudIcon Icon="fa-solid fa-file-word" Size="Size.Small" Color="Color.Secondary" />
+                                                                    </MudAvatar>
+                                                                </CardHeaderAvatar>
+                                                                <CardHeaderContent>
+                                                                    <MudText Typo="Typo.body1">@item.Filename</MudText>
+                                                                </CardHeaderContent>
+                                                            </MudCardHeader>
+                                                            <MudCardActions>
+                                                                <MudTooltip Text="@item.UploadedBy.UserID">
+                                                                    <MudAvatar Color="Color.Secondary">@item.UploadedBy.UserID[0]</MudAvatar>
+                                                                </MudTooltip>
+
+                                                                <MudIconButton Icon="fa-solid fa-download" @onclick="() => DownloadFile(item)" Color="Color.Secondary" />
+                                                                <MudIconButton Icon="fa-solid fa-trash-can" @onclick="() => DeleteFile(item)" Color="Color.Secondary" />
+                                                            </MudCardActions>
+                                                        </MudCard>
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudCard Style="border:1px solid; margin-top:5% !important">
+                                                            <MudCardHeader Style="padding:10px !important">
+                                                                <CardHeaderAvatar>
+                                                                    <MudAvatar Style="background-color:transparent !important">
+                                                                        <MudIcon Icon="fa-solid fa-file-image" Size="Size.Small" Color="Color.Secondary" />
+                                                                    </MudAvatar>
+                                                                </CardHeaderAvatar>
+                                                                <CardHeaderContent>
+                                                                    <MudText Typo="Typo.body1">@item.Filename</MudText>
+                                                                </CardHeaderContent>
+                                                            </MudCardHeader>
+                                                            <MudCardActions>
+                                                                <MudTooltip Text="@item.UploadedBy.UserID">
+                                                                    <MudAvatar Color="Color.Secondary">@item.UploadedBy.UserID[0]</MudAvatar>
+                                                                </MudTooltip>
+
+                                                                <MudIconButton Icon="fa-solid fa-download" @onclick="() => DownloadFile(item)" Color="Color.Secondary" />
+                                                                <MudIconButton Icon="fa-solid fa-trash-can" @onclick="() => DeleteFile(item)" Color="Color.Secondary" />
+                                                            </MudCardActions>
+                                                        </MudCard>
+                                                    }
+                                                </MudItem>
+                                            }
+                                        }
+
+
+                                    </MudCard>
+                                }
+
+                                @if (Teams != null && item.ElementID == "Teams")
+                                {
+                                    <MudCard Style="padding:8% 2% !important; border-radius:10px !important">
+                                        <UIRenderere FromSection="Teams" DataObject="_resource" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+
+                                        <MudItem xs="12">
+                                            <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="width:100% !important" @onclick="() => AddTeamMembers()">Add</MudButton>
+                                        </MudItem>
+
+                                        <MudSimpleTable Style="overflow-x: auto;margin-top:3% !important">
+                                            <thead>
+                                                <tr style="background-color:#183153; color:white; border-radius:2px">
+                                                    <th class="d-none"></th>
+                                                    <th>Member</th>
+                                                    <th>Hour</th>
+                                                    <th>Description</th>
+                                                    <th>Action</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var row in EditTask.Resources)
+                                                {
+                                                    <tr>
+                                                        <td class="d-none">@row.ProcessComponentKey</td>
+                                                        <td>@row.ComponentAddress.AddressName</td>
+                                                        <td>@row.TransactionQuantity</td>
+                                                        <td>@row.Description</td>
+                                                        <td><MudIconButton Icon="fa-solid fa-trash" Color="Color.Primary" @onclick="() => DeleteTeamMembers(row)"></MudIconButton></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </MudSimpleTable>
+
+                                    </MudCard>
+                                }
+                                @if (Comment != null && item.ElementID == "Comments" && TaskKey > 11)
+                                {
+                                    if (EditTask.Comments != null && EditTask.Comments.Count > 0)
+                                    {
+                                        foreach (ProcessRemark item in EditTask.Comments)
+                                        {
+                                            <MudItem xs="12">
+                                                <MudCard Style="margin-top:5% !important">
+                                                    <MudCardHeader Style="padding:10px !important">
+                                                        <CardHeaderAvatar>
+                                                            <MudAvatar Color="Color.Secondary">@item.RemarksAddress.AddressSName</MudAvatar>
+                                                        </CardHeaderAvatar>
+                                                        <CardHeaderContent>
+                                                            <MudText Typo="Typo.body1">@item.RemarksAddress.Alias  @item.commentDateTime</MudText>
+                                                        </CardHeaderContent>
+                                                    </MudCardHeader>
+                                                    <MudCardContent Style="padding:4% !important">
+                                                        <MudText Typo="Typo.body2">@item.Remarks</MudText>
+                                                    </MudCardContent>
+                                                </MudCard>
+                                            </MudItem>
+
+                                        }
+                                    }
+
+                                    <MudCard Style="padding:8% 2% !important;margin-top:3% !important">
+                                        <UIRenderere FromSection="Comment" DataObject="_Comment" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                    </MudCard>
+                                }
+
+                                @if (SubTasks != null && item.ElementID == "SubTask" && EditTask.SubProcess != null)
+                                {
+                                    <MudItem xs="12">
+                                        <MudCard Style="margin-top:5% !important; border-radius:10px !important">
+                                            <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                                                <MudIconButton Icon="fa-solid fa-plus" Color="Color.Primary" @onclick="() => OnSubTaskAddClick(EditTask.TaskKey)" />
+                                            </MudButtonGroup>
+                                        </MudCard>
+                                    </MudItem>
+
+                                    if (EditTask.SubProcess.Count > 0)
+                                    {
+                                        foreach (var item in EditTask.SubProcess)
+                                        {
+                                            <MudCard Style="margin-top:5% !important; border-radius:10px !important">
+                                                <MudCardHeader>
+                                                    <CardHeaderContent>
+                                                        <MudText Typo="Typo.h5"><b>@item.TaskId</b></MudText>
+                                                    </CardHeaderContent>
+                                                </MudCardHeader>
+
+                                                <MudCardContent Style="padding: 5px !important">
+                                                    <MudItem xs="12" Style="padding: 5px !important">
+                                                        <MudText Typo="Typo.h5">@item.TaskName</MudText>
+                                                    </MudItem>
+                                                </MudCardContent>
+                                                <MudCardActions Style="padding:2% !important">
+                                                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                                                        <MudIconButton Icon="fa-solid fa-plus" Color="Color.Primary" @onclick="() => OnChildSubTaskAddClick(item.TaskKey)" />
+                                                        <MudIconButton Icon="fa-solid fa-pen" @onclick="() => OnSubTaskEditClick(item.TaskKey)"></MudIconButton>
+                                                    </MudButtonGroup>
+                                                </MudCardActions>
+                                            </MudCard>
+                                        }
+                                    }
+
+
+                                }
+
+                                @* @if (_CheckList != null && item.ElementID == "CheckList")
+                            {
+                            <MudCard Style="padding:8% 2% !important; border-radius:10px !important">
+
+                            @if (EditTask.CheckList != null && EditTask.CheckList.Count > 0)
+                            {
+                            float TotalTask = EditTask.CheckList.Count;
+                            float MarkedTask = EditTask.CheckList.Where(x => x.isChecked).ToList().Count;
+                            float Percentage = (MarkedTask / TotalTask) * 100;
+                            <div class="d-flex">
+                            <MudItem xs="10">
+                            <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Large" Value="@Percentage" />
+                            </MudItem>
+                            <MudItem xs="2">
+                            <MudText Typo="Typo.h6"> @Percentage%</MudText>
+                            </MudItem>
+
+                            </div>
+
+                            <MudItem xs="12">
+                            <MudCard>
+                            @foreach (CheckList chk in EditTask.CheckList)
+                            {
+                            <MudCardContent>
+                            <div class="d-flex">
+                            <MudItem xs="2">
+                            @if (chk.isChecked)
+                            {
+                            <MudCheckBox Checked="true" Color="Color.Primary" @onclick="() => OnCheckListClick(chk)"></MudCheckBox>
+                            }
+                            else
+                            {
+                            <MudCheckBox Checked="false" Color="Color.Primary" @onclick="() => OnUnCheckListClick(chk)"></MudCheckBox>
+                            }
+
+                            </MudItem>
+                            <MudItem xs="8">
+                            <MudText Typo="Typo.h5">@chk.Content</MudText>
+                            </MudItem>
+                            <MudItem xs="2">
+                            <MudIconButton Icon="fa-solid fa-trash" Color="Color.Primary" @onclick="() => CheckListDelete(chk)" />
+                            </MudItem>
+                            </div>
+                            </MudCardContent>
+                            }
+                            </MudCard>
+                            </MudItem>
+                            }
+
+
+                            @if (!isChkLstDataEntryView)
+                            {
+                            <UIRenderere FromSection="CheckListBtnSec" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                            }
+                            else
+                            {
+                            <UIRenderere FromSection="CheckListDataEntry" DataObject="_chkLst" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                            }
+
+                            </MudCard>
+                            }*@
+                            </MudExpansionPanel>
+                        </MudExpansionPanels>
+                    }
+
+
+                </MudCard>
+            </MudItem>
+
+        </DialogContent>
+    </MudDialog>
+
+</MudItem>
+
+@code {
+    [Parameter]
+    public EventCallback OnCloseButtonClick { get; set; }
+    [Parameter] public bool WindowIsVisible { get; set; } = true;
+    private DialogOptions dialogOptions = new() { CloseButton = true };
+    [Parameter] public int TaskKey { get; set; }
+    [Parameter] public long NavigateElementKey { get; set; }
+    [Parameter] public BLUIElement BLElement { get; set; } 
+    private IDictionary<string, EventCallback> _interactionLogic;
+    private IDictionary<string, IBLUIOperationHelper> _objectHelpers;
+    public long TaskIdentity = 0;
+    private BLUIElement formDefinition;
+    private BLUIElement TaskDetailsView;
+    private BLUIElement TaskDetails;
+    private BLUIElement AttachmentDetails;
+    private BLUIElement Teams;
+    private BLUIElement Comment;
+    private BLUIElement SubTasks;
+    private BLUIElement KanbanButtonSection;
+    private BLUIElement _CheckList;
+    private BLUIElement CheckListBtnSec;
+    private BLUIElement CheckListDataEntry;
+    private UIBuilder _refBuilder;
+    private ProcessRequest _processRequest;
+    private IList<BLUIElement> ListOfTabs;
+    private static string DefaultDragClass = "relative rounded-lg border-2 border-dashed pa-4 mt-4 mud-width-full mud-height-full z-10";
+    private string DragClass = DefaultDragClass;
+    public Process EditTask { get; set; }
+     private List<string> fileNames = new List<string>();
+    private IReadOnlyList<IBrowserFile> files;
+    public FileUpload UploadObject { get; set; }
+    private ProcessComponent _resource;
+    private ProcessRemark _Comment = new ProcessRemark();
+    private bool isChkLstDataEntryView = false;
+    private CheckList _chkLst;
+    private UserDetails _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+
+        InitializeObjects();
+
+            long elementKey = NavigateElementKey;
+           // _navigationManager.TryGetQueryString<long>("ElementKey", out elementKey);// get element key from url 
+
+            if (elementKey > 10)
+            {
+                var formrequest = new ObjectFormRequest();
+
+                formrequest.MenuKey = elementKey;
+                formDefinition = await _navManger.GetMenuUIElement(formrequest);//get ui elements
+            }
+        
+        var childsHash = formDefinition.Children.ToLookup(elem => elem.ParentKey);
+        foreach (var child in formDefinition.Children)
+        {
+            child.Children = childsHash[child.ElementKey].ToList();
+        }
+        if (formDefinition != null)
+        {
+            TaskDetailsView = formDefinition.Children.Where(x => x._internalElementName != null && x._internalElementName.Equals("TaskTabs")).FirstOrDefault();
+            ListOfTabs = TaskKey > 11 ? TaskDetailsView.Children.Where(x => x.ElementType == "Tab").ToList() : TaskDetailsView.Children.Where(x => x.ElementType == "Tab" && !x.IsFreeze).ToList();
+            TaskDetails = ListOfTabs.Where(x => x.ElementID == "TaskDetails").FirstOrDefault();
+            AttachmentDetails = ListOfTabs.Where(x => x.ElementID == "Attachments").FirstOrDefault();
+            Teams = ListOfTabs.Where(x => x.ElementID == "Teams").FirstOrDefault();
+            Comment = ListOfTabs.Where(x => x.ElementID == "Comments").FirstOrDefault();
+            SubTasks = ListOfTabs.Where(x => x.ElementID == "SubTask").FirstOrDefault();
+            KanbanButtonSection = formDefinition.Children.Where(x => x._internalElementName != null && x._internalElementName.Equals("TabButtonSec")).FirstOrDefault();
+            _CheckList = ListOfTabs.Where(x => x.ElementID == "CheckList").FirstOrDefault();
+            CheckListBtnSec = _CheckList.Children.Where(x => x.ElementID == "ChkLstBtnSec").FirstOrDefault();
+            CheckListDataEntry = _CheckList.Children.Where(x => x.ElementID == "ChkLstDataEntry").FirstOrDefault();
+            formDefinition.IsDebugMode = true;
+        }
+
+        await GetExistingTask();
+    }
+
+    public async void InitializeObjects()
+    {
+        _interactionLogic = new Dictionary<string, EventCallback>();
+        _objectHelpers = new Dictionary<string, IBLUIOperationHelper>();
+        _refBuilder = new UIBuilder();
+        _processRequest = new ProcessRequest();
+        TaskDetailsView = new BLUIElement();
+        ListOfTabs = new List<BLUIElement>();
+        TaskDetails = new BLUIElement();
+        AttachmentDetails = new BLUIElement();
+        EditTask = new Process();
+        UploadObject = new FileUpload();
+        Teams = new BLUIElement();
+        SubTasks = new BLUIElement();
+        _user = new UserDetails();
+        _resource = new ProcessComponent();
+        _CheckList = new BLUIElement();
+        CheckListBtnSec = new BLUIElement();
+        CheckListDataEntry = new BLUIElement();
+        _chkLst = new CheckList();
+    }
+
+    private void UIStateChanged()
+    {
+
+        this.StateHasChanged();
+    }
+
+    private async void ExpansionPanelClick(BLUIElement item)
+    {
+        if (item.ElementID == "TaskDetails")
+        {
+            await GetExistingTask();
+        }
+        UIStateChanged();
+    }
+
+    private void OnInputFileChanged(InputFileChangeEventArgs e)
+    {
+        ClearDragClass();
+        files = e.GetMultipleFiles();
+        foreach (var file in files)
+        {
+            fileNames.Add(file.Name);
+        }
+    }
+
+    private void SetDragClass()
+    {
+        DragClass = $"{DefaultDragClass} mud-border-primary";
+    }
+
+    private void ClearDragClass()
+    {
+        DragClass = DefaultDragClass;
+    }
+
+    private async Task<Process> GetExistingTask()
+    {
+        if (TaskKey > 11)
+        {
+            ProcessRequest processrequest = new ProcessRequest()
+                {
+                    TaskKey = TaskKey
+                };
+            EditTask = await _processManager.GetTaskByTaskKey(processrequest);
+            await SetValue("TaskName", EditTask.TaskName);
+            DocumentRetrivaltDTO document = new DocumentRetrivaltDTO();
+            document.ProcessDetKey = (int)EditTask.TaskKey;
+            EditTask.Base64Documents = await _uploadManager.GetAllDocuments(document);
+            EditTask.Resources = await GetTeamMembers();
+            EditTask.Comments = await GetComments();
+            EditTask.SubProcess = await GetSubTasks();
+            //EditTask.CheckList = await GetCheckList();
+        }
+
+        return EditTask;
+    }
+
+    private async Task ClearFiles()
+    {
+        fileNames.Clear();
+        ClearDragClass();
+        await Task.Delay(100);
+    }
+
+    private async Task UploadFiles(int TaskKey)
+    {
+        try
+        {
+            foreach (var file in files)
+            {
+                await using MemoryStream fs = new MemoryStream();
+                await file.OpenReadStream(maxAllowedSize: 1048576).CopyToAsync(fs);
+                byte[] somBytes = GetBytes(fs);
+                string base64String = Convert.ToBase64String(somBytes, 0, somBytes.Length);
+                UploadObject.Buffer = somBytes;
+                UploadObject.UploadedFile.Size = file.Size;
+                UploadObject.UploadedFile.FileName = file.Name ?? "";
+                UploadObject.UploadedFile.Extension = file.Name.Split(".").Last() ?? "";
+                UploadObject.ProcessDetKey = TaskKey;
+                await _uploadManager.UploadFile(UploadObject);
+
+            }
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("File has been  Uploaded Successfully", Severity.Success);
+
+        }
+        catch (Exception ex)
+        {
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("Error Occured", Severity.Error);
+        }
+        finally
+        {
+            await ClearFiles();
+            DocumentRetrivaltDTO document = new DocumentRetrivaltDTO();
+            document.ProcessDetKey = TaskKey;
+            EditTask.Base64Documents = await _uploadManager.GetAllDocuments(document);
+        }
+        UIStateChanged();
+    }
+
+    public static byte[] GetBytes(Stream stream)
+    {
+        var bytes = new byte[stream.Length];
+        stream.Seek(0, SeekOrigin.Begin);
+        stream.ReadAsync(bytes, 0, bytes.Length);
+        stream.Dispose();
+        return bytes;
+    }
+
+    private async void DownloadFile(Base64Document item)
+    {
+
+        UIStateChanged();
+    }
+
+    private async void DeleteFile(Base64Document item)
+    {
+        DocumentRetrivaltDTO doc = new DocumentRetrivaltDTO()
+            {
+                DocumentKey = item.DocumentKey
+            };
+        bool success = await _uploadManager.DeleteDocument(doc);
+        if (success)
+        {
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("File has been  Deleted Successfully", Severity.Success);
+        }
+        else
+        {
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("Something went wrong", Severity.Error);
+        }
+        DocumentRetrivaltDTO document = new DocumentRetrivaltDTO();
+        document.ProcessDetKey = TaskKey;
+        EditTask.Base64Documents = await _uploadManager.GetAllDocuments(document);
+        UIStateChanged();
+    }
+    private async void OnTeamMembersChange(UIInterectionArgs<AddressResponse> args)
+    {
+        _resource.ComponentAddress = args.DataObject;
+        StateHasChanged();
+    }
+    private async void OnNoOfHoursChange(UIInterectionArgs<decimal> args)
+    {
+        _resource.TransactionQuantity = args.DataObject;
+        StateHasChanged();
+    }
+
+    private async void OnTeam_DesChange(UIInterectionArgs<string?> args)
+    {
+        _resource.Description = args.DataObject;
+        StateHasChanged();
+    }
+
+
+
+    private async void AddTeamMembers()
+    {
+        if (TaskKey > 11)
+        {
+            _resource.PrcessKey = TaskKey;
+            await _processManager.CreateProcessComponent(_resource);
+            EditTask.Resources = await GetTeamMembers();
+            _resource = new ProcessComponent();
+            UIStateChanged();
+        }
+        else
+        {
+            if (_resource.ComponentAddress.AddressKey > 11 && _resource.TransactionQuantity > 0)
+            {
+                _resource.ProcessComponentKey = 1;
+                EditTask.Resources.Add(_resource);
+                _resource = new ProcessComponent();
+                UIStateChanged();
+            }
+            else
+            {
+                _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+                _snackBar.Add("Please select Team member / Hours", Severity.Warning);
+            }
+        }
+
+        UIStateChanged();
+    }
+
+    private async void DeleteTeamMembers(ProcessComponent cmpnt)
+    {
+        if (cmpnt.ProcessComponentKey > 11)
+        {
+            ProcessRequest req = new ProcessRequest()
+                {
+                    TaskKey = TaskKey,
+                    PrcsCmpKy = cmpnt.ProcessComponentKey
+                };
+            bool success = await _processManager.DeleteComponents(req);
+            EditTask.Resources = await GetTeamMembers();
+            UIStateChanged();
+        }
+        else
+        {
+            EditTask.Resources.Remove(cmpnt);
+            UIStateChanged();
+        }
+
+    }
+
+    private async Task<IList<Process>> GetSubTasks()
+    {
+        ProcessRequest request = new ProcessRequest()
+            {
+                TaskKey = TaskKey
+            };
+        IList<Process> SubTask = await _processManager.GetSubTaskByTaskKey(request);
+        return SubTask;
+    }
+
+    private async Task<IList<ProcessComponent>> GetTeamMembers()
+    {
+        ProcessRequest request = new ProcessRequest()
+            {
+                TaskKey = TaskKey
+            };
+        IList<ProcessComponent> Teams = await _processManager.GetProcessComponents(request);
+        return Teams;
+    }
+
+    private async Task<IList<ProcessRemark>> GetComments()
+    {
+        ProcessRequest request = new ProcessRequest()
+            {
+                TaskKey = TaskKey
+            };
+        IList<ProcessRemark> Teams = await _processManager.GetProcessRemarksByProcess(request);
+        return Teams;
+    }
+
+    private async void OnCommentChange(UIInterectionArgs<string?> args)
+    {
+        _Comment.Remarks = args.DataObject;
+        StateHasChanged();
+    }
+
+    private async void OnPostClick(UIInterectionArgs<object> args)
+    {
+        if (_Comment.Remarks != "")
+        {
+            _Comment.TaskKey = TaskKey;
+            await _processManager.SaveRemarks(_Comment);
+            EditTask.Comments = await GetComments();
+            _Comment = new ProcessRemark();
+            _Comment.Remarks = "";
+
+        }
+        else
+        {
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("Please leave a comment", Severity.Warning);
+        }
+        StateHasChanged();
+    }
+
+    private async void OnBackClick(UIInterectionArgs<object> args)
+    {
+        _navigationManager.NavigateTo($"/Process/todomobileview?ElementKey=" + Convert.ToInt64(NavigateElementKey));
+    }
+
+    private async void OnSaveClick(UIInterectionArgs<object> args)
+    {
+        if (SaveRecordValidation(EditTask))
+        {
+            _user = await _hrManager.GetUserAsync();
+            if (EditTask.TaskKey > 11)
+            {
+                TaskInsertUpdate task = new TaskInsertUpdate()
+                    {
+                        PrcsDetKy = EditTask.TaskKey,
+                        TaskId = EditTask.TaskId,
+                        TaskName = EditTask.TaskName,
+                        PrcsTypKy = EditTask.ProcessType.CodeKey,
+                        TrnQty = EditTask.TransactionQauntity,
+                        TrnPri = EditTask.CostPrice,
+                        TrnRate = EditTask.TransactionRate,
+                        TrnUnitKy = EditTask.TransactionUnit.UnitKey,
+                        LeadAdrKy = EditTask.Lead.AddressKey < 11 ? _user.AdrKy : EditTask.Lead.AddressKey,
+                        CurAdrKy = EditTask.CurrentResponsible.AddressKey < 11 ? _user.AdrKy : EditTask.CurrentResponsible.AddressKey,
+                        PrjKy = EditTask.ProcessProject.ProjectKey,
+                        PrtyKy = EditTask.Priority.CodeKey,
+                        LiNo = EditTask.LineNumber,
+                        ObjKy = 1,
+                        AprStsKy = EditTask.ApproveStatus.CodeKey,
+                        ReqDt = EditTask.RequestDate.ToString("yyyy/MM/dd"),
+                        PrntKy = EditTask.ParentTaskKey,
+                        PrcsDetCat1Ky = EditTask.PorcessCategory.CodeKey,
+                        PrjPrcsCat1Ky = EditTask.PorcessCategory.CodeKey,
+                        InitalPrgs = EditTask.ProgressPercentage,
+                        ScheduleProgress = EditTask.ScheduleDetail.Progress,
+                        VersionNo = EditTask.ScheduleDetail.Schedule.VersionNumber == null ? "" : EditTask.ScheduleDetail.Schedule.VersionNumber,
+                        YurRef = EditTask.ScheduleDetail.Schedule.YourReference == null ? "" : EditTask.ScheduleDetail.Schedule.YourReference,
+                        FromDt = EditTask.ScheduleDetail.StartDate.ToString("yyyy/MM/dd"),
+                        ToDt = EditTask.ScheduleDetail.EndDate.ToString("yyyy/MM/dd"),
+                        WrkHrs = EditTask.ScheduleDetail.WorkHours,
+                        PrcsObjKy = EditTask.PrcsObjKy < 11 ? 1 : EditTask.PrcsObjKy,
+                        Des = EditTask.Description,
+                        Rate = EditTask.CostPrice,
+                        Weight = EditTask.Weight,
+                        IsCompleted = EditTask.IsCompleted,
+                        IsSprint = EditTask.IsSprint,
+                        IsProgram = EditTask.IsProgram,
+                        IsCorporate = EditTask.IsCorporate,
+                        IsGeneric = EditTask.IsGeneric,
+                        IsClients = EditTask.IsClients,
+                        IsDeveloper = EditTask.IsDeveloper,
+                        IsConsultant = EditTask.IsConsultant,
+                        IsStandUp = EditTask.IsStandUp,
+                        RecurrenceRule = EditTask.RecurrenceRule,
+                        AdrKy = EditTask.AddressKey < 11 ? 1 : EditTask.AddressKey,
+                        Remarks = EditTask.Remarks == null || EditTask.Remarks == "" ? "" : EditTask.Remarks,
+                        No1 = EditTask.No1,
+                        No2 = EditTask.No2,
+                        TaskSNm = EditTask.TaskSNm == null ? "" : EditTask.TaskSNm,
+                        PrcsDetCat2Ky = EditTask.PrcsDetCat2Ky,
+                        Anl2Ky = EditTask.Anl2Ky
+
+                    };
+
+
+                bool success = await _processManager.UpdateTask(task);
+                if (success)
+                {
+                    _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+                    _snackBar.Add("Task has been updated successfully", Severity.Success);
+                    //_navigationManager.ToBaseRelativePath();
+                    _navigationManager.NavigateTo($"/Process/todomobileview?ElementKey=" + Convert.ToInt64(NavigateElementKey));
+                }
+                else
+                {
+                    _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+                    _snackBar.Add("Something went wrong", Severity.Error);
+                }
+            }
+            else
+            {
+                TaskInsertUpdate Newtask = new TaskInsertUpdate();
+                ProcessRequest req = new ProcessRequest();
+                req.ProjectKey = EditTask.ProcessProject.ProjectKey;
+                Newtask.PrcsDetKy = 1;
+                Newtask.TaskId = await _processManager.GetNextTaskID(req);
+                Newtask.TaskName = EditTask.TaskName;
+                Newtask.PrcsTypKy = EditTask.ProcessType.CodeKey;
+                Newtask.TrnQty = EditTask.TransactionQauntity;
+                Newtask.TrnPri = EditTask.CostPrice;
+                Newtask.TrnRate = EditTask.TransactionRate;
+                Newtask.TrnUnitKy = EditTask.TransactionUnit.UnitKey;
+                Newtask.LeadAdrKy = EditTask.Lead.AddressKey < 11 ? _user.AdrKy : EditTask.Lead.AddressKey;
+                Newtask.CurAdrKy = EditTask.CurrentResponsible.AddressKey < 11 ? _user.AdrKy : EditTask.CurrentResponsible.AddressKey;
+                Newtask.PrjKy = EditTask.ProcessProject.ProjectKey;
+                Newtask.PrtyKy = EditTask.Priority.CodeKey;
+                Newtask.LiNo = EditTask.LineNumber;
+                Newtask.ObjKy = Convert.ToInt32(NavigateElementKey);
+                Newtask.AprStsKy = EditTask.ApproveStatus.CodeKey;
+                Newtask.ReqDt = EditTask.RequestDate.ToString("yyyy/MM/dd");
+                Newtask.PrntKy = EditTask.ParentTaskKey;
+                Newtask.PrcsDetCat1Ky = EditTask.PorcessCategory.CodeKey;
+                Newtask.PrjPrcsCat1Ky = EditTask.PorcessCategory.CodeKey;
+                Newtask.InitalPrgs = EditTask.ProgressPercentage;
+                Newtask.ScheduleProgress = EditTask.ScheduleDetail.Progress;
+                Newtask.VersionNo = EditTask.ScheduleDetail.Schedule.VersionNumber == null ? "" : EditTask.ScheduleDetail.Schedule.VersionNumber;
+                Newtask.YurRef = EditTask.ScheduleDetail.Schedule.YourReference == null ? "" : EditTask.ScheduleDetail.Schedule.YourReference;
+                Newtask.FromDt = EditTask.ScheduleDetail.StartDate.ToString("yyyy/MM/dd");
+                Newtask.ToDt = EditTask.ScheduleDetail.EndDate.ToString("yyyy/MM/dd");
+                Newtask.WrkHrs = EditTask.ScheduleDetail.WorkHours;
+                Newtask.PrcsObjKy = EditTask.PrcsObjKy < 11 ? 1 : EditTask.PrcsObjKy;
+                Newtask.Des = EditTask.Description;
+                Newtask.Rate = EditTask.CostPrice;
+                Newtask.Weight = EditTask.Weight;
+                Newtask.IsCompleted = EditTask.IsCompleted;
+                Newtask.IsSprint = EditTask.IsSprint;
+                Newtask.IsProgram = EditTask.IsProgram;
+                Newtask.IsCorporate = EditTask.IsCorporate;
+                Newtask.IsGeneric = EditTask.IsGeneric;
+                Newtask.IsClients = EditTask.IsClients;
+                Newtask.IsDeveloper = EditTask.IsDeveloper;
+                Newtask.IsConsultant = EditTask.IsConsultant;
+                Newtask.IsStandUp = EditTask.IsStandUp;
+                Newtask.RecurrenceRule = EditTask.RecurrenceRule;
+                Newtask.AdrKy = EditTask.AddressKey < 11 ? 1 : EditTask.AddressKey;
+                Newtask.Remarks = EditTask.Remarks == null || EditTask.Remarks == "" ? "" : EditTask.Remarks;
+                Newtask.No1 = EditTask.No1;
+                Newtask.No2 = EditTask.No2;
+                Newtask.TaskSNm = EditTask.TaskSNm == null ? "" : EditTask.TaskSNm;
+                Newtask.PrcsDetCat2Ky = EditTask.PrcsDetCat2Ky;
+                Newtask.Anl2Ky = EditTask.Anl2Ky;
+
+
+                bool succes = await _processManager.CreateTask(Newtask);
+                if (succes)
+                {
+                    _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+                    _snackBar.Add("Task has been created successfully", Severity.Success);
+                    //_navigationManager.ToBaseRelativePath();
+                    _navigationManager.NavigateTo($"/Process/todomobileview?ElementKey=" + Convert.ToInt64(NavigateElementKey));
+                }
+                else
+                {
+                    _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+                    _snackBar.Add("Something went wrong", Severity.Error);
+                }
+            }
+        }
+        EditTask = new Process();
+        StateHasChanged();
+    }
+
+    private async Task SetValue(string name, object value)
+    {
+        IBLUIOperationHelper helper;
+
+        if (_objectHelpers.TryGetValue(name, out helper))
+        {
+            await helper.SetValue(value);
+            UIStateChanged();
+            await Task.CompletedTask;
+        }
+    }
+
+    private bool SaveRecordValidation(Process Task)
+    {
+        if (Task.TaskName == "")
+        {
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("Please Enter Task", Severity.Warning);
+            return false;
+        }
+        if (Task.ProcessProject.ProjectKey < 11)
+        {
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("Please select project", Severity.Warning);
+            return false;
+        }
+        else if (Task.ApproveStatus.CodeKey < 11)
+        {
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("Please select Status", Severity.Warning);
+            return false;
+        }
+
+        else
+        {
+            return true;
+        }
+    }
+
+    private void OnSubTaskAddClick(long TaskKey)
+    {
+
+        UIStateChanged();
+
+
+    }
+
+    private void OnChildSubTaskAddClick(long TaskKey)
+    {
+        //TaskIdentity = "1";
+        //TaskIdentity = TaskKey.ToString();
+        //_navigationManager.NavigateTo($"/Process/SubTask/{NavigateElementKey}/{TaskIdentity}");
+        UIStateChanged();
+
+
+
+    }
+
+    private void OnSubTaskEditClick(long TaskKey)
+    {
+        //Hidepopup();
+        //isOpenViewOption = true;
+        //TaskIdentity = TaskKey;
+        //Count = SubTaskCount;
+        UIStateChanged();
+
+
+    }
+
+    private async void OnCloseClick()
+    {
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+
+    }
+}

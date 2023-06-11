@@ -1,0 +1,98 @@
+﻿
+<div class="tab-scroll">
+<div class="top-button-bar mt-3">
+    <MudIconButton Icon="@Icons.TwoTone.ArrowBack"
+                   Variant="Variant.Outlined"
+                   Color="Color.Primary" Size="Size.Small" OnClick="OnBack" Disabled="@isBackButtonDisabled" />
+</div>
+<div id="job-summery-section1"  class="row">
+    <div class="col-6 ">
+        <div class="summery-panel">
+            <MudExpansionPanels Elevation="0">
+
+                @foreach (var itm in DataObject.OrderItems.Where(x => x.IsActive == 1 && !x.IsNoteItem).ToLookup(x => x.TransactionItem.ItemType.Code))
+                {
+                    <MudExpansionPanel Style="background: #E1E7EE">
+                        <TitleContent>
+                            <div class="d-flex">
+                                <MudText Class="font-weight-bold mt-1">@itm.FirstOrDefault()?.TransactionItem.ItemType.CodeName</MudText>
+                                <MudText Class="font-weight-bold ml-auto mt-1">@itm.Sum(x=>x.TransactionRate).ToString("N2")</MudText>
+                            </div>
+                        </TitleContent>
+                        <ChildContent>
+                            <MudList>
+                                @foreach (var det in itm.Distinct())
+                                {
+                                    <MudListItem >
+                                        <div class="d-flex justify-content-between">
+                                            <MudText Class="font-weight-bold mt-1">@det.TransactionItem.ItemName</MudText>
+                                            <MudText Class="font-weight-bold ml-auto mt-1">@det.TransactionRate.ToString("N2")</MudText>
+                                       </div>
+                                    </MudListItem>
+                                    
+                                }
+                            </MudList>
+                            
+                        </ChildContent>
+                    </MudExpansionPanel>
+                }
+                
+               
+            </MudExpansionPanels>
+
+            <div class="total-summery-bar">
+                <p class="font-weight-bold">Total Amount</p>
+                <p class="font-weight-bold">@DataObject.OrderItems.Where(x=>x.IsActive==1).Sum(p=>p.TransactionRate).ToString("N2")</p>
+            </div>
+        </div>
+
+    </div>
+    <div class="col-6 ">
+        <div class="summery-right-panel">
+            
+            <div class="sub">
+                <div class="d-flex justify-content-between align-items-center pa-3">
+                    <MudChip Icon="@Icons.Material.Filled.Circle" Style="background:#ffffff;" IconColor="Color.Warning">Material</MudChip>
+                    @if (DataObject.WorkOrderMaterials!=null)
+                    {
+                        <span>@DataObject.WorkOrderMaterials.Where(x=>x.IsActive==1).Count()</span>
+                    }
+                    
+                </div>
+                <div class="d-flex justify-content-between align-items-center pa-3">
+                    <MudChip Icon="@Icons.Material.Filled.Circle" Style="background:#ffffff;" IconColor="Color.Warning">Service</MudChip>
+                    @if (DataObject.WorkOrderMaterials != null)
+                    {
+                        <span>@DataObject.WorkOrderServices.Where(x=>x.IsActive==1).Count()</span>
+                    }
+                </div>
+
+            </div>
+            <div class="d-flex justify-content-center gap-3">
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="ViewEstimate">View Estimate</MudButton>
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="ShowInvoiceSection">Proceed to Invoice</MudButton>
+            </div>
+        </div>
+        
+       
+    </div>
+</div>
+
+<div id="job-summery-section2" class="row d-none">
+    <div class="col-12 d-flex flex-column text-center">
+        
+        <h5>@($"Work Order({DataObject.OrderCategory1.CodeName})-{DataObject.OrderPrefix.CodeName + DataObject.OrderNumber}")</h5>
+        <h5>Vehicle & Customer Information</h5>
+        
+
+    </div>
+    <VehicleSummaryTable SelectedVehicle="DataObject.SelectedVehicle" />
+    <CustomerSummerytable SelectedVehicle="DataObject.SelectedVehicle" />
+    <MudGrid Class="mt-3">
+        <MudItem xs="12">
+                <InvoiceComponent Activate="Activate" UIScope="@UIScope" DataObject="@DataObject" />
+        </MudItem>
+    </MudGrid>
+    
+</div>
+</div>

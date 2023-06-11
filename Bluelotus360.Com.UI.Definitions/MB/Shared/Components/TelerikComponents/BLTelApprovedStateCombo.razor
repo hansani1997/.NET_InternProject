@@ -1,0 +1,35 @@
+﻿<MudItem xs="12" class=@css_class md="@UIElement.Width">
+    @if (CodeBaseResponses == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+
+
+        @if (selectedCodeBase != null)
+        {
+            <div class="w-100">
+                
+                <div class="col-12">
+
+
+                    <TelerikComboBox Data="@CodeBaseResponses" TextField="CodeName" ValueField="CodeKey"
+                             TValue="int" TItem="CodeBaseResponse"
+                             ValueChanged="(int  s)=>OnComboValueChangedTel(s)"
+                             Value="selectedCodeBase.CodeKey"
+                             FilterOperator="Telerik.Blazor.StringFilterOperator.Contains"
+                             Filterable="true"
+                             ClearButton="true">
+                    </TelerikComboBox>
+
+
+
+
+                </div>
+            </div>
+        }
+
+
+    }
+</MudItem>

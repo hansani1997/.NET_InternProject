@@ -1,0 +1,30 @@
+﻿@typeparam T
+
+@if (FormObject!=null && FormObject.ElementType != null && FormObject.ElementType.Equals("Grid"))
+	{
+					<div> @*deleted padding 16px here*@
+		<MudItem xs="12" sm="12" md="@FormObject.Width">
+			@if (VersionNumber == 1)
+			{
+				<UIGrid FormObject="FormObject"
+				DataObject="DataObject"
+				InteractionLogics="InteractionLogics"
+				ObjectHelpers="ObjectHelpers"
+				Height="@Height"
+				@ref="_refGrid" />
+			}
+			@if (VersionNumber == 2)
+			{
+				<UIGridV2 FormObject="FormObject"
+					      DataObject="DataObject"
+					      InteractionLogics="InteractionLogics"
+						  ObjectHelpers="ObjectHelpers"
+						  Height="@Height"
+						  IsServerFilterEnabled=@IsServerFilterEnabled
+						  @ref="_refGridV2" />
+			}
+
+
+		</MudItem>
+					</div>
+	}

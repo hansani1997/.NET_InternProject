@@ -1,0 +1,9 @@
+﻿@inject Microsoft.Extensions.Localization.IStringLocalizer<NavMenu> _localizer
+@using System.Security.Claims
+
+
+<MudNavMenu>
+	<MudNavLink Href="/" Match="NavLinkMatch.Prefix" Icon="@Icons.Material.Outlined.Home">Home</MudNavLink>
+	<SideMenu Menu="Menus" IconDictionary="icon_dict"/>
+</MudNavMenu>
+

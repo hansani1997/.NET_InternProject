@@ -1,0 +1,148 @@
+﻿@page "/transaction/laundrocare/"
+@using BlueLotus360.Com.UI.Definitions.MB.Shared.Components.Popups.MasterDetailPopup;
+
+
+<UserMessageDialog Messages="@validator.UserMessages" @ref="_refUserMessage" />
+<AddNewAddress OnAddressCreated="OnCustomerCreateSuccess" @ref="_refNewAddressCreation" />
+<GenericReciept Transaction="transaction" @ref="_refgenericReciept" OnCloseClick="OnRecipetClose" OnRecieptSaveSuccess="OnRecieptSavedSuccessfully" />
+
+@if (ReportShown)
+{
+    <div class="report-pop-up @(ReportShown ? "":"d-none")">
+
+        <BLReportViewer ReportSetting="_dayEndReportOption"
+                    CloseReportDelegate="HideAllPopups" />
+
+        <hr />
+    </div>
+}
+@if (UIDefinition == null)
+{
+    <div class="rip-wrap">
+        <div class="lds-ripple">
+            <div>
+            </div><div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <MudPaper Elevation="0" Class="pa-4 fix-to-h">
+        <div class="detail-wrapper">
+            <div class="header-section">
+
+                <UIBuilder FormObject="UIDefinition"
+                       DataObject="transaction"
+                       InteractionLogics="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"
+                       CssClass="no-flex-break  fixed-header" />
+
+            </div>
+
+
+
+
+
+            @if (FindTransactionShown)
+            {
+                <div class="bl-pop-up @(FindTransactionShown ? "":"d-none")">
+
+                    <FindTransaction UIElement="findTrandsactionUI"
+                             OnCloseButtonClick="HideAllPopups"
+                             OnOpenClick="LoadTransaction" />
+
+
+
+                </div>
+
+            }
+            <div class="detailsection">
+                <MudGrid>
+                    <MudItem xs=12>
+                        <LaundercareItemPiicker @ref="_refItemPicker"
+                                            Services=Services
+                                            HumanTypes=HumanTypes
+                                            Items=Items
+                                            ItemCategory1=transaction.SelectedLineItem.ItemCategory1
+                                            ItemCategory2=transaction.SelectedLineItem.ItemCategory2
+                                            OnServiceTypeChanged="OnItemCategory2Change"
+                                            OnHumanTypeChanged="OnItemCategory1Change"
+                                            OnSelectedItemChanged="OnTransactionItemChanged" />
+                    </MudItem>
+                    <MudItem xs=12>
+                        <div class="tdef">
+
+
+                            <MudTable Items="@transaction.InvoiceLineItems.Where(x=>x.IsActive==1)" Hover="true" Breakpoint="Breakpoint.Sm"
+                                  LoadingProgressColor="Color.Info" CustomFooter="true" Dense="true" FixedHeader="true" FixedFooter="true" Height="@_tableHeight" @ref="_table">
+                                <HeaderContent>
+                                    <MudTh>SL No</MudTh>
+                                    <MudTh>Service Name</MudTh>
+                                    <MudTh>Human Type</MudTh>
+                                    <MudTh>Article Name</MudTh>
+                                    <MudTh Style="text-align:right">Qty </MudTh>
+                                    <MudTh Style="text-align:right">Peices</MudTh>
+                                    <MudTh>Folding Type</MudTh>
+                                    <MudTh Style="text-align:right">Price</MudTh>
+                                    <MudTh Style="text-align:right">Total Markup</MudTh>
+                                    <MudTh Style="text-align:right">Line Total</MudTh>
+                                    <MudTh>Defects</MudTh>
+                                    <MudTh>Color</MudTh>
+                                    <MudTh>Brand</MudTh>
+                                    <MudTh>Comment</MudTh>
+                                    <MudTh Style="text-align:right">Action</MudTh>
+                                </HeaderContent>
+
+                                <RowTemplate>
+                                    <MudTd DataLabel="#">
+                                        @context.SerialNumber
+                                        <MudIconButton Icon="@Icons.Filled.EdgesensorHigh" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>ShowScanSerialNumber(context)" Disabled="@(context.TransactionItem.IsWeightItem())"></MudIconButton>
+                                    </MudTd>
+                                    <MudTd DataLabel="#">@context.ItemCategory2.CodeName</MudTd>
+                                    <MudTd DataLabel="#">@context.ItemCategory1.CodeName</MudTd>
+                                    <MudTd DataLabel="#">@context.TransactionItem.ItemName</MudTd>
+                                    <MudTd DataLabel="#" Style="text-align:right">@context.TransactionQuantity.ToString("N0")</MudTd>
+                                    <MudTd DataLabel="#" Style="text-align:right">@context.Quantity2.ToString("N0")</MudTd>
+                                    <MudTd DataLabel="#">@context.Analysis1.CodeName</MudTd>
+                                    <MudTd DataLabel="#" Style="text-align:right">@context.TransactionRate.ToString("N2")</MudTd>
+                                    <MudTd DataLabel="#" Style="text-align:right">@context.GetTotalMarkupAmount().ToString("N2")</MudTd>
+                                    <MudTd DataLabel="#" Style="text-align:right">@context.GetNetLineTotal().ToString("N2")</MudTd>
+                                    <MudTd DataLabel="#">@context.Analysis2.CodeName</MudTd>
+                                    <MudTd DataLabel="#">@context.Analysis3.CodeName</MudTd>
+                                    <MudTd DataLabel="#">@context.Analysis5.CodeName</MudTd>
+                                    <MudTd DataLabel="#">@context.Description</MudTd>
+                                    <MudTd Style="text-align:right" DataLabel="Actions">
+                                        <div class="" Style="text-align:right">
+                                            <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>OnItemEditClick(context)" />
+                                            <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2" Color="Color.Error" OnClick="()=>OnOrderItemDelete(context)" />
+                                        </div>
+
+
+                                    </MudTd>
+                                </RowTemplate>
+
+                                <FooterContent>
+
+                                    @*<MudTFootRow Class="bold-text bg-tr-g1">
+                                <MudTd colspan="3">Total</MudTd>
+
+                                <MudTd Style="text-align:right">@transaction.GetTransactionRateTotal().ToString("N2")</MudTd>
+                                <MudTd Style="text-align:right">@transaction.GetQuantityTotal().ToString("N2")</MudTd>
+                                <MudTd></MudTd>
+                                <MudTd Style="text-align:right">@transaction.GetOrderDiscountTotal().ToString("N2")</MudTd>
+                                <MudTd Style="text-align:right">@transaction.GetOrderTotalWithDiscounts().ToString("N2")</MudTd>
+                                <MudTd></MudTd>
+                                </MudTFootRow>*@
+                                </FooterContent>
+                            </MudTable>
+                        </div>
+                    </MudItem>
+                </MudGrid>
+
+            </div>
+
+        </div>
+
+    </MudPaper>
+}

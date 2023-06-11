@@ -1,0 +1,100 @@
+﻿@inherits LayoutComponentBase
+
+<MudRTLProvider RightToLeft="@_rightToLeft" >
+	<BLThemeProvider Theme="_currentTheme" @bind-IsDarkMode="@_isDarkMode" />
+	@*<BLThemeManagerButton OnClick="@((e) => OpenThemeManager(true))" />*@
+	
+	<MudDialogProvider />
+	<MudSnackbarProvider />
+	<AuthorizeView>
+		<NotAuthorized>
+		
+			<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100vh;">
+				<MudPaper Elevation="0" Class="pa-8 bl-login-card">
+					
+					<Login ThemeChanged="UpdateThemeBasedOnUser" />
+				
+				</MudPaper>
+			</MudContainer>
+		</NotAuthorized>
+		<Authorized>
+			
+			@if (!context.User.HasClaim("role", "CompanyAuthSuccess")  )
+			{
+				<MudContainer MaxWidth="MaxWidth.Small" Class="d-flex align-center" Style="height: 100vh;">
+					<MudPaper Elevation="0" Class="pa-8 bl-login-card" >
+						<CompanySelection />
+					</MudPaper>
+				</MudContainer>
+
+			}
+			else
+			{
+				<MudLayout>
+						<BLMiniDrawer OpenThemeManager="OpenThemeManager">
+							@Body
+						</BLMiniDrawer>
+				</MudLayout>
+			}
+
+		</Authorized>
+	</AuthorizeView>
+
+</MudRTLProvider>
+
+@if (_themeManagerConfiguration.Value != null && _themeManagerOpen)
+{
+	<BLThemeManager Open="_themeManagerOpen"
+					OpenChanged="OpenThemeManager" 
+					Theme="_currentTheme" 
+					ThemeChanged="UpdateTheme" 
+					Configuration="_themeManagerConfiguration.Value" DisableOverlay=true />
+}
+
+@*<style>
+	.mud-theme-manager-button {
+		position: fixed;
+		top: 40%;
+		right: 0;
+		box-shadow: 1px 1px 18px rgb(0 0 0 / 20%);
+		color: #FFFFFF;
+		background-color: var(--mud-palette-primary);
+		cursor: pointer;
+		z-index: 160000;
+	}
+
+		.mud-theme-manager-button .mud-icon-root.mud-svg-icon
+		{
+			fill:white;
+		}
+		
+</style>*@
+
+@*<MudThemeProvider />
+<MudDialogProvider />
+<MudSnackbarProvider />*@
+@*<TelerikRootComponent>*@
+    @*<MudLayout>
+        <Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+
+            <Authorized>
+                @if (!context.User.HasClaim("role", "CompanyAuthSuccess"))
+                {
+                    <CompanySelection />
+                }
+                else
+                {
+                    <BLMiniDrawer>
+                        @Body
+                    </BLMiniDrawer>
+                }
+            </Authorized>
+            <NotAuthorized>
+                <div class="page">
+                    <Login />
+                </div>
+            </NotAuthorized>
+        </Microsoft.AspNetCore.Components.Authorization.AuthorizeView>
+
+    </MudLayout>*@
+@*</TelerikRootComponent>*@

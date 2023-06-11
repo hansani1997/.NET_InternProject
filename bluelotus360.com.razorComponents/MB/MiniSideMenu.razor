@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Components.Routing;
+@if (Menu != null && Menu.SubMenus != null)
+{
+	@foreach (var menu in Menu.SubMenus)
+	{
+		@if ((menu.SubMenus != null && menu.SubMenus.Count > 0) || menu.ParentId == 0)
+		{
+			@if (menu.SubMenus.Count > 0)
+			{
+				<MudNavGroup Title="@menu.MenuCaption" Expanded="false" Class="@menu.MenuId.ToString()" Icon="@IconDictionary[menu.MenuId]">
+
+					<MiniSideMenu Menu='@menu' IconDictionary="IconDictionary" />
+
+				</MudNavGroup>
+			}
+
+		}
+		else
+		{
+			<MudNavLink OnClick="@(()=>NavigateToNewTab(menu.GetPathURL()))" Class="@menu.MenuId.ToString()" Match="NavLinkMatch.Prefix" Icon="">@menu.MenuCaption</MudNavLink>
+		}
+
+	}
+}

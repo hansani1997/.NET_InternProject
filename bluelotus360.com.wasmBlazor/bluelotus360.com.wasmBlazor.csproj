@@ -1,0 +1,46 @@
+<Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<LangVersion>preview</LangVersion>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <RunAOTCompilation>True</RunAOTCompilation>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <RunAOTCompilation>True</RunAOTCompilation>
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\plugins\Telerik.UI.for.Blazor\js\telerik-blazor.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="BlazorBarcodeScanner.ZXing.JS" Version="1.0.3" />
+    <PackageReference Include="Blazored.LocalStorage" Version="4.3.0" />
+    <PackageReference Include="BlazorGeolocation" Version="0.1.1" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.4" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.4" PrivateAssets="all" />
+    <PackageReference Include="System.Configuration.ConfigurationManager" Version="7.0.0" />
+    <PackageReference Include="TG.Blazor.IndexedDB" Version="1.5.0-preview" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\bluelotus360.com.razorComponents\bluelotus360.com.razorComponents.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\plugins\SASS\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="wwwroot\plugins\Telerik.UI.for.Blazor\js\telerik-blazor.js" />
+  </ItemGroup>
+
+</Project>

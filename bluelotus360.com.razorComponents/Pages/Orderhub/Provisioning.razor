@@ -1,0 +1,18 @@
+﻿@page "/Order/Provisioning"
+
+<MudButton Variant="Variant.Filled" Color="Color.Info" Style="color:white;margin-right:1%" StartIcon="@Icons.Filled.Store" @onclick="() => LoadPopup()">Setup Provisioning</MudButton>
+<MudButton Variant="Variant.Filled" Color="Color.Info" Style="color:white;margin-right:1%" StartIcon="@Icons.Filled.Store" @onclick="() => LoadGrid()">Setup Store</MudButton>
+
+
+@if (Grid != null)
+{
+    <MudItem Style="margin-top:2%">
+        <BLTable FormObject="Grid"
+               DataObject="UberStoreData"
+               InteractionLogics="_interactionLogic"
+               ObjectHelpers="_objectHelpers"
+               @ref="_blTb" />
+    </MudItem>
+
+}
+<bluelotus360.com.razorComponents.Pages.Orderhub.Components.GenerateLink WindowIsVisible="@isOpenPopup" OnCloseButtonClick="HideAllPopups"></bluelotus360.com.razorComponents.Pages.Orderhub.Components.GenerateLink>

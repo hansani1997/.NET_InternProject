@@ -1,0 +1,28 @@
+﻿<MudDialog>
+	<TitleContent>
+		<MudText Typo="Typo.h6" Class="dc1">
+			<MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+			@HeadingPopUp
+		</MudText>
+	</TitleContent>
+
+	<DialogContent>
+		<MudContainer Style="overflow-y: scroll; max-height:450px;padding:16px;" Class="dc2">
+			<MudList Clickable="false">
+				@foreach (var item in Validator.UserMessages.UserMessages)
+				{
+					<MudListItem Style="Color:darkred"  Text="@item.Message"   Icon="@Icons.Material.Filled.Error" />
+					
+				}
+			</MudList>
+
+		</MudContainer>
+
+	</DialogContent>
+
+	<DialogActions>
+		<MudButton OnClick="Cancel">No</MudButton>
+		<MudButton Color="Color.Secondary" OnClick="ClickYes">@ButtonName</MudButton>
+	</DialogActions>
+
+</MudDialog>

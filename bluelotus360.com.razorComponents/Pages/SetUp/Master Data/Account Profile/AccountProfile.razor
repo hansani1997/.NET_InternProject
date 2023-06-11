@@ -1,0 +1,55 @@
+﻿@page "/Account/Profile "
+@using BlueLotus360.CleanArchitecture.Domain.Entities.AccountProfile
+
+@if (formDefinition != null && formDefinition.Children.Count() > 0)
+{
+    <div class="@(isTableLoading?"":"d-none")">
+
+        <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+    </div>
+
+    <div class="@(ShowInsertDetails?"":"d-none")">
+
+        <BLAccountProfileDetails 
+                  FormObject="insertmodalUIElement"
+                  DataObject="newItem"
+                  InteractionLogics="_interactionLogic"
+                  ObjectHelpers="_objectHelpers"
+                  @ref="_refBLAccountProfileDetails" />
+    </div>
+
+
+    <div class="@(ShowRecordItems?"":"d-none")">
+
+        <BLAccountProfileHeader 
+            FormObject="modalUIElement"
+            DataObject="accountProfileResponse"
+            InteractionLogics="_interactionLogic"
+            ObjectHelpers="_objectHelpers"
+            @ref="_refBLAccountProfileHeader" />
+    </div>
+    @if (Showtable)
+    {
+        <UIBuilder FormObject="formDefinition"
+                DataObject="transaction"
+                InteractionLogics="_interactionLogic"
+                ObjectHelpers="_objectHelpers"
+                @ref="_refBuilder" />
+
+
+        <BLTable FormObject="gridUIElement"
+         DataObject="gridDetails"
+         InteractionLogics="_interactionLogic"
+         ObjectHelpers="_objectHelpers"
+         Height="400px"
+         @ref="_blTb" />
+     
+    }          
+    
+
+    <hr />
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitions...</MudAlert>
+}

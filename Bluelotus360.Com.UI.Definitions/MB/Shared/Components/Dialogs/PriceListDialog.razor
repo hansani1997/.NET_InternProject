@@ -1,0 +1,55 @@
+﻿
+
+<MudDialog  DisableSidePadding="true">
+    <TitleContent >
+                <MudItem Class="d-flex align-items-center">
+                    <MudIcon Icon="@Icons.Material.Filled.Payment" Title="Payment Term" Class="mr-2"/>
+                    <MudText Typo="Typo.h6">Price List</MudText>
+                    <MudIcon Icon="@Icons.Material.Filled.Close" ></MudIcon>
+	            </MudItem>
+    </TitleContent>
+    <DialogContent>
+            
+        <MudContainer Style="max-height: 300px;padding-bottom:20px; overflow-y: scroll;overflow-x: scroll">
+            @if (Loading)
+            {
+                <MudProgressCircular Indeterminate="true"></MudProgressCircular>
+            }
+            else
+            {
+                if (price_list.Count()>0)
+                {
+                    <MudTable Items="@price_list" Hover="true" Breakpoint="Breakpoint.Sm" @ref="mudTable" RowClassFunc="@SelectedRowClassFunc" OnRowClick="RowClickEvent" T="PriceListResponse">
+                       <HeaderContent>
+                           <MudTh>#</MudTh>
+                           <MudTh>ItemCode</MudTh>
+                           <MudTh>Item Name</MudTh>
+                           <MudTh>Packet Unit</MudTh>
+                           <MudTh>Packet Price</MudTh>
+                           <MudTh>Loose Unit</MudTh>
+                           <MudTh>Loose Price</MudTh>
+                       </HeaderContent>
+                       <RowTemplate>
+                           <MudTd DataLabel="#"></MudTd>
+                           <MudTd DataLabel="ItemCode">@context.ItemCode</MudTd>
+                           <MudTd DataLabel="Item Name">@context.ItemName</MudTd>
+                           <MudTd DataLabel="Packet Unit">@context.PackUnit.UnitName</MudTd>
+                           <MudTd DataLabel="Packet Price">@context.PackUnitPrice</MudTd>
+                           <MudTd DataLabel="Loose Unit">@context.LooseUnit.UnitName</MudTd>
+                           <MudTd DataLabel="Loose Price">@context.LooseUnitPrice</MudTd>
+                       </RowTemplate>
+                    </MudTable>
+
+                }
+                else
+                {
+                    <MudItem>
+                        <MudText Class="text-align-center">No Items to Display</MudText>
+                    </MudItem>
+                }
+
+            }
+        </MudContainer>
+    </DialogContent>
+    
+</MudDialog>

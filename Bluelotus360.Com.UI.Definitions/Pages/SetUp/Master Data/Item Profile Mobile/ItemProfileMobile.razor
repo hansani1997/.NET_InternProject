@@ -1,0 +1,97 @@
+﻿@page "/Item/ItemProfileMobile/"
+
+@using Telerik.Blazor;
+@using BL10.CleanArchitecture.Domain.Entities.ItemProfleMobile
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+
+    <AddNewAddress  OnAddressCreated="OnCustomerCreateSuccess"   @ref="_refNewAddressCreation"  />
+
+         <div class="@(isTableLoading?"":"d-none")"> 
+      
+            <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+        </div>
+
+        <div class="@(ShowUpdateDetails?"":"d-none")">
+
+            <BLItemProfileUpdateBasicDetails
+                    FormObject="updatemodalUIElement"
+                    DataObject="updateRequest"
+                    InteractionLogics="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    @ref="_bLItemProfileUpdateBasicDetails" />
+        </div>
+
+        <div class="@(ShowInsertDetails?"":"d-none")">
+
+            <BLItemProfileInsertBasicDetails 
+                    FormObject="insertmodalUIElement"
+                    DataObject="insertRequest"
+                    InteractionLogics="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    @ref="_bLItemProfileInsertBasicDetails" />
+
+        </div> 
+
+    @if (showsgrid) {
+        <UIBuilder FormObject="formDefinition"
+                   DataObject="transaction"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_refBuilder" />
+
+                   <BLTelGrid FormObject="gridUIElement" 
+                        DataObject="gridDetails" 
+                        InteractionLogics="_interactionLogic" 
+                        ObjectHelpers="_objectHelpers" 
+						Height="400px"
+                        @ref="_blTb" />
+
+        @*<hr/>
+
+        <TelerikGrid Data=@gridDetails
+                       Pageable="true"
+                       Sortable="true"
+                       FilterMode="GridFilterMode.FilterMenu"
+                       Resizable="true"
+                       SelectionMode="GridSelectionMode.Multiple"
+                       Class="h-100 w-100"
+                       Navigable="true"
+                       Reorderable="true"
+                       PageSize="12">
+
+                       <GridColumns>
+
+                            <GridCommandColumn Width="50px">
+                                    <GridCommandButton 
+                                        OnClick="UpdateHandler"
+                                        Command="Edit" 
+                                        Icon="more-horizontal">
+                                    </GridCommandButton>
+                            </GridCommandColumn>
+
+                           <GridColumn Field="@nameof(ItemSelectList.ItemCode)" Title="Item Code" Width="195px" />
+                           <GridColumn Field="@nameof(ItemSelectList.ItemName)" Title="Item Name" Width="195px" />
+
+                           <GridColumn Field="@nameof(ItemSelectList.ItemType.CodeName)" Title="Item Type" Width="195px" >
+                                <Template>
+                                    @Convert.ToString((context as ItemSelectList).ItemType.CodeName)
+                                </Template>
+                           </GridColumn>
+
+                           <GridColumn Field="@nameof(ItemSelectList.ItemUnit.UnitName)" Title="Unit" Width="195px">
+                               <Template>
+                                   @Convert.ToString((context as ItemSelectList).ItemUnit.UnitName)
+                               </Template>
+                           </GridColumn>
+
+                       </GridColumns>
+
+                   </TelerikGrid>*@
+    }
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

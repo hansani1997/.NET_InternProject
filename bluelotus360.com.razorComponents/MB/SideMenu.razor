@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Components.Routing;
+@if (Menu != null && Menu.SubMenus != null)
+{
+	@foreach (var item in Menu.SubMenus)
+	{
+		if ((item.SubMenus != null && item.SubMenus.Count > 0) || item.ParentId == 0)
+		{
+			@if (item.SubMenus.Count > 0)
+			{
+				<MudNavGroup Title="@item.MenuCaption" Expanded="false" Icon="@IconDictionary[item.Menuname]">
+					<SideMenu Menu='@item' IconDictionary="IconDictionary" />
+				</MudNavGroup>
+			}
+		}
+		else
+		{
+			if (item != null && !string.IsNullOrEmpty(item.GetPathURL()))
+			{
+				<MudNavLink Href="@item.GetPathURL()" Match="NavLinkMatch.Prefix">@item.MenuCaption</MudNavLink>
+			}
+			
+		}
+	}
+}

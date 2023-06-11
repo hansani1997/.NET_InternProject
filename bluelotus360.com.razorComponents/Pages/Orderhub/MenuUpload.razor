@@ -1,0 +1,27 @@
+﻿@page "/Order/MenuUpload"
+
+@if (formDefinition != null)
+{
+        <MudItem Style="margin-top:2%">
+            <UIBuilder FormObject="formDefinition"
+               DataObject="new object()"
+               InteractionLogics="_interactionLogic"
+               ObjectHelpers="_objectHelpers"
+               @ref="_refBuilder" />
+        </MudItem>
+
+    @if (Grid != null)
+    {
+                <MudItem Style="margin-top:2%">
+                    <BLTable FormObject="Grid"
+               DataObject="_ListOfItems"
+               InteractionLogics="_interactionLogic"
+               ObjectHelpers="_objectHelpers"
+               @ref="_blTb" />
+                </MudItem>
+
+    }
+
+
+
+}

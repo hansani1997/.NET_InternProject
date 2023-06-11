@@ -1,0 +1,24 @@
+﻿<div class="d-flex align-items-center">
+    <textarea id="grid-text-area" @bind="@RowText" readonly></textarea>
+    @*<MudIconButton Icon="@Icons.Material.TwoTone.RemoveRedEye" OnClick="@(() => UpdateTextareaHeight(TextAreaId))" />*@
+</div>
+
+
+@code {
+
+    [Parameter] public string RowText { get; set; } = "";
+    //[Parameter] public string TextAreaId { get; set; }
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            await _jsRuntime.InvokeVoidAsync("updateTextareaHeight", "grid-text-area");
+        }
+    }
+
+    //private async Task UpdateTextareaHeight(string id)
+    //{
+    //    await _jsRuntime.InvokeVoidAsync("updateTextareaHeight", id);
+    //    StateHasChanged();
+    //}
+}

@@ -1,0 +1,143 @@
+﻿@page "/dashboard/salesByLocation"
+@using ApexCharts;
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Dashboard;
+@using Telerik.Blazor
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{ 
+    @if (isChartLoading)
+    {
+        <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+ 
+    <UIBuilder FormObject="formDefinition"
+                   DataObject="sales_request"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_refBuilder" />
+
+
+
+    <MudGrid Class="d-flex my-4 px-3">
+
+        <MudItem xs="12" sm="6" >
+
+                @if (salesBylocation.Count() > 0)
+                {
+                    @*Items="salesBylocation.OrderBy(sale => sale.TotalSalesAmt).Take(10).ToList()"*@
+                    <ApexChart @ref=_detailsChart TItem="SalesByLocationResponse"
+                                                            Title="Location Wise Total Sales"
+                                                            Options="@opt"
+                                                            Debug>
+
+                                                        <ApexPointSeries TItem="SalesByLocationResponse"
+                                                             Items="salesBylocation"
+                                                             Name="Stocks"
+                                                             SeriesType="SeriesType.Donut" 
+                                                             XValue="@(e => e.Location.CodeName)"
+                                                             YValue="@(e => e.TotalSalesAmt)"
+                                                             OrderByDescending="e=>e.X"/>
+
+                   </ApexChart>
+                }
+                else{
+                  
+                       <EmptyChart @ref="empty_chart" IsChartEmpty="true"/>
+ 
+                }
+            
+        </MudItem>
+
+        <MudItem xs="12" sm="6">
+
+            <TelerikGrid Data="@salesBylocation"
+             Pageable="true"
+             Sortable="true"
+             FilterMode="@GridFilterMode.FilterRow" Height="540px">
+                <GridColumns>
+                    <GridColumn Field="Location.CodeName" Title="Location" ShowFilterCellButtons="true" />
+                    <GridColumn Field="TotalSalesAmt" Title="Total Sales Amt" ShowFilterCellButtons="true"/>
+                </GridColumns>
+            </TelerikGrid>
+            
+                @*<MudTable Items="@salesBylocation" FixedHeader="@fixed_header"  Height="400px">
+                    <HeaderContent>
+                        <MudTh>Location</MudTh>
+                        <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<SalesByLocationResponse, object>(x=>x.TotalSalesAmt)">Total</MudTableSortLabel></MudTh>
+                        
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd DataLabel="Location">@context.Location</MudTd>
+                        <MudTd DataLabel="Total">@context.TotalSalesAmt.ToString("N2")</MudTd>
+                        
+                    </RowTemplate>
+                    
+                </MudTable>*@
+            
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudPaper Style="height:300px;">
+
+                 <TelerikGrid Data="@repDetails"
+                    Pageable="true"
+                    Sortable="true"
+                    FilterMode="@GridFilterMode.FilterRow" Height="300px">
+                       <GridColumns>
+                           <GridColumn Field="RepAdrName" Title="Sales Rep" ShowFilterCellButtons="true" />
+                           <GridColumn Field="GrsAmt" Title="Grs - Dis" ShowFilterCellButtons="true">
+                               <Template>
+                                @{
+                                    string amt = "";
+                                    var rep = context as SalesRepDetailsForSalesByLocationResponse;
+                                    if (rep!=null)
+                                    {
+                                        amt = (rep.GrsAmt - rep.DisAmt).ToString("N2");
+                                    }
+                                    
+                                 }
+                                    
+                                       <div style="text-align:right;">
+                                            @amt
+                                       </div>
+                            </Template>
+                           </GridColumn>
+                           <GridColumn Field="Total" Title="Total" ShowFilterCellButtons="true" DisplayFormat="{0:N2}" TextAlign="@ColumnTextAlign.Right"/>
+                       </GridColumns>
+                 </TelerikGrid>
+
+                @*<MudSimpleTable  Hover="true" FixedHeader="@fixed_header"  Style="@(fixed_header?"height:300px;":"")">
+                    <thead>
+                        <tr>
+                            <th>Sales Rep</th>
+                            <th>Grs - Dis</th>
+                            <th>Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var row in repDetails)
+                        {
+                            <tr>
+                                    <td>@row.RepAdrName</td>
+                                    <td>@((row.GrsAmt-row.DisAmt).ToString("N2"))</td>
+                                    <td>@row.Total.ToString("N2")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    
+                    
+                </MudSimpleTable>*@
+            </MudPaper>
+            
+        </MudItem>
+
+
+    </MudGrid>
+
+        
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}
+

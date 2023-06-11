@@ -1,0 +1,29 @@
+﻿<MudItem xs="12" class=@css_class md="@UIElement.Width">
+
+    @if (Units == null)
+    {
+        <MudSkeleton Animation="Animation.Pulse" Width="100%" />
+    }
+    else
+    {
+        @if (selectedUnit != null && UIElement != null)
+        {
+            <MudAutocomplete T="UnitResponse"
+                     Text="@selectedUnit.UnitName"
+                     Label="@UIElement.ElementCaption"
+                     SearchFunc="@OnComboSearch"
+                     ValueChanged="OnComboValueChanged"
+                     Value="selectedUnit"
+                     Variant="UIDefaults.DefaultControlVariants" >
+
+                <NoItemsTemplate>
+                    <MudText Align="Align.Center" Class="px-4 py-1">
+                        No items found
+                    </MudText>
+                </NoItemsTemplate>
+            </MudAutocomplete>
+        }
+
+    }
+
+</MudItem>

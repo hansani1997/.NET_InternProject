@@ -1,0 +1,20 @@
+﻿
+<MudItem xs="width" Class=@css_class md="@UIElement.Width">
+
+    <div class="w-100">
+        <div class="col-12">
+            <TelerikTooltip TargetSelector=".tooltip-target" />
+            <div class="bk-k-lable tooltip-target" title="@UIElement.ElementCaption">@UIElement.ElementCaption</div>
+        </div>
+        <div class="col-12">
+            <TelerikTextBox
+                Value=@TextValue
+                ValueChanged="OnBlTelTextChanged"
+                PlaceHolder="@UIElement.DefaultValue"
+                Id="required"
+                Enabled=@IsEnabled
+                Class="@txbx_css">
+            </TelerikTextBox>
+        </div>
+    </div>
+</MudItem>

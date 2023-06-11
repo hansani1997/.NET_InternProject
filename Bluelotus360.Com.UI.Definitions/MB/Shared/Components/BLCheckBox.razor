@@ -1,0 +1,11 @@
+﻿<MudItem xs="12" class=@css_class md="@UIElement.Width">
+
+	<MudItem>
+		<lable>@UIElement.ElementCaption</lable>
+		<MudCheckBox Checked="@CheckBoxValue" CheckedChanged="(bool v)=>{CheckBoxChanged(v);}" Color="Color.Primary"></MudCheckBox>
+	</MudItem>
+</MudItem>
+
+
+@*SelectedOptionChanged="OnBLMultiRadioChange"*@
+@*@onselect="@((e)=>{OnBLMultiRadioChange(Convert.ToInt32(e));})"*@

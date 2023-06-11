@@ -1,0 +1,44 @@
+﻿@page "/CarWash/CarWashOrder"
+
+@if (formDefinition != null && formDefinition.Children.Count() > 0)
+{
+    <UIBuilder FormObject="formDefinition"
+           DataObject="transaction"
+           InteractionLogics="_interactionLogic"
+           ObjectHelpers="_objectHelpers"
+           @ref="_refBuilder" />
+
+    <BLTelGrid FormObject="gridUIElement"
+           DataObject="transaction.InvoiceLineItems"
+           InteractionLogics="_interactionLogic"
+           ObjectHelpers="_objectHelpers"
+           Height="200px"
+           @ref="_tranGrid" />
+
+    @*@if (FindTransactionShown)
+    {
+        <div class="bl-pop-up @(FindTransactionShown ? "":"d-none")">
+
+            <FindTransaction UIElement="findTrandsactionUI"
+                     OnCloseButtonClick="HideAllPopups"
+                     OnOpenClick="LoadTransaction" />
+        </div>
+
+    }*@
+
+           <AddNewCustomer OnCustomerCreated="OnCustomerCreateSuccess" @ref="_refNewCustomer"/>
+           <UserMessageDialog Messages="@validator.UserMessages" @ref="_refUserMessage"/>
+
+    <SelectCustomerPopUp 
+        CusList="customerDetails"
+        ObjectHelpers="_objectHelpers"
+        ModalUIElement="@cusPopupUlement"
+        InteractionLogics="_interactionLogic"
+        IsPopShown="@ShowCusPopUp"
+        @ref="_customerSelectDialog" />
+
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

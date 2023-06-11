@@ -1,0 +1,27 @@
+﻿@inherits ComponentBase;
+
+
+    <MudCard Elevation="0" Class="">
+        <MudCardContent>
+
+            <MudGrid Class="">
+
+
+                    @foreach (var formsection in FormObject.Children)
+                    {
+                        if (formsection.ElementType != null && formsection.ElementType.Equals("SectnFrmtGrp"))
+                        {
+                            <MudItem xs="12" sm="formsection.Width" md="formsection.Width" Class="@formsection.ParentCssClass">
+                                <UIRenderere FromSection="formsection" DataObject="DataObject" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                            </MudItem>
+                        }
+                    }
+
+            </MudGrid>
+        </MudCardContent>
+        <MudCardActions Class="pb-1 pl-1">
+        </MudCardActions>
+    </MudCard>
+
+
+

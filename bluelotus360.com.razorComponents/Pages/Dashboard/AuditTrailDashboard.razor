@@ -1,0 +1,62 @@
+﻿@page "/Dashboard/AuditTrailMob"
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    if (isShow)
+    {
+        <UIBuilder FormObject="formDefinition"
+           DataObject="transaction"
+           InteractionLogics="_interactionLogic"
+           ObjectHelpers="_objectHelpers"
+           @ref="_refBuilder" />
+
+        <BLTable FormObject="gridUIElement"
+           DataObject="selectedUserList.ToList()"
+           InteractionLogics="_interactionLogic"
+           ObjectHelpers="_objectHelpers"
+           SortDirection="SortDirection.Descending"
+           Height="200px"
+           @ref="_auditGrid" />
+    }
+
+    <div class="@(isShowEnterdSection?"":"d-none")">
+
+        <BLAuditTrailEnterdSection FormObject="enterdmodalUIElement"
+                               DataObject="auditTrailEnterds"
+                               InteractionLogics="_interactionLogic"
+                               ObjectHelpers="_objectHelpers"
+                               @ref="_bLAuditTrailEnterdSection" />
+
+        <hr />
+
+        <BLTable FormObject="gridEnUIElement"
+               DataObject="auditTrailEnterds"
+               InteractionLogics="_interactionLogic"
+               ObjectHelpers="_objectHelpers"
+               @ref="_auditEnGrid" />
+
+    </div>
+
+    <div class="@(isShowUpdatedSection?"":"d-none")">
+
+        <BLAuditTrailUpdatedSection FormObject="updatedmodalUIElement"
+                                DataObject="auditTrailUpdateds"
+                                InteractionLogics="_interactionLogic"
+                                ObjectHelpers="_objectHelpers"
+                                @ref="_bLAuditTrailUpdatedSection" />
+
+        <hr />
+
+        <BLTable FormObject="gridUpUIElement"
+               DataObject="auditTrailUpdateds"
+               InteractionLogics="_interactionLogic"
+               ObjectHelpers="_objectHelpers"
+               @ref="_auditUpGrid" />
+
+    </div>
+
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

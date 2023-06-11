@@ -1,0 +1,26 @@
+﻿
+<MudItem xs="12" Class=@css_class md="@UIElement.Width">
+    @if (AddressResponse == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        <MudSelect T="AddressResponse" 
+                   Label="@UIElement.ElementCaption"
+                   Class="@combo_css"
+                   MultiSelection="true"
+                   SelectedValues="selectedAddress"
+                   SelectedValuesChanged="OnComboValueChanged"
+                   Disabled="@(!isEditable)"
+                   Variant="UIDefaults.DefaultControlVariants"
+                   AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.BottomCenter"
+                   Clearable>
+
+            @foreach (var state in AddressResponse)
+            {
+                <MudSelectItem T="AddressResponse" Value="@state">@state</MudSelectItem>
+            }
+        </MudSelect>
+    }
+</MudItem>

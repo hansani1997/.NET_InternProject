@@ -1,0 +1,25 @@
+﻿
+<MudItem xs="12" md="@UIElement.Width" Class="@UIElement.ParentCssClass">
+    <MudTextField T='string'
+                  Value="TextValue" FullWidth="true" Immediate="true"
+                  Label="@UIElement.ElementCaption"
+                  Class="@css_class" 
+                  Variant="UIDefaults.DefaultControlVariants"
+                  Adornment="Adornment.Start"
+                  AdornmentIcon="@IconSvgCode"
+                  @ref="singleLineReference"
+                  @onclick="() =>{singleLineReference.SelectAsync();}"
+                  @ondblclick="() =>{TextBoxFocus();}"
+                  ValueChanged="OnBlTextChanged"
+                  OnKeyDown="OnTextBoxKeyDown" 
+                  OnAdornmentClick="AdornmentClick"
+                  Disabled="editable"
+                  Placeholder="@UIElement.DefaultValue"
+                  ReadOnly="IsReadOnly"
+            
+                  
+                  />
+
+  
+
+</MudItem>

@@ -1,0 +1,137 @@
+﻿@using BlueLotus360.Com.Infrastructure.Managers.APIManager;
+@using BlueLotus360.Com.Infrastructure.Managers.Codebase;
+@using Microsoft.AspNetCore.Authorization;
+@using Microsoft.AspNetCore.Components.Authorization;
+@using Microsoft.AspNetCore.Components.Web;
+@using Microsoft.JSInterop;
+@using bluelotus360.Com.MauiSupports.Services.AppState;
+@using bluelotus360.Com.MauiSupports.Services.ClipboardServices;
+@using bluelotus360.Com.commonLib.Managers.Company;
+@using bluelotus360.Com.commonLib.Managers.Interceptors;
+@using bluelotus360.Com.commonLib.Managers.Preferences;
+@using bluelotus360.Com.commonLib.Managers.Printer;
+@using bluelotus360.Com.commonLib.Managers.TransactionManager;
+@using bluelotus360.Com.commonLib.Services.Definition;
+@using bluelotus360.com.razorComponents.Components.Login;
+@using MudBlazor
+@using RestSharp;
+@using bluelotus360.Com.commonLib.Managers
+@using BlueLotus360.CleanArchitecture.Domain.Entities;
+@using BlueLotus360.CleanArchitecture.Domain.DTO.Object;
+@using bluelotus360.com.razorComponents.Services;
+@using bluelotus360.com.razorComponents.MB;
+@using bluelotus360.com.razorComponents.MB.Settings;
+@using bluelotus360.com.razorComponents.MB.Shared.Components;
+@using bluelotus360.com.razorComponents.MB.Shared.Components.Buttons;
+@using bluelotus360.com.razorComponents.Components.HomeScreen;
+@using bluelotus360.Com.commonLib.Managers.NavMenuManager;
+@using bluelotus360.com.razorComponents.MB.Shared.Components.Popups
+@using bluelotus360.com.razorComponents.ServiceInterfaces;
+@using bluelotus360.Com.commonLib.Managers.Identity.Authentication
+@using bluelotus360.Com.commonLib.Authentication
+@using bluelotus360.Com.MauiSupports.Services.MAUISecureStorage
+@using bluelotus360.Com.commonLib.Managers.Address;
+@using bluelotus360.com.razorComponents.MB.Shared.Components.Popups.MasterDetailPopup
+@using bluelotus360.com.razorComponents.Pages.SetUp.Master_Data.Item_Profile_Mobile.Components
+@using bluelotus360.Com.commonLib.Managers.ItemProfileMobile;
+@using bluelotus360.Com.commonLib.Managers.ItemTransferManager
+@using bluelotus360.Com.MauiSupports.Services.Detectors
+@using bluelotus360.Com.MauiSupports.Services.LocationSuppliers
+@using bluelotus360.com.razorComponents.Pages.SetUp.Master_Data.Account_Profile.Components
+@using bluelotus360.com.razorComponents.Pages.SetUp.Master_Data.Projects.ProjectProfileMobile.Components
+
+@using bluelotus360.com.razorComponents.Pages.FinancialManagement
+@using bluelotus360.com.razorComponents.MB.Shared.Components.Chart;
+@using bluelotus360.Com.commonLib.Managers.DashboardManager;
+@using bluelotus360.Com.commonLib.Managers.HRAdminDashboardManager
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Dashboard
+@using bluelotus360.Com.commonLib.Managers.HRManager
+@*@using ApexCharts;*@
+@using bluelotus360.Com.commonLib.Managers.AccountProfile
+@using bluelotus360.Com.commonLib.Managers.OrderManager
+@using bluelotus360.com.razorComponents.Pages.OrderPages.ComPonent
+@using bluelotus360.com.razorComponents.MB.Shared.Components.Popups.Transaction
+@using bluelotus360.com.razorComponents.Pages.Transaction.TransactionComponent
+@using BlueLotus360.CleanArchitecture.Domain
+@using bluelotus360.Com.commonLib.Managers.UploadManager
+@using bluelotus360.Com.commonLib.Managers.ProjectProfileMobile
+@using bluelotus360.Com.commonLib.Managers.PaymentManager
+@using bluelotus360.Com.MauiSupports.Services.SqliteStorageServices
+@using bluelotus360.com.razorComponents.Pages.Dashboard.AuditTrailComponent
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Transaction
+@using bluelotus360.com.razorComponents.MB.Shared.Components.Popups.InventoryManagement.ScanItemTransfer
+@using bluelotus360.com.razorComponents.MB.Shared.Components.RigidComponents
+@using bluelotus360.com.razorComponents.MB.Shared.Components.TelerikReportViewer
+@using bluelotus360.Com.commonLib.Managers.ProcessManager
+@using BL10.CleanArchitecture.Domain.Entities.Helpers
+@using bluelotus360.com.razorComponents.StateManagement
+@using bluelotus360.com.razorComponents.Components.Product
+@using bluelotus360.com.razorComponents.Components.Address
+@using bluelotus360.com.razorComponents.Components.Order
+@using bluelotus360.Com.MauiSupports.Services.ConnectionStates;
+@using bluelotus360.Com.commonLib.CommonServices;
+@using BL10.CleanArchitecture.Domain.Entities.ItemProfleMobile;
+@*@using bluelotus360.Com.commonLib.Offline;*@
+
+@inject IConnectionState _connectionState
+@inject ICompanyManager _companyManager
+@*@inject ISecureStorageService _storageService*@
+@inject IStorageService _storageService
+@inject RestClient _client
+@inject IUserService _userService
+@inject NavigationManager _navigationManager
+@inject ISnackbar _snackbar
+@inject AppStateService appStateService;
+@inject IJSRuntime _jsRuntime;
+@inject INavMenuManager _navManger;
+@inject IComboDataManager _comboManager;
+@inject ITransactionManager _transactionManager
+@inject IItemTransferManager _itemTransferManager
+@inject IHRManager _hrManager;
+@inject IAuthenticationManager _authenticationManager
+@inject BL10AuthProvider _stateProvider
+@inject IAuthorizationService _authorizationService
+@inject HttpClient _httpClient
+@inject IHttpInterceptorManager _interceptor
+@inject ClientPreferenceManager _clientPreferenceManager
+@inject IDialogService _dialogService;
+@inject IDashboardManager _dashboardManager;
+@inject ISnackbar _snackBar
+@inject IItemTransferManager _itemTransferManager
+@inject IDetector _detector
+@inject ILocationService _locationService
+@inject IDialogService _dialogService;
+@inject IDashboardManager _dashboardManager;
+@inject IHRAdminDashboardManager _hradmindashboardManager;
+@inject ISnackbar _snackBar;
+@inject IAccountProfileManager _profileManager;
+@*@inject ISecureStorageService _localStorage;*@
+@inject IStorageService _localStorage
+@inject IAddressManager _addressManager
+@inject IItemProfileMobileManager _itemProfileMobileManager
+@inject IOrderManager _orderManager;
+@inject IUploadManager _uploadManager;
+@inject IProjectProfileMobileManager _projectProfileMobileManager;
+@inject IPaymentManager _paymentManager;
+@inject ICodebaseManager _codebaseManager;
+@inject IAPIManager _apiManager;
+@inject IClipboardService ClipboardService;
+@inject ISqliteStorageService _sqliteStorageService;
+@inject IProcessManager _processManager
+@inject IProcessManager _processManager;
+@inject OrderState _orderState;
+@inject TaxCalculator _taxCalculator;
+@inject IModeDetection _iModeDetection;
+@inject IProcessManager _processManager
+@inject BreakPointState _breakpointDetector;
+@inject IItemProfileMobileManagerV3 _itemProfileMobileManagerV3;
+@inject IItemStockAsAtStore _stockAsAtStore;
+@inject IItemComboStore _itemComboStore;
+@inject IAddressComboStore _addressComboStore;
+@*@inject ISyncService _syncService*@
+@inject IClientPreferenceManager _preferenceManager;
+@inject ComboEventStorage _comboEventStorage;
+@inject INativePopupService _nativePopup
+@inject IBLHybridInfo _appInfo
+@inject IBarcodeService _barcodeService
+@inject IInvoicePrinterManager _printerManager;

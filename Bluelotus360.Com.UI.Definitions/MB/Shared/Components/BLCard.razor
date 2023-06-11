@@ -1,0 +1,59 @@
+﻿<MudItem xs="12" sm="6" md="@UIElement.Width">
+
+    <MudCard Class="@UIElement.CssClass">
+    @if (UIElement.Children != null && UIElement.Children.Count > 0)
+    {
+
+        @foreach (var uielement in UIElement.Children)
+        {
+            @if (uielement.ElementType != null && uielement.ElementType.Equals("CardHrader"))
+            {
+                <MudCardHeader Class="@uielement.CssClass">
+                      
+                        <CardHeaderContent >
+                           
+                            <MudText Typo="Typo.h6" Style="font-size:1em;">@UIElement.ElementCaption</MudText>
+                            
+                        </CardHeaderContent>
+                        
+                        @*<CardHeaderActions>
+                            @if (uielement.Children != null && uielement.Children.Count > 0)
+                            {
+                                @foreach (var child in uielement.Children)
+                                {
+                                    @if (child.ElementType != null && child.ElementType.Equals("IconButton"))
+                                    {
+                                        <MudIconButton Icon="@Icons.Material.Filled.Settings" Color="Color.Default" />
+                                    }
+                                }
+                            }
+                        </CardHeaderActions>*@
+                        
+                </MudCardHeader>
+             }
+            @if (uielement.ElementType != null && uielement.ElementType.Equals("CardContent"))
+            {
+                <MudDivider DividerType="DividerType.Middle" />
+                <MudCardContent Class="@uielement.CssClass">
+                    
+                    <MudText Typo="Typo.body2">@card_content</MudText>
+                </MudCardContent>
+            }
+            @if (uielement.ElementType != null && uielement.ElementType.Equals("CardAction"))
+            {
+               
+                        <MudCardActions>
+                             @foreach (var child in uielement.Children)
+                             {
+                                @if (child.ElementType!=null && uielement.ElementType.Equals("IconButton"))
+                                {
+                                    <MudIconButton Icon="@Icons.Material.Filled.Favorite" Color="Color.Default" />  
+                                }
+                    
+                             }
+                        </MudCardActions>
+            }
+       }
+    }
+</MudCard>
+</MudItem>

@@ -1,0 +1,118 @@
+﻿
+
+<div class="col-12 row">
+    <h5>IRN :</h5><h5 class="text-danger"> Pending</h5>
+</div>
+
+<div id="add-materials-services-btn" class="col-12 d-none">
+	<div class="d-flex justify-content-end">
+		<MudButton Class="primary-btn" OnClick="OnAddMaterialAndServices">+ Add Materials & Services</MudButton>
+	</div>
+</div>
+
+<div id="irn-pending-view" class="col-12 d-none">
+	<MudTable Items="@PendingIRNs" Hover="true" Breakpoint="Breakpoint.Sm" >
+		<HeaderContent>
+			<MudTh></MudTh>
+			<MudTh>Service Advisor</MudTh>
+			<MudTh>IRN NO</MudTh>
+			<MudTh>Vehicle No</MudTh>
+			<MudTh>Branch</MudTh>
+			<MudTh>IRN Type</MudTh>
+			<MudTh>Creation Date & Time</MudTh>
+			<MudTh>Actions</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+				<MudTd Style=@($"background:{RowColor};")></MudTd>
+				<MudTd DataLabel="ServiceAdvisor">@(context.OrderRepAddress.AddressName??"")</MudTd>
+				<MudTd DataLabel="IRNNO">@(context.OrderNumber??"")</MudTd>
+				<MudTd DataLabel="VehicleNo">@(context.SelectedVehicle.VehicleRegistration.ItemCode??"")</MudTd>
+				<MudTd DataLabel="Branch">@(context.BussinessUnit.CodeName)</MudTd>
+				<MudTd DataLabel="IRNType">@(context.OrderType.CodeName??"")</MudTd>
+				<MudTd DataLabel="CreationDateAndTime">@(context.OrderDate)</MudTd>
+				<MudTd>
+
+					<MudIconButton Icon="@Icons.TwoTone.OpenInFull" OnClick="@(()=>{context.IsRowVisible=!context.IsRowVisible;})"></MudIconButton>
+					<MudIconButton Icon="@Icons.TwoTone.Edit" OnClick="OnPendingIRNEditClick"></MudIconButton> 
+					<MudIconButton Icon="@Icons.TwoTone.Delete" OnClick="OnPendingIRNDeleteClick"></MudIconButton>
+					
+				</MudTd>
+		</RowTemplate>
+			<ChildRowContent>
+				@if (context.IsRowVisible)
+			{
+				<MudTr>
+					<td colspan="4">
+						<MudCard Elevation="0">
+							<MudCardHeader>
+								<CardHeaderContent>
+									<MudText Typo="Typo.body1">Insurence: <strong>@(context.Insurance.ItemName??"")</strong></MudText>
+								</CardHeaderContent>
+							</MudCardHeader>
+							<MudCardContent Class="pa-0">
+								<MudTable Items="@context.OrderItems" Context="ParticularsContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+									<RowTemplate>
+										<MudTd DataLabel="Service Or Material">@(ParticularsContext.TransactionItem.ItemName??"")</MudTd>
+										<MudTd DataLabel="Amount">@ParticularsContext.TransactionRate</MudTd>
+									</RowTemplate>
+								</MudTable>
+							</MudCardContent>
+						</MudCard>
+					</td>
+				</MudTr>
+			}
+		</ChildRowContent>
+	</MudTable>
+
+</div>
+
+<div id="irn-pending-edit" class="col-12 d-none">
+	@*<MudTable Items="@PendingIRNs" Hover="true" Breakpoint="Breakpoint.Sm">
+		<HeaderContent>
+			<MudTh>Qty</MudTh>
+			<MudTh>Particulars</MudTh>
+			<MudTh>Calssification</MudTh>
+			<MudTh>Catergory</MudTh>
+			<MudTh>Amount</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Qty"></MudTd>
+			<MudTd DataLabel="Particulars"></MudTd>
+			<MudTd DataLabel="Calssification"></MudTd>
+			<MudTd DataLabel="Catergory"></MudTd>
+			<MudTd DataLabel="Amount"></MudTd>
+		</RowTemplate>
+	</MudTable>*@
+</div>
+
+<div id="pending-proceed-btn" class="col-12 mt-2 d-none">
+	<div class="d-flex justify-content-end">
+		<MudButton Class="primary-btn" OnClick="OnProceed">Proceed</MudButton>
+	</div>
+</div>
+
+<div id="irn-pending-finalized" class="col-12 d-none">
+	<MudTable Items="@PendingIRNs" Hover="true" Breakpoint="Breakpoint.Sm">
+		<HeaderContent>
+			<MudTh>Qty</MudTh>
+			<MudTh>Particulars</MudTh>
+			<MudTh>Calssification</MudTh>
+			<MudTh>Catergory</MudTh>
+			<MudTh>Amount</MudTh>
+			<MudTh><MudIconButton Icon="@Icons.TwoTone.Print" OnClick="OnPendingPrint"/></MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd DataLabel="Qty"></MudTd>
+			<MudTd DataLabel="Particulars"></MudTd>
+			<MudTd DataLabel="Calssification"></MudTd>
+			<MudTd DataLabel="Catergory"></MudTd>
+			<MudTd DataLabel="Amount"></MudTd>
+		</RowTemplate>
+	</MudTable>
+</div>
+
+<div id="irn-pending-btn" class="col-12 mt-3 insurence-btn-section d-none">
+	<div class="d-flex justify-content-end">
+		<MudButton Class="primary-btn" OnClick="OnFinalizeforApproval">Finalize for Approval</MudButton>
+	</div>
+</div>

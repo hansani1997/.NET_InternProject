@@ -1,0 +1,58 @@
+﻿@page "/Configuration/UserConfiguration"
+
+@if (formDefinition!=null)
+{   //save btn group
+    <UIBuilder FormObject="formDefinition"
+                       DataObject="new object()"
+                       InteractionLogics="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"/>
+
+     <hr/>
+
+     //menu search combo
+    @if (ChildMenu!=null)
+    {
+        <div class="row">
+            <div style="margin-top:50px;" class="col-12 col-md-4">
+
+                <BLMenuSearchCombo ComboDataObject="@ChildMenu" OnComboChanged="MenuSearchComboChanged"/>
+           
+            </div>
+        </div>
+            
+    }
+        
+    @if (userConfigObject==null)
+    {
+        userConfigObject = new UserConfigObjectsBlLite();
+    }
+
+    @if(userConfigObject!=null && userConfigTable!=null){
+
+                                         @*<BLTelGrid FormObject="userConfigTable" 
+                                                    DataObject="userConfigObject.Children" 
+                                                    InteractionLogics="_interactionLogic" 
+                                                    ObjectHelpers="_objectHelpers" 
+						                            Height="400px"
+                                                    @ref="_blTb" />*@
+
+                                        <BLTable FormObject="userConfigTable"
+                                         DataObject="userConfigObject.Children"
+                                         InteractionLogics="_interactionLogic"
+                                         ObjectHelpers="_objectHelpers"
+                                         Height="400px"
+                                         @ref="_mudGrid" />
+    }
+}
+
+
+else
+{
+    <div class="rip-wrap">
+        <div class="lds-ripple">
+            <div>
+            </div><div>
+            </div>
+        </div>
+    </div>
+}

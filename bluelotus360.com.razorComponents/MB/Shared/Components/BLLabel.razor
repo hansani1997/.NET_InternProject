@@ -1,0 +1,10 @@
+<MudItem xs="12" class=@css_class md="@UIElement.Width">
+    <MudTextField T='string'
+                  Value="TextValue" FullWidth="true"
+                  Label="@UIElement.ElementCaption"
+                  Class="textAlignment"
+                  ReadOnly="true"
+                  @ref="singleLineReference" @onclick="() =>{singleLineReference.SelectAsync();}"
+                  Variant="UIDefaults.DefaultControlVariants" />
+
+</MudItem>

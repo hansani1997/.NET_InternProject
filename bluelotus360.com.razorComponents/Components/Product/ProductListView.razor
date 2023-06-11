@@ -1,0 +1,16 @@
+﻿<MudGrid>
+    <MudItem xs="12">
+        <MudTextField Label="Search Products" T="string" Value="filterQuery" ValueChanged="OnFilterQueryChanged" DebounceInterval="500"></MudTextField>
+    </MudItem>
+    @if (Items != null)
+    {
+        @foreach (var item in _filteredItem)
+        {
+
+           <ProductSimpleView ItemRateResponse="item" />
+
+
+
+        }
+    }
+</MudGrid>

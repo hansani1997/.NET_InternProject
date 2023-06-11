@@ -1,0 +1,99 @@
+﻿@using BlueLotus360.CleanArchitecture.Domain;
+
+<MudItem xs=12>
+    <hr />
+    <MudButtonGroup Color="Color.Default" Size="Size.Small" Variant="Variant.Outlined" Class="mb-3">
+        @*<MudButton Class="selected">One</MudButton>
+            <MudButton>Two</MudButton>
+            <MudButton>Three</MudButton>*@
+
+        @if (Services != null)
+        {
+            @foreach (var serivice in Services)
+            {
+              
+                    <MudButton OnClick="()=>SelectService(serivice)" Class="@(ItemCategory2!=null &&  serivice.CodeKey==ItemCategory2.CodeKey?"selected":"")" Disabled="@Convert.ToBoolean(serivice.AddtionalData["IsDisabled"])">
+                        @if (serivice.CodeKey == 1)
+                        {
+                            <text>Clear</text>
+                        }
+                        else
+                        {
+                            @serivice.CodeName
+                        }
+                    </MudButton>
+                
+            }
+        }
+
+    </MudButtonGroup>
+    <hr />
+    <MudButtonGroup Color="Color.Default" Size="Size.Small" Variant="Variant.Outlined">
+        @*<MudButton Class="selected">One</MudButton>
+            <MudButton>Two</MudButton>
+            <MudButton>Three</MudButton>*@
+
+        @if (HumanTypes != null)
+        {
+            @foreach (var humanType in HumanTypes)
+            {
+
+                <MudButton OnClick="()=>SelectHumanType(humanType)" Class="@(ItemCategory1!=null &&  humanType.CodeKey==ItemCategory1.CodeKey?"selected":"")">
+
+                    @if (humanType.CodeKey == 1)
+                    {
+                        <text>Clear</text>
+                    }
+                    else
+                    {
+                        @humanType.CodeName
+                    }
+
+                </MudButton>
+
+            }
+        }
+
+    </MudButtonGroup>
+    <hr />
+
+    <MudGrid Spacing="5" Justify="Justify.Center">
+
+        <MudItem xs="12">
+            <MudCarousel Class="mud-width-full  pull-grid-center item-slider" Style="height:150px;" ShowArrows="true" ShowDelimiters="false" AutoCycle="false" TData="object" @ref="_refSlider">
+                @foreach (var item in _items)
+                {
+                    <MudCarouselItem Transition="Transition.Slide" Color="@Color.Default">
+                        <MudGrid Justify="Justify.Center">
+                            @foreach (var sinitem in item)
+                            {
+                                if (sinitem.ItemKey > 10)
+                                {
+
+                                    <MudItem xs=4 sm=3 lg=1>
+                                        <MudButton FullWidth="true" Class="@GetClassName(sinitem)"
+                                       OnClick="()=>SelectItem(sinitem)">
+                                            <MudCard Class="strech">
+                                                <MudCardMedia Class="pullcenter" Image="@(!string.IsNullOrEmpty(sinitem.Base64ImageDocument)?sinitem.Base64ImageDocument:dummyImage)" />
+                                                <MudCardContent>
+                                                    <MudText Typo="Typo.body2">@sinitem.ItemCodeOnly</MudText>
+
+                                                    <MudText Typo="Typo.body2">@sinitem.ItemNameOnly.Truncate(12)</MudText>
+                                                </MudCardContent>
+
+                                            </MudCard>
+                                        </MudButton>
+
+                                    </MudItem>
+                                }
+
+                            }
+                        </MudGrid>
+                    </MudCarouselItem>
+                }
+            </MudCarousel>
+        </MudItem>
+
+
+    </MudGrid>
+</MudItem>

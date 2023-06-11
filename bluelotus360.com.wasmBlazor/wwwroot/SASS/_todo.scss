@@ -1,0 +1,27 @@
+﻿@import "_Variables.scss";
+//@import "_variablesDark.scss";
+
+.todo-button-group {
+    border-radius: $border-radius-default;
+    color: $color-primary;
+}
+
+.todo-kanban-cards {
+    background-color: #E7F1FF;
+    border-radius: $border-radius-default !important;
+    margin-top: 12px !important;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.mud-expand-panel .mud-expand-panel-content {
+    padding: 0 0px 0px !important;
+    flex: 1 1 auto;
+    max-width: 100%;
+}
+
+.mud-badge.mud-badge-default {
+    background-color: $color-secondary !important;
+    color: $color-primary-text !important;
+}
+

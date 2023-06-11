@@ -1,0 +1,13 @@
+﻿<MudPaper Elevation="0">
+	<div class="d-flex flex-column justify-content-center align-items-center">
+		<img src="./img/bar-chart.png" style="width:20%; height:20%;opacity:0.5;" />
+		@if (IsChartEmpty)
+		{
+			<span class="text-center">Empty Chart</span>
+		}
+	</div>
+
+</MudPaper>
+@code {
+	[Parameter] public bool IsChartEmpty { get; set; }
+}

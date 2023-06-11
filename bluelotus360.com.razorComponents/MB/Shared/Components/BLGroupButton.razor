@@ -1,0 +1,66 @@
+﻿@using bluelotus360.com.razorComponents.MB.Shared.Components.Buttons
+
+@*<MudHidden Breakpoint="Breakpoint.MdAndUp">*@
+	<MudItem xs="12" md="@FromSection.Width" Class="@($"mx-5 {css_class} ")">
+
+		<MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+			@if (FromSection != null && FromSection.Children != null)
+			{
+				foreach (BLUIElement element in FromSection.Children)
+				{
+					if (element.ElementType != null && element.ElementType.Equals("Button"))
+					{
+						if (!string.IsNullOrEmpty(element.IconCss))
+						{
+							<BLToolButton DataObject="DataObject" FromSection="element" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+						}
+						else
+						{
+							<BLButton DataObject="DataObject" FromSection="element" InteractionLogics="InteractionLogics" />
+						}
+
+					}
+
+					if (element.ElementType != null && element.ElementType.Equals("ToggleButton"))
+					{
+						<BLToggleButton DataObject="DataObject" FromSection="element" InteractionLogics="InteractionLogics" />
+					}
+				}
+			}
+		</MudButtonGroup>
+
+	</MudItem>
+
+@*</MudHidden>*@
+
+@*<MudHidden Breakpoint="Breakpoint.MdAndDown">
+	
+	<MudToolBar>
+		@if (FromSection != null && FromSection.Children != null)
+		{
+			foreach (BLUIElement element in FromSection.Children)
+			{
+				if (element.ElementType != null && element.ElementType.Equals("Button"))
+				{
+					if (!string.IsNullOrEmpty(element.IconCss))
+					{
+						<BLToolButton DataObject="DataObject" FromSection="element" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+					}
+					else
+					{
+						<BLButton DataObject="DataObject" FromSection="element" InteractionLogics="InteractionLogics" />
+					}
+
+				}
+
+				if (element.ElementType != null && element.ElementType.Equals("ToggleButton"))
+				{
+
+					<BLToggleButton DataObject="DataObject" FromSection="element" InteractionLogics="InteractionLogics" />
+				}
+			}
+		}
+	</MudToolBar>
+</MudHidden>
+*@
+

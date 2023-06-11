@@ -1,0 +1,71 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Content Remove="wwwroot\Shoes.jpg" />
+  </ItemGroup>
+
+
+  <ItemGroup>
+    <SupportedPlatform Include="browser" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Blazor-ApexCharts" Version="0.9.17-beta" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Authorization" Version="7.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Components.Web" Version="7.0.2" />
+    <PackageReference Include="Microsoft.AspNetCore.WebUtilities" Version="2.2.0" />
+    <PackageReference Include="MudBlazor" Version="6.2.0" />
+    <!--<PackageReference Include="MudBlazor.ThemeManager" Version="1.0.7" />-->
+    <PackageReference Include="ServiceStack.Common" Version="6.8.0" />
+    <PackageReference Include="Toolbelt.Blazor.HotKeys2" Version="1.0.0" />
+    <!--<PackageReference Include="Telerik.WebReportDesigner.Blazor" Version="17.0.23.118" />-->
+    <!--<PackageReference Include="Telerik.ReportViewer.Blazor" Version="17.0.23.118" />-->
+    
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\bluelotus360.Com.commonLib\bluelotus360.Com.commonLib.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="MB\Shared\Components\Combo\" />
+    <Folder Include="MB\Shared\Components\QrBarCode\" />
+    <Folder Include="MB\Shared\Dialog\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="MB\Settings\Theme\Components\BLTmColorItem.razor" />
+    <None Include="MB\Settings\Theme\Components\BLTmMode.razor" />
+    <None Include="MB\Settings\Theme\Components\BLTmSection.razor" />
+    <None Include="Pages\InventoryManagement\ScanItemTransfer\Component\TransferApprovalUIComponent.razor" />
+    <None Include="wwwroot\Shoes.jpg" />
+  </ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Telerik.Blazor">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.Blazor.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.DataSource">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.DataSource.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.Documents.SpreadsheetStreaming">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.Documents.SpreadsheetStreaming.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.Recurrence">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.Recurrence.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.ReportViewer.Blazor">
+			<HintPath>..\Libs\Libs\Libs\TelerikReports\Telerik.ReportViewer.Blazor.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.Zip">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.Zip.dll</HintPath>
+		</Reference>
+	</ItemGroup>
+
+</Project>

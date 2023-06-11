@@ -1,0 +1,11 @@
+﻿<MudDialog>
+    <DialogContent>
+        <MudTextField Placeholder="Customer ID" @bind-Value="ErrorMessage" ReadOnly="true"></MudTextField>
+        <MudTextField Placeholder="Customer ID" @bind-Value="_addressReponse.AddressID"></MudTextField>
+        <MudTextField Placeholder="Customer Name" @bind-Value="_addressReponse.AddressName"></MudTextField>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>

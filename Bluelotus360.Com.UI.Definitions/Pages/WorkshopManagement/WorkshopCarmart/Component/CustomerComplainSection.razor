@@ -1,0 +1,29 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Order
+@using Telerik.Blazor;
+
+@if (CustomerComplains != null)
+{
+    <TelerikGrid Data="@CustomerComplains.Where(x=>x.IsActive==1).ToList()"
+             EditMode="@GridEditMode.Incell" 
+             OnUpdate="@UpdateHandler" 
+             OnEdit="@EditHandler"
+             OnDelete="@DeleteHandler"
+             Pageable="true"
+             PageSize="5"
+             Sortable="true"
+             FilterMode="@GridFilterMode.FilterMenu"
+             SelectionMode="@GridSelectionMode.Single"
+             @bind-SelectedItems="@SelectedItems"
+             @ref="@GridRef">
+        <GridColumns>
+            <GridCheckboxColumn></GridCheckboxColumn>
+            <GridColumn Field="LineNumber" Title="Line No" Editable="false" />
+            <GridColumn Field="TransactionItem.ItemName" Title="Note"  />
+            <GridColumn Field="Description" Title="Description" />
+            <GridCommandColumn>
+                <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+            </GridCommandColumn>
+        </GridColumns>
+    </TelerikGrid>
+}

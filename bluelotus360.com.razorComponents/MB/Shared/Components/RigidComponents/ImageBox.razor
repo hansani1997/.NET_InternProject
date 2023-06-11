@@ -1,0 +1,139 @@
+﻿@using Microsoft.AspNetCore.Components.Forms
+@using BlueLotus.Com.Domain.Entity;
+@inject IJSRuntime JS
+
+@*@if ((breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Md) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Sm) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Xl) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Lg))
+{*@
+    <div style="margin-top:40px">
+        <div style="padding:0 20px; border:1px solid">
+            <MudCarousel Class="profile-img-carousal" Style="height:150px; padding:initial;margin-bottom:100px" ShowArrows="true"  ShowBullets="false" TData="string" AutoCycle="false">
+                @if (Item!=null && Item.Base64Documents.Count>0)
+                {
+                    @foreach (var img in Item.Base64Documents)
+                    {
+                        <MudCarouselItem>
+
+                            <div style="width:150px;height:150px;">
+
+                                <div class="d-flex justify-content-center align-items-center" style="height:100%;">
+                                    @if (img != null && !string.IsNullOrEmpty(img.Base64Source))
+                                    {
+                                        <img src=@($"data:image/png;base64,{img.Base64Source}") class="carousel-img" style="height:100%;width:100%" />
+                                    }
+                                   
+                                </div>
+
+                            </div>
+
+
+                        </MudCarouselItem>
+
+                    }
+                }
+                else
+                {
+                    @foreach (var img in images)
+                    {
+                        <MudCarouselItem>
+
+                            <div style="height:150px;">
+
+                                <div class="d-flex justify-center align-center" style="height:100%;">
+                                    @if (img != null)
+                                    {
+                                        <img src="./img/@img" class="carousel-img" style="height:100%;width:100%" />
+                                    }
+                                </div>
+
+                            </div>
+
+
+                        </MudCarouselItem>
+
+                    }
+                }
+               
+
+            </MudCarousel>
+
+        </div>
+            <div style="margin:10px">
+
+                   @* <MudFileUpload T="IBrowserFile" FilesChanged="UploadFiles">
+                        <ButtonTemplate>
+               
+                            <MudButton HtmlTag="label"
+                                       style="border:none"
+                                       Color="Color.Primary"
+                                       StartIcon="@Icons.Material.TwoTone.FileUpload"
+                                       for="@context">
+                                Upload Files ( 1KB Max )
+                            </MudButton>
+               
+                        </ButtonTemplate>
+                    </MudFileUpload>*@
+
+                                    <FileUploadTelPopUp UploadObject="uploadObject"
+                                                    WindowIsVisible="ImagePopupShown"
+                                                    OnCloseButtonClick="HideAllPopups"
+                                                    PopupTitle="Item Image Upload"
+                                                    UploadFileType="Images"
+                                                    UploaddSuccess="UploadSuccess" />
+                                
+                                     <MudFileUpload T="Item" Class="align-center"> 
+                                         <ButtonTemplate>
+                                        @{
+                                            var ctx = new Item();
+
+                                            <MudButton     HtmlTag="label" 
+                                                           Style="border:none"
+                                                           Color="Color.Primary"
+                                                           OnClick="()=>ShowImageUploadPopUp()"
+                                                           for ="@ctx">
+
+                                                 <MudIconButton HtmlTag="label" 
+                                                           Style="border:none"
+                                                           Color="Color.Primary"
+                                                           Icon="@Icons.Material.TwoTone.FileUpload"
+                                                           OnClick="()=>ShowImageUploadPopUp()"
+                                                           for ="@ctx">
+                                                 </MudIconButton>
+
+                                                  Upload Files ( 1KB Max )
+
+                                            </MudButton>
+                                           
+                                       
+                                        }
+                                        </ButtonTemplate>
+                                    </MudFileUpload>
+                                    
+                  
+            </div>
+
+    </div>
+@*}
+else
+{
+    
+}*@
+
+
+
+
+
+
+
+
+@*<MudButton class="carousel-button carousel-previous-button" @onclick="PreviousImage">‹</MudButton>
+<MudButton class="carousel-button carousel-next-button" @onclick="NextImage">›</MudButton>*@
+
+<style>
+    .profile-img-carousal .carousel-img
+    {
+        object-fit: scale-down;
+        height: 100% !important;
+        width:100%;
+        margin: auto;
+    }
+</style>

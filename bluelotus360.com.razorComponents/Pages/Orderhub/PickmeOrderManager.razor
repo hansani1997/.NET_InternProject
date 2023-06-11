@@ -1,0 +1,104 @@
+﻿@page "/Order/ViewPickmeOrders"
+@using BlueLotus360.Com.Infrastructure.OrderPlatforms.PickMe;
+
+
+@if (formDefinition != null)
+{
+    <MudItem Style="margin-top:2%">
+        <UIBuilder FormObject="formDefinition"
+               DataObject="new object()"
+               InteractionLogics="_interactionLogic"
+               ObjectHelpers="_objectHelpers"
+               @ref="_refBuilder" />
+    </MudItem>
+    <MudItem Style="margin-top:2%">
+
+      
+       @* <MudTable Items="@getOrder.Data" 
+              Hover="true"
+              Bordered="true"
+              Striped="true"
+              Dense="true"
+              FixedHeader="true"
+              FixedFooter="true"
+              Height="90% vh">
+
+              <HeaderContent>
+                <MudTh>Order ID</MudTh>
+                <MudTh>Address</MudTh>
+                <MudTh>Placed At</MudTh>
+                <MudTh>Status</MudTh>
+              
+              </HeaderContent>
+           
+              <RowTemplate>
+                <MudTd DataLabel="Order ID">@context.PickmeJobID</MudTd>
+                <MudTd DataLabel="Address">@context.Customer.Location.Address</MudTd>
+                <MudTd DataLabel="Placed At">@DateTimeOffset.FromUnixTimeMilliseconds(Convert.ToInt64(context.CreatedTimestamp)).DateTime.AddMinutes(330).ToString("dd/MM/yyyy HH:mm:ss tt")</MudTd>
+                <MudTd DataLabel="Status">@context.Status.Name</MudTd>
+                <MudTd><MudButton Variant="Variant.Filled" Color="Color.Info" Style="color:white" StartIcon="@Icons.TwoTone.Save" @onclick="() => SaveOrder(context)">Save</MudButton></MudTd>
+            </RowTemplate>
+
+            <ChildRowContent>
+                <MudTable Items="@context.Order.Items" Hover="true" Context="OrderContext" Style="width:100% !important">
+                    <HeaderContent>
+                        <MudTh>SKU</MudTh>
+                        <MudTh>Item Name</MudTh>
+                        <MudTh>Qty</MudTh>
+                        <MudTh>Price</MudTh>
+
+                    </HeaderContent>
+
+                    <RowTemplate>
+                        <MudTd DataLabel="SKU" style="background-color:lightgray">@OrderContext.RefID</MudTd>
+                        <MudTd DataLabel="Item Name" style="background-color:lightgray">@OrderContext.Name</MudTd>
+                        <MudTd DataLabel="Qty" style="background-color:lightgray">@OrderContext.Qty</MudTd>
+                        <MudTd DataLabel="Price" style="background-color:lightgray">@OrderContext.Total</MudTd>
+            </RowTemplate>
+                </MudTable>
+            </ChildRowContent>
+             
+        </MudTable>*@
+
+        <MudSimpleTable FixedHeader="true" Style="height:90% vh;">
+
+            <tbody>
+                @foreach (var order in getOrder.Data)
+                {
+                    <tr style="background-color:lightgray; height:2px;">
+
+                        <th><b>Order ID</b></th>
+                        <th><b>Address</b></th>
+                        <th><b>Placed At</b></th>
+                        <th><b>Status</b></th>
+                        <th><MudButton Variant="Variant.Filled" Color="Color.Info" Style="color:white" StartIcon="@Icons.Filled.Save" @onclick="() => SaveOrder(order)">Save</MudButton></th>
+                    </tr>
+                    <tr>
+                        <td>@order.PickmeJobID</td>
+                        <td>@order.Customer.Location.Address</td>
+                        <td>@DateTimeOffset.FromUnixTimeMilliseconds(Convert.ToInt64(order.CreatedTimestamp)).DateTime.AddMinutes(330).ToString("dd/MM/yyyy HH:mm:ss tt")</td>
+                        <td>@order.Status.Name</td>
+                    </tr>
+                    <tr style="background-color:lightyellow ; height:2px;">
+                        <th><b>SKU</b></th>
+                        <th><b>Item Name</b></th>
+                        <th><b>Qty</b></th>
+                        <th><b>Price</b></th>
+                    </tr>
+
+                    @foreach (var item in order.Order.Items)
+                    {
+                        <tr>
+                            <td>@item.RefID</td>
+                            <td>@item.Name</td>
+                            <td>@item.Qty</td>
+                            <td>@item.Total</td>
+                        </tr>
+                    }
+
+                }
+
+            </tbody>
+        </MudSimpleTable>
+    </MudItem>
+}

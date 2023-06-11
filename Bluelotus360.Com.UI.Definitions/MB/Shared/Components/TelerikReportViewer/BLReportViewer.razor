@@ -1,0 +1,34 @@
+﻿@using Telerik.ReportViewer.Blazor;
+<div class="brew">
+    <MudGrid>
+        <MudItem xs=12 Style="text-align: right;
+    padding: 20px;
+    padding-top: 33px;
+    padding-bottom: 15px;
+    background: white;
+    padding-right: 22px;
+">
+            <button type="button" class="btn btn-danger btn-sm" @onclick="CloseWindow">
+                <MudIcon Icon="@Icons.Filled.Close"></MudIcon>
+            </button>
+        </MudItem>
+    </MudGrid>
+    <MudGrid>
+        <MudItem Class="bl-report-container">
+
+            @if (SourceOptions != null)
+            {
+                <ReportViewer ViewerId="ReportView"
+                          ServiceUrl="@ReportSetting.ReportRestServicePath"
+                          ReportSource="@SourceOptions"
+                          Parameters="@(new ParametersOptions { Editors = new EditorsOptions { MultiSelect = EditorType.ComboBox, SingleSelect = EditorType.ComboBox } })"
+                          ScaleMode="@(ScaleMode.Specific)"
+                          @ref="__refReportViewer"
+                          ParametersAreaVisible=false
+                          Scale="1.0" />
+            }
+
+        </MudItem>
+    </MudGrid>
+</div>
+

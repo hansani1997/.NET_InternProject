@@ -1,0 +1,45 @@
+﻿@page "/Order/StockPriceUpdate"
+
+@if (formDefinition != null)
+{
+    <MudTabs Elevation="2" Rounded="true" ApplyEffectsToContainer="true" PanelClass="pa-6" Outlined="true">
+        <MudTabPanel Text="PickMe">
+            <MudItem Style="margin-top:2%">
+                <UIRenderere FromSection="PickmeDefinition" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+            </MudItem>
+            @if (PickmeGrid != null)
+            {
+                <MudItem Style="margin-top:2%">
+                    <BLTable FormObject="PickmeGrid"
+                       DataObject="_ListOfPickmeMenu"
+                       InteractionLogics="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"
+                       @ref="_blTb" />
+                </MudItem>
+
+            }
+        </MudTabPanel>
+        <MudTabPanel Text="Uber">
+            <MudItem Style="margin-top:2%">
+                <UIRenderere FromSection="UberDefinition" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+            </MudItem>
+            @if (UberGrid != null)
+            {
+                <MudItem Style="margin-top:2%">
+                    <BLTable FormObject="UberGrid"
+                       DataObject="_ListOfUberMenu"
+                       InteractionLogics="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"
+                       @ref="_blTbx" />
+                </MudItem>
+
+            }
+        </MudTabPanel>
+
+    </MudTabs>
+
+
+
+
+
+}

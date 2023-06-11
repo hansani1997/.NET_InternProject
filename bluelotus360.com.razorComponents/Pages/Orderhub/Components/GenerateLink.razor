@@ -1,0 +1,28 @@
+﻿<MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions">
+    <TitleContent>
+    </TitleContent>
+
+    <DialogContent>
+        <div class="row">
+            <div class="col-md-12" style="margin-bottom:2%"><b>Copy Provision Setup Link  </b></div>
+            
+        </div>
+        
+        <div class="row">
+           @* <div class="col-md-2"></div>*@
+            
+            <div class="col-md-6">
+                <MudButton Variant="Variant.Filled" Color="Color.Warning" Style="color:white;margin-right:1%" OnClick="OnCloseClick">Cancel</MudButton>
+            </div>
+
+            <div class="col-md-6">
+                <MudButton Variant="Variant.Filled" Color="Color.Info" Style="color:white;margin-right:1%" @onclick="() => CopyLink()">Copy Link</MudButton>
+            </div>
+        
+        </div>
+    </DialogContent>
+
+    @*<DialogActions>
+    <MudButton OnClick="OnCloseClick">Cancel</MudButton>
+    </DialogActions>*@
+</MudDialog>

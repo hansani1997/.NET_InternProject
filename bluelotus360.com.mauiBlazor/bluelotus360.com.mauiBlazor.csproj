@@ -1,0 +1,206 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Razor">
+
+    <PropertyGroup>
+        <TargetFrameworks>net7.0-android;net7.0-ios;net7.0-maccatalyst</TargetFrameworks>
+        <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net7.0-windows10.0.19041.0</TargetFrameworks>
+        <!-- Uncomment to also build the tizen app. You will need to install tizen by following this: https://github.com/Samsung/Tizen.NET -->
+        <!-- <TargetFrameworks>$(TargetFrameworks);net7.0-tizen</TargetFrameworks> -->
+        <OutputType>Exe</OutputType>
+        <RootNamespace>bluelotus360.com.mauiBlazor</RootNamespace>
+        <UseMaui>true</UseMaui>
+        <SingleProject>true</SingleProject>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <EnableDefaultCssItems>false</EnableDefaultCssItems>
+
+        <!-- Display name -->
+        <ApplicationTitle>bluelotus360.com.mauiBlazor</ApplicationTitle>
+
+        <!-- App Identifier -->
+        <ApplicationId>com.companyname.bluelotus360.com.mauiblazor</ApplicationId>
+        <ApplicationIdGuid>13487D57-8AD4-4BAA-9BFE-86D591AC24AC</ApplicationIdGuid>
+
+        <!-- Versions -->
+        <ApplicationDisplayVersion>1.0</ApplicationDisplayVersion>
+        <ApplicationVersion>1</ApplicationVersion>
+
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'ios'">14.2</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'maccatalyst'">14.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'android'">26.0</SupportedOSPlatformVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</SupportedOSPlatformVersion>
+        <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
+        <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
+        <AndroidSigningKeyStore>bl-360-maui-blazor-hybrid-new.keystore</AndroidSigningKeyStore>
+        <GenerateAppInstallerFile>True</GenerateAppInstallerFile>
+        <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
+        <AppxSymbolPackageEnabled>True</AppxSymbolPackageEnabled>
+        <GenerateTestArtifacts>True</GenerateTestArtifacts>
+        <HoursBetweenUpdateChecks>0</HoursBetweenUpdateChecks>
+        <AppxPackageSigningEnabled>True</AppxPackageSigningEnabled>
+        <PackageCertificateThumbprint>357D683871BB13E9CFE16ABAC3608C7408E3B7CB</PackageCertificateThumbprint>
+        <AppxPackageSigningTimestampDigestAlgorithm>SHA256</AppxPackageSigningTimestampDigestAlgorithm>
+        <DefaultLanguage>en</DefaultLanguage>
+        <GenerateTemporaryStoreCertificate>True</GenerateTemporaryStoreCertificate>
+        <AppInstallerUri>https://localhost:7202/packages/</AppInstallerUri>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net7.0-android|AnyCPU'">
+      <AndroidKeyStore>True</AndroidKeyStore>
+      <AndroidSigningStorePass>bl10pwd-UVHBG</AndroidSigningStorePass>
+      <AndroidSigningKeyPass>bl10pwd-UVHBG</AndroidSigningKeyPass>
+      <AndroidSigningKeyAlias>bl360key</AndroidSigningKeyAlias>
+      <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+      <AndroidUseAapt2>True</AndroidUseAapt2>
+      <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+      <AndroidPackageFormat>aab</AndroidPackageFormat>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net7.0-android|AnyCPU'">
+      <AndroidKeyStore>True</AndroidKeyStore>
+      <AndroidSigningStorePass>bl10pwd-UVHBG</AndroidSigningStorePass>
+      <AndroidSigningKeyPass>bl10pwd-UVHBG</AndroidSigningKeyPass>
+      <AndroidSigningKeyAlias>bl360key</AndroidSigningKeyAlias>
+      <AndroidPackageFormat>aab</AndroidPackageFormat>
+      <AndroidUseAapt2>True</AndroidUseAapt2>
+      <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    </PropertyGroup>
+
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows' and '$(Configuration)' == 'Release'">
+		<AppxPackageSigningEnabled>true</AppxPackageSigningEnabled>
+		<PackageCertificateThumbprint>0D6E2147271CAA68357B3E4724E6EE66D67AAAB8</PackageCertificateThumbprint>
+	</PropertyGroup>
+	<PropertyGroup Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows' and '$(RuntimeIdentifierOverride)' != ''">
+		<RuntimeIdentifier>$(RuntimeIdentifierOverride)</RuntimeIdentifier>
+	</PropertyGroup>
+
+    <ItemGroup>
+        <!-- App Icon -->
+        <MauiIcon Include="Resources\AppIcon\appicon.svg" ForegroundFile="Resources\AppIcon\newlogo.png" Color="#ffffff" />
+
+        <!-- Splash Screen -->
+
+        <!-- Images -->
+        <MauiImage Include="Resources\Images\*" />
+        <MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
+
+        <!-- Custom Fonts -->
+        <MauiFont Include="Resources\Fonts\*" />
+
+        <!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
+        <MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="compilerconfig.json" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="wwwroot\img\Shoes.jpg" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Resources\AppIcon\bllogo.svg" />
+      <None Remove="Resources\Fonts\CeraRoundProBlack.otf" />
+      <None Remove="Resources\Fonts\CeraRoundProBold.otf" />
+      <None Remove="Resources\Fonts\CeraRoundProLight.otf" />
+      <None Remove="Resources\Fonts\CeraRoundProMedium.otf" />
+      <None Remove="Resources\Fonts\CeraRoundProRegular.otf" />
+      <None Remove="Resources\Fonts\CeraRoundProThin.otf" />
+      <None Remove="Resources\Fonts\Mynerve-Regular.ttf" />
+      <None Remove="Resources\Splash\LoginLogo.svg" />
+    </ItemGroup>
+
+    <ItemGroup>
+		<Content Include="Resources\AppIcon\bllogo.svg">
+			<ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+			<CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</Content>
+		<MauiSplashScreen Include="Resources\Splash\logonew.svg" BaseSize="128,128" Color="#183153">
+		  <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+		  <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+		</MauiSplashScreen>
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Include="compilerconfig.json" />
+      <None Include="wwwroot\plugins\Telerik.UI.for.Blazor\js\telerik-blazor.js" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="CommunityToolkit.Maui" Version="4.0.0" />
+        <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+        <PackageReference Include="Toolbelt.Blazor.HotKeys2" Version="1.0.0" />
+        <PackageReference Include="ZXing.Net.Maui" Version="0.3.0-preview.1" />
+        <PackageReference Include="ZXing.Net.Maui.Controls" Version="0.3.0-preview.1" />
+        <!--<PackageReference Include="Telerik.WebReportDesigner.Blazor" Version="17.0.23.118" />-->
+        <!--<PackageReference Include="Telerik.ReportViewer.Blazor" Version="17.0.23.118" />-->
+    </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\bluelotus360.com.razorComponents\bluelotus360.com.razorComponents.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <MauiXaml Update="MauiPages\BarcodePopup.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+      <MauiXaml Update="MauiPages\YesNoPopup.xaml">
+        <Generator>MSBuild:Compile</Generator>
+      </MauiXaml>
+    </ItemGroup>
+
+	<ItemGroup>
+		<Reference Include="Telerik.Blazor">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.Blazor.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.DataSource">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.DataSource.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.Documents.SpreadsheetStreaming">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.Documents.SpreadsheetStreaming.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.Recurrence">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.Recurrence.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.ReportViewer.Blazor">
+			<HintPath>..\Libs\Libs\Libs\TelerikReports\Telerik.ReportViewer.Blazor.dll</HintPath>
+		</Reference>
+		<Reference Include="Telerik.Zip">
+			<HintPath>..\Libs\Libs\Libs\TelerikUI\Telerik.Zip.dll</HintPath>
+		</Reference>
+    <Reference Include="Telerik.ReportViewer.Blazor">
+      <HintPath>..\Libs\Libs\Libs\TelerikReports\Telerik.WebReportDesigner.Blazor.dll</HintPath>
+    </Reference>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiFont Update="Resources\Fonts\CeraRoundProBlack.otf">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </MauiFont>
+	  <MauiFont Update="Resources\Fonts\CeraRoundProLight.otf">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </MauiFont>
+	  <MauiFont Update="Resources\Fonts\CeraRoundProMedium.otf">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </MauiFont>
+	  <MauiFont Update="Resources\Fonts\CeraRoundProRegular.otf">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </MauiFont>
+	  <MauiFont Update="Resources\Fonts\CeraRoundProThin.otf">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </MauiFont>
+	  <MauiFont Update="Resources\Fonts\CeraRoundProBold.otf">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+	  </MauiFont>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="wwwroot\plugins\SASS\" />
+	</ItemGroup>
+
+</Project>

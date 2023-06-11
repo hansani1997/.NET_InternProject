@@ -1,0 +1,42 @@
+﻿<MudDialog @bind-IsVisible=IsPopUpShown Options="dialogOptions" DisableSidePadding="true">
+    <TitleContent>
+        <MudToolBar Class="mx-0">
+            <MudIconButton Icon="@Icons.Material.TwoTone.Save" Color="Color.Inherit" OnClick="SaveAddress" />
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.TwoTone.Close" Color="Color.Inherit" OnClick="HidePopUp" />
+        </MudToolBar>
+        <MudDivider />
+    </TitleContent>
+    <DialogContent>
+        <MudContainer>
+            @if (InitiatorElement != null)
+            {
+                <MudPaper Class="popup-container">
+                    <UIRenderere DataObject="addressMaster"
+                             FromSection="InitiatorElement"
+                             InteractionLogics="InteractionLogics"
+                             ObjectHelpers="ObjectHelpers" />
+
+                    @if (validator.ValidationMessages.UserMessages.Count > 0)
+                    {
+                        <MudItem xs="12">
+                            <MudList Clickable="false">
+                                @foreach (var item in validator.ValidationMessages.UserMessages)
+                                {
+                                    <MudListItem IconColor="Color.Error" Text=@item.Message Icon="@Icons.Filled.Error" />
+
+                                }
+                            </MudList>
+
+                        </MudItem>
+
+
+                    }
+                </MudPaper>
+            }
+        </MudContainer>
+       
+    </DialogContent>
+</MudDialog>
+
+           

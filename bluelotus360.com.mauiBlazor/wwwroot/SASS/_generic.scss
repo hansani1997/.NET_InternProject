@@ -1,0 +1,34 @@
+﻿@import "_Variables.scss";
+//@import "_variablesDark.scss";
+
+:root {
+    --bl-gray: $palette-gray;
+    --primary-blue: $color-primary;
+}
+
+.bk-k-lable {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+
+.pop-up-z-index {
+    z-index: 30002 !important;
+}
+
+.k-dialog-titlebar {
+    background-color: $color-primary;
+
+    &-error .k-dialog-titlebar {
+        background-color: $color-orange !important;
+    }
+}
+
+.k-pager-numbers {
+    .k-link.k-state-selected,
+    .k-link.k-selected {
+        color: $palette-white;
+        background-color: $color-primary;
+    }
+}

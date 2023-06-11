@@ -1,0 +1,81 @@
+﻿@using BlueLotus360.CleanArchitecture.Domain.DTO.Object;
+<MudGrid class="pop-up-wrap">
+
+    <div class="pop-up-ui">
+
+     @*   <UIRenderere FromSection="RecieptUIDefinitions"
+                     InteractionLogics="InteractionLogics"
+                     ObjectHelpers="ObjectHelpers"
+                     DataObject="DataObject" />*@
+        <hr />
+        <MudText Typo="Typo.body1">
+            Current Settlements  - Balance Is <strong> @BalanceAmount.ToString("N2")</strong>
+        </MudText>
+        <div class="tdef">
+            <MudTable Items="@currentTrasnactionReps" Hover="true" Breakpoint="Breakpoint.Sm" Loading="false"
+                      LoadingProgressColor="Color.Info" CustomFooter="true" Dense="true" FixedHeader="true" FixedFooter="true" Height="200px">
+                <HeaderContent>
+
+                    <MudTh>Trn No</MudTh>
+                    <MudTh Style="text-align:right">Invoice Amount</MudTh>
+                    <MudTh Style="text-align:right">Sett Off Amount</MudTh>
+                    <MudTh Style="text-align:right">Total Sett Off</MudTh>
+                    <MudTh Style="text-align:right">Balance</MudTh>
+
+                </HeaderContent>
+
+                <RowTemplate>
+                    <MudTd DataLabel="#">@(context.TransactionNumber.Equals("0") ? "N/A" :context.TransactionNumber)</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Invoice Amount">@context.InvoiceAmaount.ToString("N2")</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Transaction Unit">@context.SetOffAmount.ToString("N2")</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Transaction Rate">@context.TotalSetOffAmount.ToString("N2")</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Quantity">@context.BalanceAmount.ToString("N2")</MudTd>
+                </RowTemplate>
+
+
+
+            </MudTable>
+        </div>
+        <hr />
+
+
+        @if (HasPaymentEntries)
+        {
+            <MudText Typo="Typo.body1">
+                Payables  - @(payments.Count.ToString())
+            </MudText>
+            @foreach(AccoutRecieptPayment item in payments)
+            {
+                <RecieptEntryLine RecieptLine="item"/>
+            }
+
+
+        }
+        else
+        {
+            <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">No Details Found... Please Check Configuration</MudAlert>
+
+        }
+
+        <hr />
+        <MudGrid>
+            <MudItem sm=10></MudItem>
+            <MudItem sm=1>
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="OnSaveButtonClick">
+                    Save
+                </MudButton>
+
+            </MudItem>
+
+            <MudItem sm=1>
+                <MudButton Color="Color.Default" OnClick="OnCloseButtonClick" Variant="Variant.Filled">
+                    Cancel
+                </MudButton>
+
+            </MudItem>
+        </MudGrid>
+    </div>
+
+
+</MudGrid>
+

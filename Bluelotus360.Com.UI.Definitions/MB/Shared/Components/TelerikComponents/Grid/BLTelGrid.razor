@@ -1,0 +1,21 @@
+﻿@typeparam T
+
+
+@if (FormObject.ElementType != null && FormObject.ElementType.Equals("Grid"))
+{
+	<MudItem xs="12" sm="12" md="@FormObject.Width">
+
+		@if (DataObject != null)
+		{
+
+			<BLTelerikKendoGrid FormObject="FormObject"
+						DataObject="DataObject"
+						InteractionLogics="InteractionLogics"
+						ObjectHelpers="ObjectHelpers"
+						Height="@Height"
+						@ref="_refGrid" />
+		}
+
+
+	</MudItem>
+}

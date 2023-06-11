@@ -1,0 +1,546 @@
+﻿@import "_Variables.scss";
+//@import "_variablesDark.scss";
+
+/*sales by location */
+.avatar-drop-down p {
+    width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.top-reminder .mud-alert {
+    background: $alert-background-color;
+    border-radius: $border-radius-default;
+}
+
+.top-reminder .mud-alert .mud-icon-button-label {
+    color: $palette-red;
+}
+
+.top-reminder .mud-alert .mud-chip {
+    height: 15px;
+    padding: 0 8px;
+}
+
+.top-reminder .mud-alert p {
+    color: $color-primary;
+}
+
+.bl-home-calander .mud-picker-calendar-content {
+    display: flex;
+    justify-content: center;
+}
+
+.coming-soon-page {
+    background: url("/img/coming-soon.svg");
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+
+.monthly_gpft_npft_dl_chart {
+    width: 75%;
+    height: 100%;
+}
+
+.chart_view {
+    border-width: $border-width-default;
+    border-style: $outline-style-dotted;
+    border-color: $color-primary;
+    height: 90vh;
+    padding: 12px;
+}
+
+.chart_view_container {
+    border-width: $border-width-default;
+    border-style: $border-style-default;
+    border-color: $color-primary;
+    height: 100%;
+    padding: 10px;
+}
+
+.sls-crdhgt {
+    height: 160px;
+}
+
+.sls-card-header .mud-card-header-content h6 {
+    font-weight: $bold;
+}
+
+.bl-card-cont-primary, .bl-card-conts-secondary {
+    color: $color-primary-text;
+    font-weight: $bold;
+    display: flex;
+    justify-content: center;
+}
+
+.dash-board-container {
+    margin-top: 20px;
+    border-radius: $border-radius-default;
+}
+
+.bl-avatar {
+    @include border;
+    height: 100px !important;
+    width: 100px !important;
+    font-size: $typography-default-size !important;
+    /*border: 0.3px solid #A8ABAE !important;*/
+}
+
+.welcome-panel {
+    display: flex;
+    width: 100%;
+    height: 200px;
+    left: 88px;
+    top: 78px;
+    background: linear-gradient(266.48deg, #F1AD84 47.1%, #A053C5 82.98%);
+    border-radius: $border-radius-default;
+}
+
+.last-access {
+    @include border;
+    width: 100%;
+    height: 131px;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    background: radial-gradient(97.57% 210.75% at 0.9% 2.98%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+    //warning: gradient uses a rotation that is not supported by CSS and may not behave as expected
+    //backdrop-filter: blur(42px);
+    //Note: backdrop-filter has minimal browser support
+}
+
+.bl-carousel {
+    height: 227px;
+    border-radius: $border-radius-default;
+    color: $color-light-text !important;
+    background-color: $color-primary;
+}
+
+.carousel-img {
+    object-fit: cover;
+    width: auto !important;
+    height: 100% !important;
+    margin: auto;
+}
+
+.dashboard-tile-card {
+    @include border;
+    width: 100%;
+    height: 100%;
+    background: $palette-white;
+}
+
+.dashboard-tile-card-header {
+    @include border;
+    height: 25px;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 10px;
+}
+
+.dashboard-tile-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75%;
+}
+
+.dashboard-card-action {
+    background: $color-primary;
+    height: 25%;
+    border-radius: 0 0 $border-radius-default $border-radius-default;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+//My Notes - Border issue cannot be fixed - Fixed!
+.my-items-card {
+    //@include border;
+    box-sizing: border-box;
+    width: 268px;
+    height: 300px;
+    width: 100%;
+    border-width: $border-width-default;
+    border-style: $border-style-default;
+    border-color: $border-color-default;
+
+    .mud-card-header {
+        //@include border;
+        border-radius: 0px;
+        padding: 10px;
+
+        .mud-card-header-actions {
+            padding: 10px;
+        }
+    }
+
+    .mud-fab-size-small {
+        width: 25px;
+        height: 25px;
+        min-height: 10px;
+    }
+
+    .mud-card-content {
+        //@include border;
+        border-radius: 0px;
+        padding: 10px;
+        height: 200px;
+    }
+}
+
+.my-todo-card {
+    //@include border;
+    box-sizing: border-box;
+    width: 268px;
+    height: 100%;
+    width: 100%;
+    border-width: $border-width-default;
+    border-style: $border-style-default;
+    border-color: $border-color-default;
+
+    .mud-card-header {
+        //@include border;
+        border-radius: 0px;
+        padding: 10px;
+
+        .mud-card-header-actions {
+            padding: 10px;
+        }
+    }
+
+    .mud-fab-size-small {
+        width: 25px;
+        height: 25px;
+        min-height: 10px;
+    }
+
+    .mud-card-content {
+        padding: 10px;
+        height: 200px;
+
+        .todo-empty {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+
+            span {
+                color: $color-primary-text;
+                font-size: $typography-default-size;
+            }
+        }
+    }
+}
+
+.chart-card {
+    @include border;
+    border-radius: 0px;
+    padding-top: 12px;
+
+    .apexcharts-title-text {
+        fill: $palette-dark-gray;
+        font-family: $typography-default-family;
+    }
+}
+
+.pin-button {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+
+    span {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font: $bold;
+    }
+}
+
+.pin-card {
+    margin: 5px 0px;
+    cursor: pointer;
+    border-radius: $border-radius-default;
+
+    &:hover {
+        @include border;
+        color: none !important;
+        margin: 5px 0px;
+        cursor: pointer;
+        background: rgba(242, 242, 242, 0.5);
+    }
+
+    .mud-card-header {
+        padding: 0 3px;
+
+        svg {
+            fill: $palette-white;
+            margin-top: 8px;
+        }
+    }
+
+    .mud-card-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 6px;
+        width: 100%;
+
+        .mud-avatar-medium {
+            height: 120px !important;
+            width: 120px !important;
+            font-size: $typography-default-size !important;
+        }
+
+        .mud-avatar-filled {
+            color: $palette-black;
+            background: radial-gradient(97.57% 210.75% at 0.9% 2.98%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+            box-shadow: 3px 3px 7px 0 rgb(0 0 0 / 20%), -4px -4px 9px 0 rgb(255 255 255 / 55%);
+        }
+
+        p {
+            color: $color-light-text;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        height: 100px;
+        padding-left: 21px;
+        padding-right: 21px;
+        text-align: center;
+        padding-bottom: 20px;
+    }
+
+    .mud-card-actions {
+        background: $color-primary;
+        border-radius: 0px 0px 20px 20px;
+        padding: 15px;
+
+        a {
+            color: $color-light-text !important;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            resize: horizontal;
+        }
+    }
+}
+
+.pin-card-empty {
+    margin: 5px 0px;
+    cursor: pointer;
+    border-radius: $border-radius-default;
+    border: $border-width-default $border-style-dashed $border-color-default;
+    height: 137px;
+
+    .mud-card-header {
+        height: 0px;
+        padding: 0 3px;
+    }
+
+    .mud-card-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding: 6px;
+        width: 100%;
+        padding-bottom: 20px;
+
+        svg {
+            color: $color-primary;
+            fill: $color-primary;
+            width: 100px;
+            height: 55px;
+        }
+
+        p {
+            color: $color-primary;
+            text-align: center;
+        }
+
+        .mud-avatar-medium {
+            height: 120px !important;
+            width: 120px !important;
+            font-size: $typography-default-size !important;
+        }
+
+        .mud-avatar-filled {
+            color: $palette-black;
+            background: radial-gradient(97.57% 210.75% at 0.9% 2.98%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+            box-shadow: 3px 3px 7px 0 rgb(0 0 0 / 20%), -4px -4px 9px 0 rgb(255 255 255 / 55%);
+        }
+    }
+
+    .mud-card-actions {
+        background: $color-primary;
+        border-radius: 0px 0px 20px 20px;
+        padding: 15px;
+        text-align: center;
+
+        a {
+            color: $palette-white !important;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            resize: horizontal;
+        }
+    }
+}
+
+.pin-card-empty-space {
+    @include border;
+    width: 100%;
+    background-color: transparent;
+    margin: 5px 0;
+
+    .mud-card-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 89px;
+
+        span {
+            color: $color-primary;
+        }
+    }
+}
+
+.pin-dialog-container {
+    .mud-dialog-title {
+        background: $color-primary;
+        text-align: center;
+
+        span {
+            color: $palette-white;
+            text-align: center;
+        }
+    }
+
+    .mud-dialog-action {
+        display: flex;
+        justify-content: center;
+    }
+}
+
+.pin-wrapper {
+    @include border;
+    /*background: rgba(242, 242, 242, 0.5);*/
+    //padding: 12px;
+    border-color: $border-color-default;
+
+    .dshbrd-section {
+        height: 60%;
+    }
+
+    .pin-section {
+        height: 40%;
+    }
+}
+
+@media (max-width: 960px) {
+    .bl-avatar {
+        height: 150px !important;
+        width: 150px !important;
+        font-size: $typography-default-size-mobile !important;
+    }
+
+    .welcome-panel {
+        position: relative;
+        height: 477px;
+        left: 0;
+        top: -4px;
+        right: 0;
+        background: linear-gradient(180deg, #A053C5 0%, #F1AD84 100%);
+        border-radius: 0px 0px 25px 25px;
+        flex-direction: column;
+
+        .last-access {
+            width: 100%;
+        }
+
+        .monthly_gpft_npft_dl_chart {
+            width: 100%;
+            height: 100%;
+
+            .mud-dialog-content {
+                padding: 0px !important;
+            }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .bl-carousel {
+        height: 115px;
+        width: auto;
+        margin-right: 5px !important;
+        margin-left: 5px !important;
+    }
+
+    .welcome-panel {
+        position: relative;
+        height: 412px;
+        left: 0;
+        top: -5px;
+        right: -5px;
+        background: linear-gradient(180deg, #A053C5 0%, #F1AD84 100%);
+        border-radius: 0px 0px 25px 25px;
+        flex-direction: column;
+
+        .last-access {
+            width: 100%;
+        }
+    }
+
+    .carousel-img {
+        width: 100% !important;
+        height: 100px;
+    }
+
+    .pin-button span {
+        display: none;
+    }
+
+    .pin-card {
+        &.pin-card-content a {
+            width: 100%;
+        }
+
+        &.pin-card-content svg {
+            display: none;
+            width: 0%;
+        }
+    }
+}
+
+@media (max-width: 499px) {
+    .pin-card {
+        & .mud-card-content .mud-avatar-medium {
+            height: 50px !important;
+            width: 50px !important;
+            font-size: $typography-default-size-mobile !important;
+        }
+
+        &-empty {
+            & .mud-card-content .mud-avatar-medium {
+                height: 50px !important;
+                width: 50px !important;
+                font-size: $typography-default-size-mobile !important;
+            }
+        }
+    }
+}

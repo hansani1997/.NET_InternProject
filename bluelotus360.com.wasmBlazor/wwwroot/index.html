@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>bluelotus360.com.wasmBlazor</title>
+    <base href="/" />
+    <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" rel="stylesheet" />
+    <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet" />
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <link href="https://use.fontawesome.com/releases/v6.3.0/css/all.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+    <link href="SASS/StyleSheet.css" rel="stylesheet" />
+    <link href="SASS/ThemeManager.css" rel="stylesheet" />
+
+</head>
+
+<body>
+    <div id="app">
+        <div class="splash-page">
+            <div class="splash-card">
+                <img src="img/NewLoadingGif.gif" style="width:130px; height:auto;" />
+            </div>
+        </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="" class="reload">Reload</a>
+        <a class="dismiss">🗙</a>
+    </div>
+    <script src="_framework/blazor.webassembly.js"></script>
+    <script src="js/site.js"></script>
+    <script src="js/scroll.js"></script>
+    <script src="js/screenwidth.js"></script>
+    <script src="js/geoLocation.js"></script>
+    <script src="_content/TG.Blazor.IndexedDB/indexedDb.Blazor.js"></script>
+    <!--for apex chart-->
+
+    <script src="_content/Blazor-ApexCharts/js/apex-charts.min.js"></script>
+    <script src="_content/Blazor-ApexCharts/js/blazor-apex-charts.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!--for telerik report-->
+    <script src="js/interop.js"></script>
+    <script src="_content/Telerik.ReportViewer.Blazor/interop.js" defer></script>
+    <script src="https://bl360x.com/BLECOMTEST//api/telerikreports/resources/js/telerikReportViewer"></script>
+
+    <!--for telerik report designer-->
+    <script src="_framework/blazor.webview.js" autostart="false"></script>
+    <script src="_content/telerik.webreportdesigner.blazor/telerikWebReportDesignerInterop.js" defer></script>
+    <script src="https://localhost:7036/api/reportdesigner/designerresources/js/webReportDesigner/"></script>
+    <script src="https://localhost:7036/api/reportdesigner/resources/js/telerikReportViewer"></script>
+    <!--for zxing barcode reader-->
+    <script src="_content/BlazorBarcodeScanner.ZXing.JS/zxingjs.index.min.js"></script>
+    <script src="_content/BlazorBarcodeScanner.ZXing.JS/BlazorBarcodeScanner.js"></script>
+</body>
+
+</html>

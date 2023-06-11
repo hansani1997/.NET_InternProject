@@ -1,0 +1,92 @@
+﻿@page "/transaction/salesordermaui"
+@using bluelotus360.com.razorComponents.Components.Address
+
+<div class="item-cat-area">
+   
+    @if (_orderState.DisplayMode == WindowDisplayMode.LandingProgress)
+    {
+        <MudProgressLinear Color="Color.Primary" Value="@Value" Class="my-7" >
+          
+        </MudProgressLinear>
+        <hr />
+        <MudText Typo="Typo.subtitle1" Color="Color.Dark">
+            Loading Products (@CurrentCaategory)
+        </MudText>
+    }
+    @if (_orderState.DisplayMode == WindowDisplayMode.CategoryListView)
+    {
+        <CategoryListView Categories="Categories" OnCategoryClick="OnCategorySelected" />
+    }
+
+    @if (_orderState.DisplayMode == WindowDisplayMode.CategoryView)
+    {
+        <CategoryView OnCategoryBackButtonClick="OnCategoryBackButtonClicked" BLUIElement="__itemSetting" />
+    }
+
+    @if (_orderState.DisplayMode == WindowDisplayMode.CartSummaryView)
+    {
+        <bluelotus360.com.razorComponents.Components.Order.CartDetailView />
+    }
+</div>
+
+
+<div class="options-area">
+  
+        <table class="f-w f-h">
+            <tr>
+               <td width="90%">
+                @if (_orderState.IsCustomerSelected)
+                {
+                    <OrderBottomBar @ref="_refBottomBar" />
+                }
+                else
+                {
+                    <MudButton FullWidth="true" Color="__buttonColor" OnClick="ToggleOpen" Class="customer-selection   bl-btn-primary flex-grow-1">
+                        Select Customer
+                    </MudButton>
+                }
+                    
+               </td>
+               <td width="10%">
+                    
+                @if (_orderState.IsCustomerSelected)
+                {
+                    <MudButton FullWidth="true" Color="__buttonColor" Class="customer-selection   bl-btn-primary flex-grow-1" IconClass="@Icons.Material.Filled.Close" Size="Size.Small" DisableElevation="true" OnClick="ClearCustomer" >
+                        X
+                    </MudButton>
+                }
+                else
+                {
+                    <MudButton FullWidth="true" Color="__buttonColor" OnClick="ShowCustomerAddWindow" Class="customer-selection   bl-btn-primary flex-grow-1">
+                        +
+                    </MudButton>
+                }
+
+               </td>
+            </tr>
+        </table>
+      
+    
+
+</div>
+
+<MudPopover Open="@_isOpen" Fixed="true" Class="px-4 pt-4" AnchorOrigin="Origin.CenterCenter" TransformOrigin="Origin.CenterCenter">
+    <div class="d-flex flex-column strech-width">
+        <MudGrid>
+            <MudItem md="10" sm="10" xs="8"><MudText>Select a Customer.</MudText></MudItem>
+
+        </MudGrid>
+        <div class="AddressPop">
+            <AddressSelectionPopUp AddressUIObject="__addressPage" />
+        </div>
+        <MudGrid Class="pt-2">
+            <MudItem xs="6" md="1" sm="6">
+                <MudButton Color="Color.Primary" Variant="Variant.Filled" FullWidth="true" OnClick="ToggleOpen" aria-label="delete">OK</MudButton>
+
+            </MudItem>
+            <MudItem xs="6" md="1" sm="6">
+                <MudButton Variant="Variant.Filled" FullWidth="true" Color="Color.Error" OnClick="CancelCustomerSelection">X</MudButton>
+            </MudItem>
+        </MudGrid>
+    </div>
+</MudPopover>

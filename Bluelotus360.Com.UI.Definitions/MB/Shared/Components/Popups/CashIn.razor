@@ -1,0 +1,38 @@
+﻿
+
+<MudGrid class="cash-in-wrap">
+
+    <div class="cash-ui">
+        <h6>
+            @CashInOutUIDefeinition.ElementCaption @if (cashtransaction.TransactionNumber.Length > 0)
+            {
+                <span> - <span class="success-text">@cashtransaction.TransactionNumber</span></span>
+            }
+
+        </h6>
+
+        <div class=" @(!messages.IsValidForm()?"bl-expansion-panel":"d-none")">
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="@($"Cannot Process,Please Correct Errors")">
+                    @foreach (var error in messages.UserMessages)
+                    {
+                        <MudText Color="@Color.Error">@error.Message</MudText>
+                    }
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+
+        </div>
+        <hr />
+        <UIRenderere DataObject="cashtransaction"
+                     FromSection="CashInOutUIDefeinition"
+                     InteractionLogics="InteractionLogics"
+                     ObjectHelpers="ObjectHelpers"
+                     />
+      
+
+    </div>
+
+</MudGrid>
+
+
+

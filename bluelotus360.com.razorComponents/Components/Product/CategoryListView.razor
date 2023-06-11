@@ -1,0 +1,31 @@
+﻿<MudPaper Class="pa-2">
+    @if (filterdCategories != null)
+    {
+        <MudGrid>
+            <MudItem xs="12">
+                <MudTextField Placeholder="Search Categories" T="string" Value="filterQuery" ValueChanged="OnFilterQueryChanged" DebounceInterval="500"></MudTextField>
+            </MudItem>
+            @foreach (var item in filterdCategories)
+            {
+
+                <MudItem xl="2" md="3" sm="6" xs="12">
+                    <MudButton FullWidth="true" Variant="Variant.Filled" Class="pa-0 border-1px" OnClick="()=>ProcessCategoryClick(item)">
+                        <MudCard Style="width:100%">
+                            <MudCardContent>
+                                <MudImage Fluid="true" Src="@("https://bluelotus360.co/3pl/SGF/Cat/"+item.GetCodeExtraCharacter1())" Height="200" Alt="@item.CodeName" Elevation="0" />
+                                <MudText>@item.CodeName</MudText>
+
+                            </MudCardContent>
+
+                        </MudCard>
+                    </MudButton>
+
+                </MudItem>
+
+
+
+            }
+        </MudGrid>
+
+    }
+</MudPaper>

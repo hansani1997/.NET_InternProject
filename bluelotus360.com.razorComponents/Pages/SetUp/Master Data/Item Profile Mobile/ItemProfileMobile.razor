@@ -1,0 +1,63 @@
+﻿@page "/Item/ItemProfileMobile"
+
+@using BL10.CleanArchitecture.Domain.Entities.ItemProfleMobile
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+            <AddNewAddress OnAddressCreated="OnCustomerCreateSuccess" @ref="_refNewAddressCreation" />
+
+             <div class="@(isTableLoading?"":"d-none")"> 
+      
+                <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+            </div>
+
+
+            //update
+            <div class="@(ShowUpdateDetails?"":"d-none")">
+
+                 <BLItemProfileUpdateDetails FormObject="updatemodalUIElement"
+                                             DataObject="updateRequest"
+                                             InteractionLogics="_interactionLogic"
+                                             ObjectHelpers="_objectHelpers"
+                                             @ref="_bLItemProfileUpdateDetails" />
+            </div>
+           
+            //insert 
+            <div class="@(ShowInsertDetails?"":"d-none")">
+
+                 <BLItemProfileInsertDetails 
+                                             FormObject="insertmodalUIElement"
+                                             DataObject="insertRequest"
+                                             InteractionLogics="_interactionLogic"
+                                             ObjectHelpers="_objectHelpers"
+                                             @ref="_bLItemProfileInsertDetails" />
+
+            </div>
+
+            @if(showsgrid){
+
+                   //btn group
+                   <UIBuilder FormObject="formDefinition"
+                               DataObject="transaction"
+                               InteractionLogics="_interactionLogic"
+                               ObjectHelpers="_objectHelpers"
+                               @ref="_refBuilder" />
+
+
+                   //grid
+                      <BLTable FormObject="gridUIElement"
+                               DataObject="gridDetails.Where(x=>x.IsActive==true).ToList()"
+                               InteractionLogics="_interactionLogic"
+                               ObjectHelpers="_objectHelpers"
+                               Height="400px"
+                               @ref="_blTb" />
+    
+            }
+
+         
+}
+
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitions...</MudAlert>
+}

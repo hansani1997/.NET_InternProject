@@ -1,0 +1,90 @@
+﻿@page "/Carmart/WorkShop"
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+
+    <MudTabs Class="carmart-top-tab" KeepPanelsAlive="true" ActivePanelIndexChanged="TabActivator" @ref="@tabs">
+        <MudTabPanel Text="OverView" Icon="@Icons.TwoTone.Home" >
+            <OverView Activate="Activate"
+                      UIScope="formDefinition"
+                      DataObject="_workOrderObj"
+                      InteractionLogic="_interactionLogic"
+                      ObjectHelpers="_objectHelpers"
+                      EnableTabs="EnableAllTabs"
+                      DisableTabs="DisableAllTabs"/>
+        </MudTabPanel>
+        <MudTabPanel Text="Job Materials & Services" Icon="@Icons.TwoTone.CardTravel" Disabled="IsTabDisabled1">
+            <JobMaterialServices Activate="Activate"
+                                 UIScope="formDefinition"
+                                 DataObject="_workOrderObj" @ref="jobms_ref" />
+        </MudTabPanel>
+        <MudTabPanel Text="Job Card Ticket" Icon="@Icons.TwoTone.WatchLater" Disabled="IsTabDisabled2">
+            <JobCardTicket Activate="Activate"
+                             UIScope="formDefinition"
+                       DataObject="_workOrderObj" DisableTabs="DisableAllTabs" />
+        </MudTabPanel>
+        <MudTabPanel Text="Job Summary" Icon="@Icons.TwoTone.Summarize" Disabled="IsTabDisabled3">
+            <JobSummery Activate="Activate"
+                             UIScope="formDefinition"
+                            DataObject="_workOrderObj" 
+                            @ref="job_sum" />
+        </MudTabPanel>
+    </MudTabs>
+
+    
+}
+else
+{
+    <div class="rip-wrap">
+        <div class="lds-ripple">
+            <div>
+            </div><div>
+            </div>
+        </div>
+    </div>
+}
+
+
+
+@*<TelerikTabStrip PersistTabContent="true">
+        <TabStripTab>
+            <HeaderTemplate>
+                <TelerikIcon Icon="email" />
+                <strong>Overview</strong>
+            </HeaderTemplate>
+            <Content>
+                <OverView Activate="Activate" />
+            </Content>
+        </TabStripTab>
+
+        <TabStripTab>
+            <HeaderTemplate>
+                <TelerikIcon Icon="email" />
+                <strong>Icon and text</strong>
+            </HeaderTemplate>
+            <Content>
+                <OverView Activate="Activate" />
+            </Content>
+        </TabStripTab>
+
+        <TabStripTab>
+            <HeaderTemplate>
+                <TelerikIcon Icon="email" />
+                <strong>Icon and text</strong>
+            </HeaderTemplate>
+            <Content>
+                <OverView Activate="Activate" />
+            </Content>
+        </TabStripTab>
+
+        <TabStripTab>
+            <HeaderTemplate>
+                <TelerikIcon Icon="email" />
+                <strong>Icon and text</strong>
+            </HeaderTemplate>
+            <Content>
+                <OverView Activate="Activate" />
+            </Content>
+        </TabStripTab>
+
+    </TelerikTabStrip>*@

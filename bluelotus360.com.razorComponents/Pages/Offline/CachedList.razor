@@ -1,0 +1,144 @@
+﻿@page "/cachedList"
+@using bluelotus360.Com.MauiSupports.Models;
+
+<MudText Typo="Typo.h3">Sync List Related to Current Company</MudText>
+<MudTabs>
+    <MudTabPanel Text="Incoming Strings">
+        <MudDataGrid Items="_items" T="IncomingStrings">
+            <Columns>
+                <HierarchyColumn T="IncomingStrings" />
+                <PropertyColumn Property="x=>x.ID" Title="ID" />
+                <PropertyColumn Property="x => x.user" Title="User" />
+                <PropertyColumn Property="x=>x.company" Title="Company" />
+                <PropertyColumn Property="x=>x.name" Title="Document" />
+                <PropertyColumn Property="x=>x.timestamp" Title="Time Entered" />
+            </Columns>
+            <ChildRowContent>
+                <MudCard>
+                    <MudCardContent>
+                        <MudText class="inline-3">@context.Item.parameters</MudText>
+                        <MudPaper Class="mud-theme-primary">
+                            <MudText class="inline-3">@context.Item.response</MudText>
+                        </MudPaper>
+                    </MudCardContent>
+                </MudCard>
+            </ChildRowContent>
+            <PagerContent>
+                <MudDataGridPager T="IncomingStrings" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudTabPanel>
+    <MudTabPanel Text="Item Combo Contents">
+        <MudDataGrid Items="_itemComboItems" T="ItemComboResponses">
+            <Columns>
+                <PropertyColumn Property="x=>x.ID" Title="ID" />
+                <PropertyColumn Property="x=>x.ObjectKey" Title="Object" />
+                <PropertyColumn Property="x=>x.company" Title="Company" />
+                <PropertyColumn Property="x=>x.user" Title="User" />
+                <PropertyColumn Property="x=>x.ItemKey" Title="Item Key" />
+                <PropertyColumn Property="x=>x.ItemName" Title="Item Name" />
+                <PropertyColumn Property="x=>x.timestamp" Title="Timestamp" />
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="ItemComboResponses" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudTabPanel>
+    <MudTabPanel Text="Address Combo Contents">
+        <MudDataGrid Items="_addressComboItems" T="AddressComboModel">
+            <Columns>
+                <PropertyColumn Property="x=>x.Id" Title="ID" />
+                <PropertyColumn Property="x=>x.RequestingElement" Title="Object" />
+                <PropertyColumn Property="x=>x.Company" Title="Company" />
+                <PropertyColumn Property="x=>x.User" Title="User" />
+                <PropertyColumn Property="x=>x.AddressKey" Title="Item Key" />
+                <PropertyColumn Property="x=>x.AddressName" Title="Item Name" />
+                <PropertyColumn Property="x=>x.timestamp" Title="Timestamp" />
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="AddressComboModel" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudTabPanel>
+    <MudTabPanel Text="Stock As Att">
+        <MudButton @onclick="()=>deleteAll()">Delete All</MudButton>
+        <MudDataGrid Items="_stockAsAtItems" T="StockAsAt">
+            <Columns>
+                <PropertyColumn Property="x=>x.Id" Title="ID" />
+                <PropertyColumn Property="x=>x.User" Title="User" />
+                <PropertyColumn Property="x=>x.Company" Title="Company" />
+                <PropertyColumn Property="x=>x.Project" Title="Project" />
+                <PropertyColumn Property="x=>x.element" Title="Element" />
+                <PropertyColumn Property="x=>x.Location" Title="Location" />
+                <PropertyColumn Property="x=>x.ItemCd" Title="Item Code" />
+                <PropertyColumn Property="x=>x.CurStk" Title="Current Stock" />
+                <PropertyColumn Property="x=>x.isLocked" Title="Is Locked" />
+                <PropertyColumn Property="x=>x.timestamp" Title="Timestamp" />
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="StockAsAt" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudTabPanel>
+    <MudTabPanel Text="Saved combo details">
+        <MudDataGrid Items="_comboInteractions" T="ComboInteraction">
+            <Columns>
+                <PropertyColumn Property="x=>x.ID" Title="ID" />
+                <PropertyColumn Property="x=>x.internalElementName" Title="Element name" />
+                <PropertyColumn Property="x=>x.eventName" Title="Event name" />
+                <PropertyColumn Property="x=>x.eventAction" Title="Event Action" />
+                <PropertyColumn Property="x=>x.eventStart" Title="Start" />
+                <PropertyColumn Property="x=>x.eventEnd" Title="End" />
+            </Columns>
+            <PagerContent>
+                <MudDataGridPager T="ComboInteraction" />
+            </PagerContent>
+        </MudDataGrid>
+    </MudTabPanel>
+</MudTabs>
+
+@code {
+    private IEnumerable<IncomingStrings> _items;
+    private IEnumerable<StockAsAt> _stockAsAtItems;
+    private IEnumerable<ItemComboResponses> _itemComboItems;
+    private IEnumerable<AddressComboModel> _addressComboItems;
+    private IEnumerable<ComboInteraction> _comboInteractions;
+
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+    }
+
+    private async void deleteAll()
+    {
+        await _stockAsAtStore.DeleteAsync(null);
+        StateHasChanged();
+    }
+
+    protected async override Task OnInitializedAsync()
+    {
+        string uid = await _storageService.GetItem("UID");
+        string cid = await _storageService.GetItem("CID");
+        int UID = int.Parse(uid);
+        int CID = int.Parse(cid);
+        _items = await _sqliteStorageService.GetItemsAsync(CID, UID);
+        _stockAsAtItems = await _stockAsAtStore.GetAllContents();
+        _itemComboItems = await _itemComboStore.GetContents(UID, CID, 0, "", 0);
+        _addressComboItems = await _addressComboStore.GetContents(UID, CID, 0, "", 0);
+        _comboInteractions = await _comboEventStorage.GetInteractionsToList();
+        await base.OnInitializedAsync();
+    }
+
+    private async Task ReloadContent()
+    {
+        string uid = await _storageService.GetItem("UID");
+        string cid = await _storageService.GetItem("CID");
+        int UID = int.Parse(uid);
+        int CID = int.Parse(cid);
+        _items = await _sqliteStorageService.GetItemsAsync(CID, UID);
+        _itemComboItems = await _itemComboStore.GetContents(UID, CID, 0, "", 0);
+        _stockAsAtItems = await _stockAsAtStore.GetAllContents();
+        _addressComboItems = await _addressComboStore.GetContents(UID, CID, 0, "", 0);
+        _comboInteractions = await _comboEventStorage.GetInteractionsToList();
+    }
+}

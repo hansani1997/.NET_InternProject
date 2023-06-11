@@ -1,0 +1,12 @@
+
+bluelotus360.Com.mauiBlazor
+
+this library is created for use only maui
+
+bluelotus360.Com.commonLib
+
+this library is created for use both web and MAUI
+
+bluelotus360.com.razorComponents
+
+this library is used for UI in razor components

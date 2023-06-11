@@ -1,0 +1,12 @@
+﻿<div class="flex-container flex-container-style fixed-height">
+
+            <MudToolBar Class="px-0">
+                <MudIconButton Icon="@Icons.Material.TwoTone.ArrowBackIos" Color="Color.Inherit" OnClick="GoBackToListView" />
+                <MudText Typo="Typo.h6">Products In @(_orderState.SelectedCategory != null ? _orderState.SelectedCategory.CodeName : "")</MudText>
+                
+            </MudToolBar>
+
+        <div class="flex-item  pa-2 pr-4 pl-4">
+            <ProductListView BLUIElement="BLUIElement" />
+        </div>
+</div>

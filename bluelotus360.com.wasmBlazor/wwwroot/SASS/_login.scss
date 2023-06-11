@@ -1,0 +1,341 @@
+﻿@import "_Variables.scss";
+//@import "_variablesDark.scss";
+
+/*login screen*/
+.loginlogo {
+    width: 214px;
+    height: 124.51px;
+}
+
+.login-wrapper .mud-icon-root.mud-svg-icon {
+    fill: $input-field-font-color;
+    font-size: $input-icon-default-size /*18px*/;
+    margin: inherit;
+}
+
+.company-selection-card {
+    .mud-typography-h5 {
+        font-size: $typography-h5-size;
+        color: $palette-white;
+    }
+
+    .mud-input-control {
+        > .mud-input-control-input-container {
+            > div.mud-input.mud-input-text {
+                margin-top: 12px;
+                border: none;
+                border-radius: $border-radius-default;
+                background: $login-input-color !important;
+                height: $login-input-field-height;
+
+                > input.mud-input-root,
+                + .mud-input-slot.mud-input-root {
+                    color: $palette-white !important;
+                    padding: 16px;
+                }
+            }
+        }
+    }
+
+    .mud-icon-root.mud-svg-icon {
+        fill: $color-icon-default;
+        font-size: $avatar-height-width; /*$adornment-icon-size*/
+        margin: inherit;
+    }
+}
+
+/*log in page input field*/
+.mud-input.mud-input-outlined {
+    position: relative;
+    border: none;
+    border-radius: $border-radius-default;
+}
+
+.bl-login-card {
+    //to give it a mobile feel
+    padding: 0px !important;
+    //display: flex;
+    border-radius: $border-radius-default;
+    background: $color-primary;
+    width: 100%;
+    height: 100%;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.login-wrapper {
+    .mud-typography-h4 {
+        font-size: 25px;
+        margin: -16px;
+        color: $palette-white !important;
+    }
+
+    .mud-typography-h5 {
+        font-size: 25px;
+        margin: -16px;
+        color: $palette-white !important;
+    }
+
+    .mud-input > input.mud-input-root,
+    div.mud-input-slot.mud-input-root {
+        @include typography;
+        border: none;
+        background: $login-input-color;
+        border-radius: $border-radius-default;
+        height: $login-input-field-height;
+        padding: 0px 16px 0px;
+        color: $palette-white;
+        font-weight: $regular;
+    }
+}
+
+/*Login Button*/
+.bl-login-card {
+    .mud-button-filled.mud-button-filled-primary {
+        background: $color-secondary !important;
+
+        .mud-button-label {
+            color: $color-primary;
+        }
+    }
+}
+
+/*Log out border radius*/
+.mud-popover.mud-popover-open {
+    opacity: 1;
+}
+
+/*removing border/outline from profile card*/
+.mud-paper-outlined {
+    border: none;
+}
+
+.centered {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+}
+
+/*.right {
+    right: 0;
+    background-color: $palette-white;
+}*/
+
+.split-left, .split-right {
+    height: 100%;
+    width: 50%;
+    position: fixed;
+    z-index: 1;
+    top: 0;
+    overflow-x: hidden;
+    padding-top: 20px;
+    display: flex;
+}
+
+.split-left {
+    left: 0;
+}
+
+.split-right {
+    right: 0;
+    background-color: $palette-white;
+}
+
+.image-icon {
+    width: 25px;
+    height: 25px;
+    margin-right: 40px !important;
+}
+
+.welcome-text {
+    text-align: center;
+    margin: 15px;
+    color: $palette-white;
+    font-size: 25px !important;
+    font-weight: $bold;
+}
+
+footer {
+    bottom: 10px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: 100%;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    //margin-top: 170px;
+    //flex-shrink: 0;
+    position: absolute;
+}
+
+.connect-with-us {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    /*margin-top: 170px;*/
+    /*position: absolute;*/
+
+    .mud-typography-body2{
+        display: none;
+    }
+}
+
+.d-inline {
+    display: inline-block;
+}
+
+/*company selection styles start*/
+.avatar-item {
+    justify-content: center;
+    align-content: center;
+    margin-top: 30px;
+    display: flex;
+    position: relative;
+}
+
+.avatar-logo {
+    margin-right: 70px !important;
+}
+
+.avatar-logo-text {
+    text-align: center;
+    color: $palette-white;
+}
+
+.avatar-logo-img {
+    width: 100px !important;
+    height: 100px !important;
+    background-color : $palette-white;
+}
+
+.select-company-text {
+    text-align: center;
+    color: $palette-white;
+    font-size: 25px !important;
+    font-weight: $bold;
+    margin-top: 20px;
+}
+
+.user-avatar-img {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translateX(50%);
+}
+
+/*.company-logo {
+    margin-top: 50px;
+}*/
+
+.mud-list-item-gutters {
+    padding-left: 5px !important;
+    padding-right: 5px !important;
+}
+
+//Avatar styles in Company selection
+.company-selection-avatar {
+    color: $palette-white;
+    background-color: $color-primary !important;
+
+    .mud-avatar.mud-avatar-medium {
+        color: $color-primary;
+        margin-right: 10px;
+    }
+
+    .mud-avatar-filled.mud-avatar-filled-primary {
+        background-color: $palette-white;
+    }
+    //Hid the name and Company name in Company selection page
+    /*.mud-typography-body2 {
+        color: $palette-white;
+    }*/
+}
+
+/*@media (min-height: 560px) {
+    .footer {
+        display: none;
+    }
+}*/
+
+@media (max-width: 960px) {
+    .split-right {
+        display: none;
+    }
+
+    .split-left {
+        justify-content: center;
+        align-items: center;
+        width: 100%;
+        padding-top: 10px;
+    }
+
+    .company-logo {
+        display: none;
+    }
+
+    .welcome-text {
+        text-align: left;
+        font-size: 20px !important;
+        color: $palette-white;
+        margin: 10px;
+    }
+
+    /*footer {
+        margin-top: 120px;
+    }*/
+    /*.loginlogo {
+        width: 160px;
+        height: 99.4px;
+    }*/
+    /*company selection styles*/
+    .avatar-logo {
+        margin-right: 30px !important;
+        text-align: center;
+    }
+
+    .avatar-logo-img {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .avatar-item {
+        margin-top: 10px;
+    }
+
+    .select-company-text {
+        text-align: left;
+        font-size: 18px !important;
+    }
+}
+
+@media (max-width: 960px) {
+    .image-icon {
+        width: 20px;
+        height: 20px;
+        margin-right: 28px;
+    }
+
+    .welcome-text {
+        margin: 10px;
+    }
+}
+
+@media (min-width: 600px) and (max-width: 960px) {
+    footer {
+        margin-top: 40px;
+    }
+
+    .avatar-logo {
+        margin-right: 50px !important;
+        text-align: center;
+    }
+
+    .avatar-logo-img {
+        width: 80px !important;
+        height: 80px !important;
+    }
+}

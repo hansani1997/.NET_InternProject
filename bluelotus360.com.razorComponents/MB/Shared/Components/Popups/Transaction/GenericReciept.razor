@@ -1,0 +1,64 @@
+﻿@using BlueLotus360.CleanArchitecture.Domain.DTO.Object;
+
+<div class="bl-pop-up @(IsPopUpShown ? "":"d-none")">
+    <MudGrid class="pop-up-wrap">
+
+        <div class="pop-up-ui">
+
+            @*   <UIRenderere FromSection="RecieptUIDefinitions"
+            InteractionLogics="InteractionLogics"
+            ObjectHelpers="ObjectHelpers"
+            DataObject="DataObject" />*@
+            <hr />
+            <MudText Typo="Typo.body1">
+                Current Settlements  - Payables <strong> @BalancePayement.ToString("N2")</strong>
+            </MudText>
+            <div class="tdef">
+            
+            </div>
+            <hr />
+
+
+            @if (HasPaymentEntries)
+            {
+                <MudText Typo="Typo.body1">
+                    Payables  - @(payments.Count.ToString())
+                </MudText>
+
+                <div class="scroll-receipt">
+                    @foreach (PaymentModeWiseAmount item in payementModeReciept.Payements)
+                    {
+                        <GenericRecieptEntryLine RecieptLine="item" />
+                    }
+
+                </div>
+            }
+            else
+            {
+                <MudAlert Severity="Severity.Warning" Variant="Variant.Outlined">No Details Found... Please Check Configuration</MudAlert>
+
+            }
+
+            <hr />
+            <MudGrid>
+                <MudItem sm=10></MudItem>
+                <MudItem sm=1>
+                    <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="OnSaveButtonClick">
+                        Save
+                    </MudButton>
+
+                </MudItem>
+
+                <MudItem sm=1>
+                    <MudButton Color="Color.Default" OnClick="OnCloseButtonClick" Variant="Variant.Filled">
+                        Cancel
+                    </MudButton>
+
+                </MudItem>
+            </MudGrid>
+        </div>
+
+
+    </MudGrid>
+
+</div>

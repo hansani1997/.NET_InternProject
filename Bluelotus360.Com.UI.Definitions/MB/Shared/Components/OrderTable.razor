@@ -1,0 +1,138 @@
+﻿@using BlueLotus360.CleanArchitecture.Domain.Entities.Order
+			
+<MudTable Items="@Order.OrderItems" Hover="true" Breakpoint="Breakpoint.Sm" 
+			LoadingProgressColor="Color.Info" CustomFooter="true" Dense="true" FixedHeader="true" FixedFooter="true"  Height="400px">
+				<HeaderContent>
+					<MudTh>#</MudTh>
+					<MudTh>Item Code</MudTh>
+					<MudTh>Order Location</MudTh>
+					<MudTh Style="text-align:right">Confirmed</MudTh>
+					<MudTh Style="text-align:right">IsTransfer</MudTh>
+					<MudTh Style="text-align:right">Unit</MudTh>
+					<MudTh Style="text-align:right">Trn Rate</MudTh>
+					<MudTh Style="text-align:right">Trn Qty</MudTh>
+					<MudTh Style="text-align:right">Req Qty</MudTh>
+					<MudTh Style="text-align:right">Amount</MudTh>
+				</HeaderContent>
+
+				<RowTemplate>
+					<MudTd DataLabel="#">@context.LineNumber</MudTd>
+					<MudTd DataLabel="Item Name">@context.TransactionItem.ItemName</MudTd>
+					<MudTd DataLabel="Location">@context.OrderLineLocation</MudTd>
+					<MudTd Style="text-align:right" DataLabel="Confirmed">
+						@if (context.IsTransferConfirmed == 0)
+						{
+						<MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary" Class="ma-0">No</MudButton>
+						}
+						@if (context.IsTransferConfirmed == 1)
+						{
+						<MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Success" Class="ma-0">Yes</MudButton>
+						}
+						@if (context.IsTransferConfirmed == 2)
+						{
+						<MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" Class="ma-0">N/A</MudButton>
+						}
+
+					</MudTd>
+					<MudTd Style="text-align:right" DataLabel="Is Transfer">
+					@if (context.IsTransfer == 0)
+						{
+						<MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary" Class="ma-0">No</MudButton>
+						}
+					@if (context.IsTransfer == 1)
+						{
+						<MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Success" Class="ma-0">Yes</MudButton>
+						}
+					@if (context.IsTransfer == 2)
+						{
+						<MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" Class="ma-0">N/A</MudButton>
+						}
+
+					</MudTd>
+					<MudTd Style="text-align:right" DataLabel="Transaction Unit">@context.TransactionUnit</MudTd>
+					<MudTd Style="text-align:right" DataLabel="Transaction Rate">@context.TransactionRate.ToString("N2")</MudTd>
+					<MudTd Style="text-align:right" DataLabel="Quantity">@context.TransactionQuantity.ToString("N2")</MudTd>
+					<MudTd Style="text-align:right" DataLabel="RequestedQty">@context.RequestedQuantity.ToString("N2")</MudTd>
+
+					<MudTd Style="text-align:right" DataLabel="Line Total">@context.GetLineTotalWithoutDiscount().ToString("N2")</MudTd>
+				</RowTemplate>
+
+			<FooterContent>
+
+				<MudTFootRow Class="bold-text">
+					<MudTd colspan="6"></MudTd>
+					<MudTd colspan="3" Style="text-align:left">Total</MudTd>
+					<MudTd Style="text-align:right">@Order.GetOrderTotalWithoutDiscounts().ToString("N2")</MudTd>
+
+				</MudTFootRow>
+
+				<MudTFootRow Class="bold-text">
+					<MudTd colspan="6"></MudTd>
+					<MudTd colspan="3" Style="text-align:left">Discount</MudTd>
+					<MudTd Style="text-align:right">@Order.GetOrderDiscountTotal().ToString("N2")</MudTd>
+			
+				</MudTFootRow>
+
+				<MudTFootRow Class="bold-text">
+					<MudTd colspan="6"></MudTd>
+					<MudTd colspan="3" Style="text-align:left">NBT</MudTd>
+					<MudTd Style="text-align:right">0.00</MudTd>
+					
+				</MudTFootRow>
+
+				<MudTFootRow Class="bold-text">
+					<MudTd colspan="6"></MudTd>
+					<MudTd colspan="3" Style="text-align:left">Tax</MudTd>
+					<MudTd Style="text-align:right">0.00</MudTd>
+							
+				</MudTFootRow>
+
+				<MudTFootRow Class="bold-text">
+					<MudTd colspan="6"></MudTd>
+					<MudTd colspan="3" Style="text-align:left">Net Total</MudTd>				
+					<MudTd Style="text-align:right">@Order.GetOrderTotalWithDiscounts().ToString("N2")</MudTd>
+				</MudTFootRow>
+
+			</FooterContent>
+
+		</MudTable>
+
+		 <div class="mobile-line-details">
+			 <ul>
+				 <li>
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="body-default">Total</span>
+                        <span class="body-default">@Order.GetOrderTotalWithoutDiscounts().ToString("N2")</span>
+					</div>
+
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="body-default">Discount</span>
+                        <span class="body-default">@Order.GetOrderDiscountTotal().ToString("N2")</span>                       
+					</div>
+
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="body-default">NBT</span>
+                        <span class="body-default">-</span>
+					</div>
+
+                    
+                    <div class="d-flex justify-content-between mb-2">
+                        <span class="body-default">Tax</span>
+                        <span class="body-default">0.00</span>                       
+					</div>
+
+				</li>
+                <li>
+                    <span class="sub-title-2">Net Total</span>
+                    <span class="sub-title-2">@Order.GetOrderTotalWithDiscounts().ToString("N2")</span>                    
+				</li>
+			 </ul>
+		 </div>
+
+@code {
+
+	[Parameter]
+	public Order Order{ get; set; }
+
+}

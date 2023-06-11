@@ -1,0 +1,92 @@
+﻿
+<MudGrid Class="mt-12 pa-3">
+    <UIRenderere FromSection="@UIdefinition" DataObject="Transfer" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+
+    <MudItem xs="12" Class="mt-3">
+
+        @if (_invoiceItemList != null && _invoiceItemList.Count > 0)
+        {
+                @*<BLTelGrid FormObject="_grid1"
+                   DataObject="_invoiceItemList.Where(x=>x.isApr==1).ToList()"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_blTb" />*@
+            
+
+            <MudTable Items="@_invoiceItemList.Where(x=>x.isApr==1).ToList()"
+                  Dense="true"
+                  Hover="true"
+                  Bordered="true"
+                  Striped="true">
+                <ToolBarContent>
+                    <MudText Color="Color.Primary">Approved Items</MudText>
+                </ToolBarContent>
+                <HeaderContent>
+                   @* <MudTh>Invoice Date</MudTh>
+                    <MudTh>INV No</MudTh>*@
+                    <MudTh>Delivery Date</MudTh>
+                    <MudTh>Barcode</MudTh>
+                    <MudTh>Item Code</MudTh>
+                    <MudTh>Item Name</MudTh>
+                    <MudTh>Folding Type</MudTh>
+                    <MudTh>Unit</MudTh>
+                    <MudTh>Received</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    @*<MudTd DataLabel="INV No">@context.InvoiceNo</MudTd>*@
+                    <MudTd DataLabel="Delivery Date">@context.DeliveryDate</MudTd>
+                    <MudTd DataLabel="Barcode">@context.serialNo</MudTd>
+                    <MudTd DataLabel="Item Code">@context.ItemCode</MudTd>
+                    <MudTd DataLabel="Item Name">@context.ItemName</MudTd>
+                    <MudTd DataLabel="Folding Type">@context.AnalysisType1</MudTd>
+                    <MudTd DataLabel="Unit">@context.TrnUnit</MudTd>
+                    <MudTd DataLabel="Received">
+                        <MudChip Icon="@Icons.Material.TwoTone.Done" Color="Color.Success" Size="Size.Small" Class="bl-chip-small" />
+                    </MudTd>
+                </RowTemplate>
+                <PagerContent>
+                    <MudTablePager />
+                </PagerContent>
+            </MudTable>
+        }
+        
+        <MudDivider/>
+    </MudItem>
+
+    <MudItem xs="12">
+
+        <MudText Color="Color.Primary">Pending to be Scanned</MudText>
+            @if (_grid1 != null && _invoiceItemList != null && _invoiceItemList.Count > 0)
+            {
+                <UIGrid FormObject="_grid1"
+                   DataObject="_invoiceItemList.Where(x=>x.isApr!=1).ToList()"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_blTb" />
+            }
+    </MudItem>
+</MudGrid>
+
+
+<MudDialog @bind-IsVisible="IsValidationShown" DisableSidePadding="true">
+    <TitleContent>
+        <MudText Typo="Typo.h6" Color="Color.Dark">
+            <MudIcon Icon="@Icons.Material.Filled.Info" Class="mr-3" />Error
+        </MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudContainer Style="max-height: 100px; overflow-y: scroll;" Class="pa-3">
+
+            <MudList Clickable="false">
+                @foreach (var item in validator.UserMessages.UserMessages)
+                {
+                    <MudListItem Style="Color:darkred" Text="@item.Message" Icon="@Icons.Material.Filled.Error" />
+                }
+            </MudList>
+
+        </MudContainer>
+    </DialogContent>
+    <DialogActions>
+        <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="@(()=>{IsValidationShown=false;})" Class="px-10">Close</MudButton>
+    </DialogActions>
+</MudDialog>

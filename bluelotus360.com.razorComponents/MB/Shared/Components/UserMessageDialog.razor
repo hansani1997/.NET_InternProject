@@ -1,0 +1,19 @@
+﻿<div class="bl-pop-up denom @(MessageShown ? "":"d-none")">
+    <MudGrid class="user_messages">
+        <MudItem xs="12">
+            <MudList Clickable="false">
+                @foreach (var item in Messages.UserMessages)
+                {
+                    <MudListItem Text=@item.Message Icon="@Icons.Filled.Bookmark" />
+
+                }
+            </MudList>
+
+        </MudItem>
+
+        <MudItem sm="11"></MudItem>
+        <MudItem sm="1">
+            <MudButton Variant="Variant.Filled" Color="Color.Primary" FullWidth="true" OnClick="()=>HideWindow()">Ok</MudButton>
+        </MudItem>
+    </MudGrid>
+</div>

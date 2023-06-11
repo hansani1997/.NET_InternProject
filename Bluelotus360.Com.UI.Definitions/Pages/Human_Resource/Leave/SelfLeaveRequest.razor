@@ -1,0 +1,158 @@
+﻿@page "/HumanResource/LeaveRequest_Mobile"
+@using Telerik.Blazor;
+@using BlueLotus360.CleanArchitecture.Domain.Entities.HR;
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    
+    @if (showAlert)
+    {
+            <BLAlert CloseAlert="(()=>showAlert=false)" AlertContent="@alertContent" AlertStatus="@Servrity" />
+
+    }
+    @if (isProcessing)
+    {
+         <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+
+    <MudGrid>
+        <MudContainer>
+
+            <MudGrid Class="@(GridShow?"d-flex mt-3":"d-none")">
+
+                <MudItem xs="12">
+                    <MudToolBar>
+                        <MudIconButton Icon="@Icons.TwoTone.Send" OnClick="Apply" Variant="Variant.Outlined" Color="Color.Primary"></MudIconButton>
+                    </MudToolBar>
+
+                   
+
+                    <TelerikGrid Data=@_levDetails
+                        Pageable="true"
+                        Sortable="true"
+                        FilterMode="GridFilterMode.FilterMenu"
+                        Resizable="true"
+                        SelectionMode="GridSelectionMode.Multiple"
+                        PageSize="10">
+
+                        <GridColumns>
+                            <GridColumn Field="@nameof(LeaveDetails.LeaveType)" Title="Leave Type" Width="195px" />
+                            <GridColumn Field="@nameof(LeaveDetails.EftvDt)" Title="From Date" Width="195px" >
+                                <Template>
+                                    @Convert.ToDateTime((context as LeaveDetails).EftvDt).ToString("yyyy/MM/dd")
+                                </Template>
+                            </GridColumn>
+                            <GridColumn Field="@nameof(LeaveDetails.ToD)" Title="To Date" Width="195px" >
+                                <Template>
+                                    @Convert.ToDateTime((context as LeaveDetails).ToD).ToString("yyyy/MM/dd")
+                                </Template>
+                            </GridColumn>
+                            <GridColumn Field="@nameof(LeaveDetails.Taken)" Title="Days/Hours" Width="195px" >
+                                <Template>
+                                    @((context as LeaveDetails).Taken.ToString("N2"))
+                                </Template>
+                            </GridColumn>
+                            <GridColumn Field="@nameof(LeaveDetails.IsCd)" Title="Type" Width="195px" >
+                                <Template>
+                                    @{
+                                    var itm = context as LeaveDetails;
+                                    if (itm.IsCd == 0)
+                                    {
+                                        <span>Day</span>
+                                    }
+                                    else
+                                    { 
+                                        <span>Hour</span>
+                                    }
+                                }
+                                </Template>
+                            </GridColumn>
+                            <GridColumn Field="@nameof(LeaveDetails.Status)" Title="Status" Width="195px" />
+                            <GridColumn Field="@nameof(LeaveDetails.LevReason)" Title="Leave Reason" Width="195px" />
+                        </GridColumns>
+
+                    </TelerikGrid>
+
+                </MudItem>
+            </MudGrid>
+    
+            <MudGrid Class="@(GridShow?"d-none":"d-flex")">
+                <MudItem xs="12" Class="ml-3 mt-3">
+                    <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+
+                        <MudIconButton Icon="@Icons.TwoTone.ArrowBack" OnClick="GoBack"></MudIconButton>
+                        <MudIconButton Icon="@Icons.TwoTone.Send" OnClick="LeaveApply" ></MudIconButton>
+                        
+                    </MudButtonGroup >
+                </MudItem>
+                <MudItem xs="12" md="6">
+                    <UIBuilder FormObject="formDefinition"
+                       DataObject="_leaveReq"
+                       InteractionLogics="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"
+                       @ref="_refBuilder" />
+                </MudItem>
+                 <MudItem xs="12" md="6">	
+
+                             <TelerikGrid Data=@_leaveReq.LeaveSummary            
+                                Pageable="true"
+                                Sortable="true"
+                                FilterMode="GridFilterMode.FilterMenu"
+                                Resizable="true"
+                                SelectionMode="GridSelectionMode.Multiple"
+                                PageSize="10">
+
+                                <GridColumns>
+                                            <GridColumn Field="@nameof(LeaveSummary.LeaveType)" Title="Leave Type"/>
+                                            <GridColumn Field="@nameof(LeaveSummary.Elagible)" Title="Eligible"/>
+                                            <GridColumn Field="@nameof(LeaveSummary.Taken)" Title="Already Taken"/>
+                                            <GridColumn Field="@nameof(LeaveSummary.Bal)" Title="Balance">
+                                                <Template>
+                                                    @{
+                                                        var itm = context as LeaveSummary;
+                                                        if (itm.Bal<=0)
+                                                        {
+                                                            itm.Bal=0;
+                                                        }
+                                                
+                                                            @itm.Bal;
+                                                     }
+                                                    
+                                                </Template>
+                                            </GridColumn>
+                                            <GridColumn Field="@nameof(LeaveSummary.IsCd01)" Title="Day/Hour" >
+                                                <Template>
+                                                 @{
+                                                    var itm = context as LeaveSummary;
+                                                    if (itm.IsCd01 == 0)
+                                                    {
+                                                        <span>Day</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Hour</span>
+                                                    }
+                                                   
+                                                }
+                                                </Template>
+                                            </GridColumn>
+                                </GridColumns>
+                                
+
+                             </TelerikGrid>
+                     
+                </MudItem>
+            </MudGrid>
+
+        </MudContainer>
+            
+       
+    </MudGrid>
+
+}
+else
+{
+     <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons... </MudAlert>
+}		
+
+

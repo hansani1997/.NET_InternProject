@@ -1,0 +1,26 @@
+﻿<MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions">
+    <TitleContent>
+        @if (selectedOrder != null)
+        {
+            <h3>@selectedOrder.Platforms.AccountName - @selectedOrder.OrderReference</h3>
+        }
+    </TitleContent>
+    <DialogContent>
+        <MudItem Style="margin-top:2% !important">
+            <UIRenderere FromSection="EditSection"
+                         DataObject="SelectedItem"
+                         InteractionLogics="InteractionLogics"
+                         ObjectHelpers="ObjectHelpers" />
+        </MudItem>
+        <MudItem Style="margin-top:2%">
+            <BLTable FormObject="EditGrid"
+                     DataObject="selectedOrder.OrderItemDetails"
+                     InteractionLogics="InteractionLogics"
+                     ObjectHelpers="ObjectHelpers"
+                     @ref="GridRef" />
+        </MudItem>
+    </DialogContent>
+    @*<DialogActions>
+    <MudButton OnClick="OnCloseClick">Cancel</MudButton>
+    </DialogActions>*@
+</MudDialog>

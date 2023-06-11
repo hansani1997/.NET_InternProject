@@ -1,0 +1,22 @@
+﻿@using ApexCharts
+@typeparam T
+
+
+<ApexChart @ref=_detailsChart
+                  TItem="T"
+                  Title="@Title"
+                  Height=500
+                  Debug>
+
+                <ApexPointSeries TItem="T"
+                        Items="ChartDetails"
+                        Name="@Name"
+                        SeriesType="SeriesType.Bar" 
+                        XValue="@(e => xval)"
+                        YValue="@(e => yval)"
+                        OrderByDescending="e=>e.X"/>
+
+</ApexChart>     
+
+
+

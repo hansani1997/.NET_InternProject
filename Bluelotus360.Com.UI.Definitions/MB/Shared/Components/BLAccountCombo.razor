@@ -1,0 +1,17 @@
+﻿
+<MudItem xs="12" class=@css_class md="@UIElement.Width">
+@if(AccountResponses==null){
+       <MudSkeleton Animation="Animation.Wave" Width="100%" />
+}
+else{
+   <MudAutocomplete T="AccountResponse" 
+    Label="@UIElement.ElementCaption" 
+    SearchFunc="@OnComboSearch"
+    ValueChanged="OnComboValueChanged" 
+    Value="selectedAccount" 
+    Disabled="@(!isEditable)"
+    Variant="UIDefaults.DefaultControlVariants"
+    @ref="_ref"
+    />   
+}
+</MudItem>

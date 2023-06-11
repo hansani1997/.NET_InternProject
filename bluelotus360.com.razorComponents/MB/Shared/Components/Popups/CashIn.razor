@@ -1,0 +1,82 @@
+﻿<MudDialog @bind-IsVisible=IsPopUpShown Options="dialogOptions" DisableSidePadding="true">
+    <TitleContent>
+        <MudToolBar Class="mx-0">
+            <MudSpacer />
+            <MudIconButton Icon="@Icons.Material.TwoTone.Close" Color="Color.Inherit" OnClick="HidePopUp" />
+        </MudToolBar>
+        <MudDivider />
+    </TitleContent>
+    <DialogContent>
+        <MudContainer>
+            <MudPaper Class="popup-container">
+                <h6>
+                    @CashInOutUIDefeinition.ElementCaption @if (cashtransaction.TransactionNumber.Length > 0)
+                    {
+                        <span> - <span class="success-text">@cashtransaction.TransactionNumber</span></span>
+                    }
+
+                </h6>
+                <br />
+                <div class=" @(!messages.IsValidForm()?"bl-expansion-panel":"d-none")">
+                    <MudExpansionPanels>
+                        <MudExpansionPanel Text="@($"Cannot Process,Please Correct Errors")">
+                            @foreach (var error in messages.UserMessages)
+                            {
+                                <MudText Color="@Color.Error">@error.Message</MudText>
+                            }
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+
+                </div>
+                <hr />
+                <UIRenderere DataObject="cashtransaction"
+                             FromSection="CashInOutUIDefeinition"
+                             InteractionLogics="InteractionLogics"
+                             ObjectHelpers="ObjectHelpers" />
+            </MudPaper>
+        </MudContainer>
+
+    </DialogContent>
+</MudDialog>
+
+<style>
+                .bl-pop-up{
+                    z-index: 200 !important;
+                }
+</style>
+
+@*<MudGrid class="cash-in-wrap">
+
+    <div class="cash-ui">
+        <h6>
+            @CashInOutUIDefeinition.ElementCaption @if (cashtransaction.TransactionNumber.Length > 0)
+            {
+                <span> - <span class="success-text">@cashtransaction.TransactionNumber</span></span>
+            }
+
+        </h6>
+        <br/>
+        <div class=" @(!messages.IsValidForm()?"bl-expansion-panel":"d-none")">
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="@($"Cannot Process,Please Correct Errors")">
+                    @foreach (var error in messages.UserMessages)
+                    {
+                        <MudText Color="@Color.Error">@error.Message</MudText>
+                    }
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+
+        </div>
+        <hr />
+        <UIRenderere DataObject="cashtransaction"
+                     FromSection="CashInOutUIDefeinition"
+                     InteractionLogics="InteractionLogics"
+                     ObjectHelpers="ObjectHelpers" />
+
+
+    </div>
+
+</MudGrid>*@
+
+
+

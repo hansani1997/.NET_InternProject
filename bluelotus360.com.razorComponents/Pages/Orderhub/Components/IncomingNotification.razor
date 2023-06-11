@@ -1,0 +1,48 @@
+﻿<MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions">
+    <TitleContent>
+       
+    </TitleContent>
+    <DialogContent>
+       <div class="row">
+            <div class="col-md-12" style="margin-bottom:2%"><b>New Orders are in Queue.Please Accept/Reject the Order </b></div>
+
+        </div>
+
+        <div class="row" style="margin-bottom:2%">
+            <div class="col-md-9"></div>
+
+            <div class="col-md-2">
+                <MudButton Variant="Variant.Filled" Color="Color.Info" Style="color:white;margin-right:1%" OnClick="OKClick">OK</MudButton>
+            </div>
+
+        </div>
+    </DialogContent>
+    @*<DialogActions>
+    <MudButton OnClick="OnCloseClick">Cancel</MudButton>
+    </DialogActions>*@
+</MudDialog>
+
+@code {
+    [Parameter]
+    public EventCallback OnCloseButtonClick { get; set; }
+    [Parameter] public bool WindowIsVisible { get; set; } = true;
+    [Parameter] public EventCallback OnOKClick { get; set; }
+    private DialogOptions dialogOptions = new() { CloseButton = true };
+    private async void OnCloseClick()
+    {
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+
+    }
+
+    private async void OKClick()
+    {
+        if (OnOKClick.HasDelegate)
+        {
+            await OnOKClick.InvokeAsync();
+
+        }
+    }
+}

@@ -1,0 +1,73 @@
+﻿@page "/Carmart/Insurance"
+
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <MudTabs Class="carmart-top-tab" ActivePanelIndexChanged="TabActivator" KeepPanelsAlive="true" @ref="@tabs">
+
+        <MudTabPanel Text="OverView" Icon="@Icons.TwoTone.Home" Disabled="IsTabDisabled0">
+            <InsuranceOverView 
+                Activate="Activate"
+                UIScope="formDefinition"
+                DataObject="_insurenceOrderObj"
+                InteractionLogic="_interactionLogic"
+                ObjectHelpers="_objectHelpers"
+                EnableTabs="EnableAllTabs"
+                DisableTabs="DisableAllTabs" />
+        </MudTabPanel>
+
+        <MudTabPanel Text="IRN Materials & Services" Icon="@Icons.TwoTone.CardTravel" Disabled="IsTabDisabled1">
+            <IRNMaterialsAndServices Activate="Activate"
+                    UIScope=" formDefinition"
+                    DataObject="_insurenceOrderObj"
+                    InteractionLogic="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    EnableTabs="EnableAllTabs"
+                    DisableTabs="DisableAllTabs" />
+        </MudTabPanel>
+
+        <MudTabPanel Text="Pending IRN" Icon="@Icons.TwoTone.WatchLater" Disabled="IsTabDisabled2">
+            <PendingIRN Activate="Activate"
+                    UIScope=" formDefinition"
+                    DataObject="_insurenceOrderObj"
+                    InteractionLogic="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    EnableTabs="EnableAllTabs"
+                    DisableTabs="DisableAllTabs" 
+                    @ref="_irnPending" />
+        </MudTabPanel>
+
+        <MudTabPanel Text="Processing IRN" Icon="@Icons.TwoTone.ListAlt" Disabled="false">
+            <ProcessingIRN Activate="Activate"
+                    UIScope=" formDefinition"
+                    DataObject="_insurenceOrderObj"
+                    InteractionLogic="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    EnableTabs="EnableAllTabs"
+                    DisableTabs="DisableAllTabs"
+                    @ref="@_irnProcessing" />
+        </MudTabPanel>
+
+        <MudTabPanel Text="Finalized IRN" Icon="@Icons.Filled.CheckCircle" Disabled="false">
+            <FinalizedIRN Activate="Activate"
+                       UIScope=" formDefinition"
+                       DataObject="_insurenceOrderObj"
+                       InteractionLogic="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"
+                       EnableTabs="EnableAllTabs"
+                       DisableTabs="DisableAllTabs" 
+                       @ref="@_irnFinalized"  />
+        </MudTabPanel>
+
+    </MudTabs>
+}
+else
+{
+    <div class="rip-wrap">
+        <div class="lds-ripple">
+            <div>
+            </div><div>
+            </div>
+        </div>
+    </div>
+}

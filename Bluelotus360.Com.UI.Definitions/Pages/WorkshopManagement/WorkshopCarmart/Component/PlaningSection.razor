@@ -1,0 +1,79 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+@using BlueLotus360.CleanArchitecture.Client.Infrastructure.Helpers
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Order
+
+<UIRenderere FromSection="@UI"
+             DataObject="DataObject"
+             InteractionLogics="InteractionLogic"
+             ObjectHelpers="ObjectHelpers" />
+
+@code{
+    [Parameter] public BLUIElement UI { get; set; }
+    [Parameter] public WorkOrder DataObject { get; set; }
+    [Parameter] public long ObjectKey { get; set; }
+    [Parameter] public EventCallback OnProceedPlaning{ get; set; }
+    [Parameter] public EventCallback OnClosePopUp{ get; set; }
+    private IDictionary<string, EventCallback> InteractionLogic { get; set; }
+    private IDictionary<string, IBLUIOperationHelper> ObjectHelpers { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        ObjectHelpers = new Dictionary<string, IBLUIOperationHelper>();
+        InteractionHelper helper = new InteractionHelper(this, UI);
+        InteractionLogic = helper.GenerateEventCallbacks();
+
+        
+        await base.OnParametersSetAsync();
+    }
+
+    private async void OnStartDateClick(UIInterectionArgs<DateTime?> args)
+    {
+        DataObject.OrderDate = DateTime.Now;
+
+        StateHasChanged();
+        await Task.CompletedTask;
+    }
+    private async void OnEndDateClick(UIInterectionArgs<DateTime?> args)
+    {
+        DataObject.DeliveryDate = (DateTime)args.DataObject;
+        StateHasChanged();
+        await Task.CompletedTask;
+    }
+
+    private async void OnProceed(UIInterectionArgs<object> args)
+    {
+        DataObject.FormObjectKey = ObjectKey;
+        DataObject.OrderStatus = new CodeBaseResponse() { OurCode = "WIP" };
+
+        await _workshopManager.EditWorkOrder(DataObject);
+
+        OrderOpenRequest req = new OrderOpenRequest();
+        req.ObjKy = ObjectKey;
+        req.OrderKey = DataObject.OrderKey;
+
+        WorkOrder workOrd = await _workshopManager.OpenWorkOrderV2(req);
+
+        if (workOrd != null)
+        {
+            workOrd.SelectedVehicle.CopyFrom(DataObject.SelectedVehicle);
+            workOrd.WorkOrderSimpleEstimation = DataObject.WorkOrderSimpleEstimation;
+            if (DataObject.WorkOrderTransaction != null)
+            {
+                workOrd.WorkOrderTransaction.CopyFrom(DataObject.WorkOrderTransaction);
+            }
+            DataObject.CopyFrom(workOrd);
+        }
+        if (OnClosePopUp.HasDelegate)
+        {
+            await OnClosePopUp.InvokeAsync();
+            
+        }
+        if (OnProceedPlaning.HasDelegate)
+        {
+            await OnProceedPlaning.InvokeAsync();
+        }
+
+        _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+        _snackBar.Add("Planing Date is Updated Successfully", Severity.Success);
+    }
+}

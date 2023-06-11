@@ -1,0 +1,456 @@
+﻿@typeparam TItem
+@using BlueLotus360.Com.UI.Definitions.MB.Shared.Components
+@using BlueLotus360.Com.UI.Definitions.MB.Shared.Components.TelerikComponents.Button
+@using System.Reflection
+@using Telerik.Blazor
+@using Telerik.DataSource
+@using BlueLotus360.CleanArchitecture.Client.Infrastructure.Routes
+
+@if (DataObject !=null)
+{
+    <TelerikGrid  @ref="@GridRef"
+             Data=@DataObject
+             Pageable="true"
+             Sortable="true"
+             FilterMode="@GridFilterMode.FilterMenu"
+             Resizable="true"
+             SelectionMode="GridSelectionMode.Multiple"
+             PageSize="10"
+             Navigable="true"
+             Height="480px"
+             EditMode="GridEditMode.Popup"
+             Class=@FormObject.CssClass
+             FilterRowDebounceDelay="filterDebounceDelay">
+
+             <GridAggregates>
+            @{
+                foreach (var row in FormObject.Children)
+                {
+                    if (row.ElementType != null && row.ElementType.Equals("GridParameter"))
+                    {
+                        if (row!=null && row.Children.Count() == 0 && DataObject!=null)
+                        {
+                            if (GetBlGridColumnType(row.DefaultAccessPath, DataObject.FirstOrDefault()) == typeof(decimal) )
+                            {
+                                     <GridAggregate Field="@row.DefaultAccessPath" Aggregate="@GridAggregateType.Sum" />
+                            }
+                        
+                        }
+                    }
+                }
+             }
+                
+            </GridAggregates>
+
+        <GridColumns>
+            @*<GridCheckboxColumn></GridCheckboxColumn>*@
+            @foreach (var row in FormObject.Children)
+            {
+                @if (row.ElementType != null && row.ElementType.Equals("GridParameter"))
+			    {
+                    @if (row.ElementID.Equals("DynamicColumn"))
+                    {
+                                
+                                        <GridColumn Width="@row.CoulmnWidth"
+                                           Title="@row.ElementCaption"
+                                           TextAlign="@ColumnTextAlign.Center"
+                                           Visible="@row.IsVisible" >
+
+                                                       <Template >
+                                                        @{
+                                                                BLUIElement ui=new BLUIElement();
+
+                                                                ui.ElementName= (context.GetType().GetProperty("ElementName")?.GetValue(context, null)!=null)?context.GetType().GetProperty("ElementName")?.GetValue(context, null).ToString():"";
+                                                                ui.ElementType = (context.GetType().GetProperty("ElementType")?.GetValue(context, null)!=null)?context.GetType().GetProperty("ElementType")?.GetValue(context, null).ToString():"";
+                                                                ui.ElementID = (context.GetType().GetProperty("ElementID")?.GetValue(context, null)!=null)?context.GetType().GetProperty("ElementID")?.GetValue(context, null).ToString():"";
+                                                                ui._internalElementName=(context.GetType().GetProperty("_internalElementName")?.GetValue(context, null)!=null)? context.GetType().GetProperty("_internalElementName")?.GetValue(context, null).ToString():"";
+                                                                ui.ElementKey = (context.GetType().GetProperty("ElementKey")?.GetValue(context, null)!=null)?Convert.ToInt64(context.GetType().GetProperty("ElementKey")?.GetValue(context, null).ToString()):1;
+                                                                ui.OurCode=(context.GetType().GetProperty("OurCode")?.GetValue(context, null)!=null)?context.GetType().GetProperty("OurCode")?.GetValue(context, null).ToString():"";
+                                                                ui.IsVisible = true;
+                                                                ui.IsEnable=true;
+                                                                ui.DefaultValue=(context.GetType().GetProperty("DefaultValue")?.GetValue(context, null)!=null)?context.GetType().GetProperty("DefaultValue")?.GetValue(context, null).ToString():"";
+                                                                ui.UrlAction=(context.GetType().GetProperty("UrlAction")?.GetValue(context, null)!=null)?context.GetType().GetProperty("UrlAction")?.GetValue(context, null).ToString():"";
+                                                                ui.UrlController=(context.GetType().GetProperty("UrlController")?.GetValue(context, null)!=null)?context.GetType().GetProperty("UrlController")?.GetValue(context, null).ToString():"";
+                                                                ui.IsServerFiltering=(context.GetType().GetProperty("IsCd02")?.GetValue(context, null)!=null)?Convert.ToBoolean(context.GetType().GetProperty("IsCd02")?.GetValue(context, null).ToString()):false;
+                                                                @switch(ui.ElementID ){
+                                                                    case "CodeBase":ui.OnClickAction = "OnCodebaseChange";break;
+                                                                    case "Address":ui.OnClickAction = "OnAddressChange";break;
+                                                                    case "Item":ui.OnClickAction = "OnItemChange";break;
+                                                                    case "Unit":ui.OnClickAction = "OnUnitChange";break;
+                                                                    case "":ui.OnClickAction = "";break;
+                                                                    
+                                                                 }
+                                                                
+                                    
+                                                                 ui.DefaultAccessPath=(context.GetType().GetProperty("DefaultAccessPath")?.GetValue(context, null)!=null)?context.GetType().GetProperty("DefaultAccessPath")?.GetValue(context, null).ToString():"";
+                                                                 ui.ParentCssClass = "tel-combo-dyn-comp";
+                                                                 
+                                                                 //ui.CssClass=(context.GetType().GetProperty("CssClass")?.GetValue(context, null)!=null)?context.GetType().GetProperty("CssClass")?.GetValue(context, null).ToString():"";
+                                                                //ui.IconCss=(context.GetType().GetProperty("IconCssClass")?.GetValue(context, null)!=null)?context.GetType().GetProperty("IconCssClass")?.GetValue(context, null).ToString():"";
+                                    
+                                                                                @if (!string.IsNullOrEmpty(ui.ElementType) && (ui.ElementType.Equals("TelCmb")||ui.ElementType.Equals("Cmb")))
+                                                                {
+                                                                    if (!string.IsNullOrEmpty(ui.ElementID) && ui.ElementID.Equals("CodeBase"))
+                                                                    {
+                                                                                                        <BLTelCodeBaseCombo UIElement="@ui" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                                    }
+                                                                    if (!string.IsNullOrEmpty(ui.ElementID) && ui.ElementID.Equals("Address"))
+                                                                    {
+                                                                                                        <BLTelAddressCombo UIElement="@ui" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                                    }
+
+                                                                    if (!string.IsNullOrEmpty(ui.ElementID) && ui.ElementID.Equals("Item"))
+                                                                    {
+                                                                                                        <BLTelItemCombo UIElement="@ui" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                                    }
+
+                                                                    if (!string.IsNullOrEmpty(ui.ElementID) && ui.ElementID.Equals("Unit"))
+                                                                    {
+                                                                                                         <BLTelUnitCombo UIElement="@ui" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                                    }
+                                                                    if (!string.IsNullOrEmpty(ui.ElementID) && ui.ElementID.Equals("User"))
+                                                                    {
+                                                                        <BLTelUsersCombo UIElement="@ui" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                                    }
+
+                                                                    if (!string.IsNullOrEmpty(ui.ElementID) && ui.ElementID.Equals("Account"))
+                                                                    {
+                                                                         <BLTelAccountCombo UIElement="@ui" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+
+                                                                    }
+                                                                    if (!string.IsNullOrEmpty(ui.ElementID) && ui.ElementID.Equals("ApprovedStatus"))
+                                                                    {
+                                                                          <BLTelApprovedStateCombo UIElement="@ui" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+
+                                                                    }
+                                                                    if (!string.IsNullOrEmpty(ui.ElementID) && ui.ElementID.Equals("NextStatusCombo"))
+                                                                    {
+                                                                        <BLTelNextApproveStatusCombo UIElement="@ui" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+
+                                                                    }
+
+
+                                                                }
+                                                                @if (!string.IsNullOrEmpty(ui.ElementType) && ui.ElementType.Equals("TelNumericBox"))
+                                                                {
+                                                                            ui.OnClickAction = "OnNumericBoxChange";
+                                                                            <BLTelNumericBox UIElement="@ui" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                                }
+                                                                @if (!string.IsNullOrEmpty(ui.ElementType) && ui.ElementType.Equals("TelTextBox"))
+                                                                {
+                                                                            ui.OnClickAction = "OnTextBoxChange";
+                                                                            <BLTelTextBox UIElement="@ui" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLTelTextBox>
+                                                                }
+                                                                @if (!string.IsNullOrEmpty(ui.ElementType) && ui.ElementType.Equals("TelDatePicker"))
+                                                                {
+                                                                            ui.OnClickAction = "OnDateChange";
+                                                                            <BLTelDatePicker DataObject="@context" InteractionLogics="InteractionLogics" UIElement="@ui" ObjectHelpers="ObjectHelpers" />
+                                                                }
+                                                                @if (!string.IsNullOrEmpty(ui.ElementType) && ui.ElementType.Equals("Chip"))
+                                                                {
+                                                                        <BLChip DataObject="DataObject" InteractionLogics="InteractionLogics" UIElement="@ui" ObjectHelpers="ObjectHelpers" />
+                                                                }
+                                                       }
+                                                       </Template>
+                                        </GridColumn>
+                                    
+                                
+                    }
+                    else if (row.ElementID.Equals("MultipleCoditionColumn"))
+                    {
+                        <GridColumn Width="@row.CoulmnWidth"
+                                           Title="@row.ElementCaption"
+                                           TextAlign="@ColumnTextAlign.Center"
+                                           Visible="@row.IsVisible" >
+
+                                            <Template>
+                                            @{
+                                                if (context.GetType().GetProperty(row.DefaultAccessPath)?.GetValue(context, null) != null) 
+                                                {
+                                                    int bitVal = Convert.ToInt32(context.GetType().GetProperty(row.DefaultAccessPath)?.GetValue(context, null));
+                                                        @if (bitVal == 0)
+                                                    {
+                                                            <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Secondary" Class="ma-0">No</MudButton>
+                                                    }
+                                                    else if (bitVal == 1)
+                                                    {
+                                                            <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Success" Class="ma-0">Yes</MudButton>
+                                                    }
+                                                    else
+                                                    {
+                                                            <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" Class="ma-0">N/A</MudButton>
+                                                    }
+                                                 }
+
+                                            }
+                                            </Template>
+                        </GridColumn>
+                    }
+                    else if (row.ElementID.Equals("LineNoColumn"))
+                    {
+                        
+                                <GridColumn Field="@row.DefaultAccessPath"
+                                            Title="#"
+                                            TextAlign="@ColumnTextAlign.Center"
+                                            Width="@row.CoulmnWidth"
+                                            Visible=true>
+                                        
+                                        <FooterTemplate>
+                                            <div class="text-center">
+                                                <span class="text-bold">Total</span>
+                                            </div>
+                                        </FooterTemplate>
+                                </GridColumn>
+                    }
+                    else if(row.ElementID.Equals("ImageColumn")){
+                        <GridColumn Field="@row.DefaultAccessPath"
+                                            Title="Image"
+                                            TextAlign="@ColumnTextAlign.Center"
+                                            Width="@row.CoulmnWidth"
+                                            Visible=true>
+                            <Template>
+                                @{
+                                    string imageName = SetGridValues(context,row.DefaultAccessPath);
+                                   
+                                    if(!string.IsNullOrEmpty(imageName)){
+                                            <img class="rounded" id="@imageName.Trim()" src="@($"{BaseEndpoint.ProductImageURL}/{imageName.Trim()}.jpg")" width="75%"/>
+                                    }
+                                    
+                                    
+                                }
+                            </Template>
+                        </GridColumn>
+                    }
+                    else if(row.ElementID.Equals("CommandColumn")){
+                        <GridCommandColumn Title="@row.ElementCaption"
+                                           Visible="@row.IsVisible"
+                                           Width="@row.CoulmnWidth" 
+                                           Locked="true">
+                                           <div class="d-flex">
+                                               @if (row!=null && row.Children.Count() > 0)
+                                                   {
+                                                        @foreach (var child in row.Children)
+                                                        {
+                                                            @if (child.ElementType != null && child.ElementType.Equals("TelButton"))
+                                                            {
+                                                                <div class="mx-1">
+                                                                  <BLTelButton DataObject="@context" InteractionLogics="InteractionLogics" FromSection="child" ObjectHelpers="ObjectHelpers" />
+                                                                </div>
+                                                            }
+                                                        }
+                                                  }
+                                           </div>
+                        </GridCommandColumn>
+                    }
+                    else
+                    {
+
+                        @if (row!=null && row.Children.Count() > 0)
+                        {
+                            <GridColumn Width="@row.CoulmnWidth"
+                                                    Title="@row.ElementCaption"
+                                                    TextAlign="@ColumnTextAlign.Center"
+                                                    Visible="@row.IsVisible">
+                                    <Template>
+                                    @{
+                                            <div class="d-flex">
+                                            
+                                                @foreach (var child in row.Children)
+                                            {
+                                                    @if (child.ElementType != null && child.ElementType.Equals("TelCmb"))
+                                                {
+                                                        if (child.ElementID != null && child.ElementID.Equals("CodeBase"))
+                                                        {
+                                                               <BLTelCodeBaseCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                        }
+                                                        if (child.ElementID != null && child.ElementID.Equals("Address"))
+                                                        {
+                                                                <BLTelAddressCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                        }
+
+                                                        if (child.ElementID != null && child.ElementID.Equals("Item"))
+                                                        {
+                                                                <BLTelItemCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                        }
+
+                                                        if (child.ElementID != null && child.ElementID.Equals("Unit"))
+                                                        {
+                                                                <BLUnitCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                        }
+                                                        if (child.ElementID != null && child.ElementID.Equals("User"))
+                                                                    {
+                                                            <BLTelUsersCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                                    }
+
+                                                        if (child.ElementID != null && child.ElementID.Equals("Account"))
+                                                        {
+                                                                 <BLTelAccountCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+
+                                                        }
+                                                        if (child.ElementID != null && child.ElementID.Equals("ApprovedStatus"))
+                                                        {
+                                                                 <BLTelApprovedStateCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+
+                                                        }
+                                                        if (child.ElementID != null && child.ElementID.Equals("NextStatusCombo"))
+                                                        {
+                                                                <BLTelNextApproveStatusCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+
+                                                        }
+
+
+                                                }
+                                                                @if (child.ElementType != null && child.ElementType.Equals("TelNumericBox"))
+                                                {
+
+                                                                    <BLTelNumericBox UIElement="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+
+                                                                @if (child.ElementType != null && child.ElementType.Equals("ReadOnlyNB"))
+                                                {
+
+                                                                     <BLNumericBox UIElement="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" IsReadOnly=true />
+                                                }
+
+                                                                @if (child.ElementType != null && child.ElementType.Equals("TextBox"))
+                                                {
+
+                                                                     <BLTextBox UIElement="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLTextBox>
+                                                }
+
+                                                                @if (child.ElementType != null && child.ElementType.Equals("TelSwitch"))
+                                                {
+                                                                     <BLTelSwitch FromSection="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLTelSwitch>
+                                                }
+
+
+                                                                @if (child.ElementType != null && child.ElementType.Equals("MultiRadio"))
+                                                {
+
+                                                                      <BLMultiRadio UIElement="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLMultiRadio>
+                                                }
+
+                                                                @if (child.ElementType != null && child.ElementType.Equals("TelButton"))
+                                                {
+                                                                      <BLTelButton DataObject="@context" InteractionLogics="InteractionLogics" FromSection="child" ObjectHelpers="ObjectHelpers" />
+                                                }
+
+                                                                @if (child.ElementType != null && child.ElementType.Equals("CheckBox"))
+                                                {
+
+                                                                      <BLCheckBox UIElement="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLCheckBox>
+                                                }
+
+                                                           
+
+                                                                @if (child.ElementType != null && child.ElementType.Equals("TelDatePicker"))
+                                                {
+                                                                      <BLTelDatePicker DataObject="@context" InteractionLogics="InteractionLogics" UIElement="child" ObjectHelpers="ObjectHelpers" />
+                                                }
+
+                                                                @if (child.ElementType != null && child.ElementType.Equals("TelDTimePicker"))
+                                                {
+                                                                      <BLTelDateTimePicker DataObject="@context" InteractionLogics="InteractionLogics" UIElement="child" ObjectHelpers="ObjectHelpers" />
+                                                }
+                                                @if (child.ElementType != null && child.ElementType.Equals("Chip"))
+                                                 {
+                                                    <BLChip DataObject="@context" InteractionLogics="InteractionLogics" UIElement="child" ObjectHelpers="ObjectHelpers" />
+                                                 }
+                                                
+                                            }
+
+                                            </div>
+                                    }
+                                    </Template>
+                                </GridColumn>
+                        }
+                        else
+                        {
+                                <GridColumn Field="@row.DefaultAccessPath"
+                                            Title="@row.ElementCaption"
+                                            TextAlign="@(row.CssClass.Split().Contains("text-right")?@ColumnTextAlign.Right:row.CssClass.Split().Contains("text-center")?@ColumnTextAlign.Center:@ColumnTextAlign.Left)"
+                                            ShowFilterCellButtons="true"
+                                            DisplayFormat="@row.Format"
+                                            Width="@row.CoulmnWidth"
+                                            Visible="@row.IsVisible">
+                                    
+
+                                            <FooterTemplate>
+                                            @{
+                                                decimal total = 0;
+                                                string footer_text = "";
+                                                var ctx = context as FooterTemplateContext;
+
+                                                    if (ctx?.Sum!=null)
+                                                    {
+                                                        if (ctx != null && ctx?.AggregateResults != null && ctx?.AggregateResults.Count() > 0)
+                                                        {
+                                                            AggregateResult aggr = ctx.AggregateResults.FirstOrDefault(r => r.AggregateMethodName == "Sum" && r.Member == row.DefaultAccessPath);
+                                                            
+                                                            if(aggr!=null)
+                                                                total = (decimal)aggr.Value;
+                                                            
+                                                            footer_text = total.ToString("N2");
+                                                            <div style="text-align:right;">
+                                                                    @footer_text
+                                                            </div>
+                                                        }
+                                                    }
+                                                    
+                                                 }
+                                                
+                                    
+                                    
+                                            </FooterTemplate>
+                               
+
+                                </GridColumn>
+                            
+                              
+                        }
+
+                    }
+                        
+                }
+                    
+                    
+            }
+       
+        </GridColumns>
+    @*<GridToolBar>
+        <GridCommandButton Command="Add" Icon="add">Add Product</GridCommandButton>
+    </GridToolBar>*@
+
+
+</TelerikGrid>
+
+
+   @* if (row.ElementID.Equals("FunctionColumn"))
+    {
+        <GridColumn Field=""
+            Title="@row.ElementCaption">
+            <Template>
+                @{
+                    decimal val = 0;
+                    Type type = context.GetType();
+                    if (type != null)
+                    {
+
+                        MethodInfo info = type.GetMethod(row.DefaultAccessPath);
+                        if (info != null)
+                        {
+                            val = Convert.ToDecimal(info.Invoke(context, null));
+                            <span>@val</span>
+
+                        }
+
+                    }
+
+
+                }
+            </Template>
+
+        </GridColumn>
+    }*@
+
+}

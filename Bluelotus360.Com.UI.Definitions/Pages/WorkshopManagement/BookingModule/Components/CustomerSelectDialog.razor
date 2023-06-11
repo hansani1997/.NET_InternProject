@@ -1,0 +1,14 @@
+﻿
+<MudDialog @bind-IsVisible="@IsPopShown">
+
+    <DialogContent>
+
+        <MudContainer Style="overflow-y: scroll; max-height:150px;padding:16px;" Class="dc2">
+            @if(ModalUIElement!=null){
+			    <UIRenderere FromSection="ModalUIElement" DataObject="CusList" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+		    }
+        </MudContainer>
+      
+    </DialogContent>
+
+</MudDialog>

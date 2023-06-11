@@ -1,0 +1,13 @@
+﻿
+<MudCarousel Class="mud-width-full" Style="height:100%;" ShowArrows="true" ShowBullets="true" AutoCycle="false" TData="object">
+    
+    @foreach (var img in arr)
+    {
+        <MudCarouselItem Transition="transition">
+            <div class="d-flex justify-center">
+                <img src="./img/@img" class="mud-image object-contain object-center rounded-lg" width="100%" height="100%">
+            </div>
+        </MudCarouselItem>
+    }
+
+</MudCarousel>

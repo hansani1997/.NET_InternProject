@@ -1,0 +1,195 @@
+﻿@page "/dashboard/Finance_DB_Mobile"
+@using ApexCharts;
+
+
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{ 
+ 
+    <UIBuilder FormObject="formDefinition"
+                   DataObject="request"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_refBuilder" />
+
+    <MudGrid Class="mx-0 mt-5 w-100">
+        <MudItem xs="12" md="6" >
+
+            <MudPaper Elevation="0" Class="chart-card">
+                @if (response_for_actual_vs_budgeted_income_Response.Count() > 0)
+                {
+                    <ApexChart @ref=_detailsChart TItem="ActualVsBudgetedIncomeResponse"
+                              Title="ACTUAL VS BUDGETED INCOME"
+                              Options="opt1"
+                              Debug>
+
+                                  <ApexPointSeries TItem="ActualVsBudgetedIncomeResponse"
+                                                   Items="response_for_actual_vs_budgeted_income_Response"
+                                                   Name="Actual Income"
+                                                   SeriesType="SeriesType.Bar" 
+                                                   XValue="@(e => e.YYYY_MM)"
+                                                   YValue="@(e => Convert.ToDecimal(e.Income))"
+                                                   OrderByDescending="e=>e.X"/>
+
+                                  <ApexPointSeries TItem="ActualVsBudgetedIncomeResponse"
+                                                   Items="response_for_actual_vs_budgeted_income_Response"
+                                                   Name="Budgeted Income"
+                                                   SeriesType="SeriesType.Bar" 
+                                                   XValue="@(e => e.YYYY_MM)"
+                                                   YValue="@(e => Convert.ToDecimal(e.BgtIncome))"
+                                                   OrderByDescending="e=>e.X"/>
+
+                    </ApexChart>
+                }
+
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="6" >
+
+             <MudPaper Elevation="0" Class="chart-card">
+                @if (gnm.Count() > 0)
+                {
+                    <ApexChart @ref=_gnmChart TItem="GPft_NetPft_Margin_Response"
+                                                            Title="GROSS PROFIT & NET PROFIT MARGIN "
+                                                            OnDataPointSelection=OnClickChartAsync
+                                                            Options="@options"
+                                                            Debug>
+
+                                                        <ApexPointSeries TItem="GPft_NetPft_Margin_Response"
+                                                             Items="gnm"
+                                                             Name=""
+                                                             SeriesType="SeriesType.Bar" 
+                                                             XValue="@(e => e.XAx)"
+                                                             YValue="@(e => Convert.ToDecimal(e.Gnm))" />
+
+                                                        
+
+                                            </ApexChart>
+                }
+                
+             </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="6" Class="mt-3">
+
+             <MudPaper Elevation="0" Class="chart-card">
+                @if (debtors_ages.Count() > 0)
+                {
+                    <ApexChart @ref=_ageChart TItem="Debtors_Creditors_Age_Analysis"
+                                                            Title="DEBTORS AGE ANALYSIS "
+                                                            OnDataPointSelection=DataPointsSelectedForDebtorAgeAnalysis
+                                                            Options="@opt2"
+                                                            Debug>
+
+                                                        <ApexPointSeries TItem="Debtors_Creditors_Age_Analysis"
+                                                             Items="debtors_ages"
+                                                             Name=""
+                                                             SeriesType="SeriesType.Donut" 
+                                                             XValue="@(e => e.Hdr)"
+                                                             YValue="@(e => Convert.ToDecimal(e.Amt))"
+                                                             OrderByDescending="e=>e.X"/>
+
+                                                        
+
+                                            </ApexChart>
+                }
+                
+              </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="6" Class="mt-3">
+
+            <MudPaper Elevation="0" Class="chart-card">
+                @if (creditors_ages.Count() > 0)
+                {
+                    <ApexChart @ref=_ageChart TItem="Debtors_Creditors_Age_Analysis"
+                                                            Title="CREDITORS AGE ANALYSIS "
+                                                            OnDataPointSelection=DataPointsSelectedForCreditorAgeAnalysis
+                                                            Options="@opt3"
+                                                            Debug>
+
+                                                        <ApexPointSeries TItem="Debtors_Creditors_Age_Analysis"
+                                                             Items="creditors_ages"
+                                                             Name=""
+                                                             SeriesType="SeriesType.Donut" 
+                                                             XValue="@(e => e.Hdr)"
+                                                             YValue="@(e => Convert.ToDecimal(e.Amt))"
+                                                             OrderByDescending="e=>e.X"/>
+
+                                                        
+
+                                            </ApexChart>
+                }
+                
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="6" Class="mt-3">
+
+            <MudPaper Elevation="0" Class="chart-card">
+                @if (debtors_ages_overdue.Count() > 0)
+                {
+                    <ApexChart @ref=_ageChart TItem="Debtors_Creditors_Age_Analysis"
+                                                            Title="DEBTORS AGE ANALYSIS OVERDUE"
+                                                            OnDataPointSelection=DataPointsSelectedForDebtorAgeOverdueAnalysis
+                                                            Options="@opt4"
+                                                            Debug>
+
+                                                        <ApexPointSeries TItem="Debtors_Creditors_Age_Analysis"
+                                                             Items="debtors_ages_overdue"
+                                                             Name=""
+                                                             SeriesType="SeriesType.Pie" 
+                                                             XValue="@(e => e.Hdr)"
+                                                             YValue="@(e => Convert.ToDecimal(e.Amt))"
+                                                             OrderByDescending="e=>e.X"/>
+
+                                                        
+
+                                            </ApexChart>
+                }
+                
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="6" Class="mt-3">
+
+            <MudPaper Elevation="0" Class="chart-card">
+                @if (creditors_ages_overdue.Count() > 0)
+                {
+                    <ApexChart @ref=_ageChart TItem="Debtors_Creditors_Age_Analysis"
+                                                            Title="CREDITORS AGE ANALYSIS OVERDUE"
+                                                            OnDataPointSelection=DataPointsSelectedForCreditorAgeOverdueAnalysis
+                                                            Options="@opt5"
+                                                            Debug>
+
+                                                        <ApexPointSeries TItem="Debtors_Creditors_Age_Analysis"
+                                                             Items="creditors_ages_overdue"
+                                                             Name=""
+                                                             SeriesType="SeriesType.Pie" 
+                                                             XValue="@(e => e.Hdr)"
+                                                             YValue="@(e => Convert.ToDecimal(e.Amt))"
+                                                             OrderByDescending="e=>e.X"/>
+
+                                                        
+
+                                            </ApexChart>
+                }
+               @* else{
+
+                   <MudPaper Style="height:269px;" Class="d-flex justify-content-center align-items-center">
+                       <EmptyChart @ref="empty_chart" IsChartEmpty=true/>
+                   </MudPaper>  
+
+                }*@
+            </MudPaper>
+        </MudItem>
+
+
+    </MudGrid>
+      
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons... </MudAlert>
+}

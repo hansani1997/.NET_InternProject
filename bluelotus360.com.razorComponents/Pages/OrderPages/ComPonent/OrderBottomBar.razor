@@ -1,0 +1,18 @@
+﻿     <MudPaper>
+        <MudToolBar Class="bl-btn-primary">
+            <MudText>@(_orderState.SelectedCustomer == null ? "" : _orderState.SelectedCustomer.AddressName)</MudText>
+            <MudSpacer />
+            <MudButton Color="Color.Surface" Class="pa-2 text-white" OnClick="OnCartClick">
+                <MudBadge Content="_orderState.TotalProducts.ToString()" Overlap="true" Color="Color.Error">
+                    <MudIcon Icon="@Icons.Material.Filled.ShoppingCart" Class="text-white" />
+                </MudBadge>
+            </MudButton>
+            @*<MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Close" Size="Size.Small" DisableElevation="true" OnClick="OnClearCustomerClick" />*@
+        </MudToolBar>
+        
+     </MudPaper>
+
+
+
+
+       

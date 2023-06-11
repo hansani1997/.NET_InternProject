@@ -1,0 +1,207 @@
+﻿@using BlueLotus360.CleanArchitecture.Client.Infrastructure.Helpers
+@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Order
+
+
+    <TelerikWindow Modal="WindowIsVisible" Visible=true
+               Centered="true"
+               CloseOnOverlayClick="false" Class="@(!WindowIsVisible?"d-none":"pop-up-z-index")" Height="500px" Width="1000px" Resizable=false>
+
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+            <WindowAction Name="Minimize" />
+            <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+       Edit
+    </WindowTitle>
+    <WindowContent>
+        <MudContainer>
+            @if (PopUI != null && DataObject!=null)
+            {
+                <UIRenderere FromSection="@PopUI"
+                         DataObject="@DataObject"
+                         InteractionLogics="InteractionLogic"
+                         ObjectHelpers="ObjectHelpers" />
+            }
+            
+            
+        </MudContainer>
+
+    </WindowContent>
+</TelerikWindow>
+
+@code {
+
+    public bool WindowIsVisible { get; set; }
+    [Parameter] public BLUIElement PopUI { get; set; }
+    public WorkOrder DataObject { get; set; } 
+    [Parameter] public EventCallback<OrderItem> UpdateItem{ get; set; }
+    [Parameter] public EventCallback ItemAddedSuccessfull { get; set; }
+    [Parameter] public long ElementKey{ get; set; }
+
+    bool HideMinMax { get; set; } = false;
+    private IDictionary<string, EventCallback> InteractionLogic { get; set; }
+    private IDictionary<string, IBLUIOperationHelper> ObjectHelpers { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+
+        ObjectHelpers = new Dictionary<string, IBLUIOperationHelper>();
+        InteractionHelper helper = new InteractionHelper(this, PopUI);
+        InteractionLogic = helper.GenerateEventCallbacks();
+
+        await base.OnParametersSetAsync();
+    }
+
+    private async void OnCloseClick()
+    {
+        WindowIsVisible = false;
+        StateHasChanged();
+    }
+
+    public void ShowEditPopUp(WorkOrder itm)
+    {
+        DataObject = new WorkOrder();
+        DataObject.CopyFrom(itm);
+        WindowIsVisible = true;
+        
+        StateHasChanged();
+    }
+
+    private async void OnPopUpMaterialComboChange(UIInterectionArgs<ItemResponse> args)
+    {
+        DataObject.SelectedOrderItem.TransactionItem = args.DataObject;
+        ItemRateResponse rates = await RetriveRate(DataObject.SelectedOrderItem.TransactionItem);
+        DataObject.SelectedOrderItem.Rate = rates.Rate;
+        DataObject.SelectedOrderItem.TransactionRate = rates.TransactionRate;
+        DataObject.SelectedOrderItem.DiscountPercentage = rates.DiscountPercentage;
+        DataObject.SelectedOrderItem.AvailableStock = await RetriveStockAsAt(DataObject.SelectedOrderItem.TransactionItem);
+        await ReadData("MaterialTransactionUnit");
+
+        StateHasChanged();
+    }
+    private async void OnMaterialCarmartAccountChange(UIInterectionArgs<AccountResponse> args)
+    {
+        StateHasChanged();
+    }
+
+    private async void OnMaterialPrincipleAccountChange(UIInterectionArgs<AccountResponse> args)
+    {
+        StateHasChanged();
+    }
+    private async void OnMaterialPopUpNumericBoxChange(UIInterectionArgs<decimal> args)
+    {
+        DataObject.SelectedOrderItem.CalculateLineBalance();
+
+        StateHasChanged();
+        await Task.CompletedTask;
+    }
+
+    private async void OnMaterialTransactionUnitChange(UIInterectionArgs<UnitResponse> args)
+    {
+        DataObject.SelectedOrderItem.TransactionUnit = args.DataObject;
+        StateHasChanged();
+        await Task.CompletedTask;
+    }
+    private async void MaterialTransactionUnit_OnBeforeDataFetch(UIInterectionArgs<ComboRequestDTO> args)
+    {
+        if (DataObject!=null)
+        {
+            args.DataObject.AddtionalData.Add("ItemKey", DataObject.SelectedOrderItem.TransactionItem.ItemKey);
+        }
+       
+        StateHasChanged();
+    }
+    private async void OnMaterialPopUpAddToGridClick(UIInterectionArgs<object> args)
+    {
+        DataObject.SelectedOrderItem.IsInEditMode = true;
+        DataObject.SelectedOrderItem.IsActive = 1;
+
+        if (DataObject.SelectedOrderItem.BaringCompany == null || DataObject.SelectedOrderItem.BaringPrinciple == null)
+        {
+            DataObject.SelectedOrderItem.BaringCompany = new AccountResponse();
+            DataObject.SelectedOrderItem.BaringPrinciple = new AccountResponse();
+        }
+        if (UpdateItem.HasDelegate)
+        {
+            await UpdateItem.InvokeAsync(DataObject.SelectedOrderItem);
+        }
+        
+        WindowIsVisible = false;
+        StateHasChanged();
+    }
+
+    public async Task<ItemRateResponse> RetriveRate(ItemResponse workOrderItem)
+    {
+        ItemRateRequest request = new ItemRateRequest();
+        request.LocationKey = DataObject.OrderLocation.CodeKey;
+        request.ItemKey = workOrderItem.ItemKey;
+        request.EffectiveDate = DateTime.Now.Date;
+        request.ConditionCode = "OrdTyp";
+        request.ObjectKey = ElementKey;
+        return (await _comboManager.GetRate(request));
+    }
+
+    public async Task<decimal> RetriveStockAsAt(ItemResponse workOrderItem)
+    {
+        StockAsAtRequest request = new StockAsAtRequest();
+        request.ElementKey = ElementKey;
+        request.LocationKey = DataObject.OrderLocation.CodeKey;
+        request.ItemKey = workOrderItem.ItemKey;
+        StockAsAtResponse response = await _transactionManager.GetStockAsAt(request);
+        return Math.Max(response.StockAsAt, 0);
+    }
+
+
+    #region object helpers
+
+    private async Task SetValue(string name, object value)
+    {
+        IBLUIOperationHelper helper;
+
+        if (ObjectHelpers.TryGetValue(name, out helper))
+        {
+            await helper.SetValue(value);
+            StateHasChanged();
+            await Task.CompletedTask;
+        }
+    }
+    private async Task SetDataSource(string name, object dataSource)
+    {
+        IBLUIOperationHelper helper;
+
+        if (ObjectHelpers.TryGetValue(name, out helper))
+        {
+            await (helper as IBLServerDependentComponent).SetDataSource(dataSource);
+            StateHasChanged();
+        }
+    }
+
+    private void ToggleViisbility(string name, bool visible)
+    {
+        IBLUIOperationHelper helper;
+
+        if (ObjectHelpers.TryGetValue(name, out helper))
+        {
+            helper.UpdateVisibility(visible);
+            StateHasChanged();
+        }
+    }
+    private async Task ReadData(string name, bool UseLocalStorage = false)
+    {
+        IBLUIOperationHelper helper;
+
+        if (ObjectHelpers.TryGetValue(name, out helper))
+        {
+            await (helper as IBLServerDependentComponent).FetchData(UseLocalStorage);
+
+            StateHasChanged();
+        }
+    }
+    #endregion
+
+}

@@ -1,0 +1,9 @@
+﻿
+<MudItem xs="12" md="@FromSection.Width" Class="@css_class">
+	<MudSwitch T="bool" 
+			   Checked="check"
+	           CheckedChanged="SwitchValueChanged"
+	           ThumbIcon="@(check==true ? Icons.Material.Filled.Done : Icons.Material.Filled.Close)"
+	           ThumbIconColor="@(check==true ? Color.Success : Color.Error)">@FromSection.ElementCaption</MudSwitch>
+
+</MudItem>

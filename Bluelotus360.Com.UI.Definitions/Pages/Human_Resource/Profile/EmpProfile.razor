@@ -1,0 +1,133 @@
+﻿@using Telerik.Blazor;
+@using BlueLotus360.CleanArchitecture.Domain.Entities.HR;
+
+@if (Employee != null )
+{
+      <MudGrid>
+            <MudItem xs="12" md="3">
+                <MudCard Elevation="0">
+                    <MudCardContent>
+                        <div class="d-flex justify-center mb-4">
+
+                            @if (!string.IsNullOrEmpty(@ImageDataUrl))
+                            {
+                                <MudAvatar Image="@ImageDataUrl" Style="height:250px; width:250px;"> </MudAvatar>
+                            }
+                            else
+                            {
+                                <MudAvatar Color="Color.Secondary" Style="height:250px; width:250px;font-size:5rem;">@FirstLetterOfName</MudAvatar>
+                            }
+
+                        </div>
+                    </MudCardContent>
+
+                </MudCard>
+            </MudItem>
+
+            <MudItem xs="12" md="4">
+
+                <MudCard Elevation="0">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+                            <MudText>Hello @FirstName</MudText>
+                        </CardHeaderContent>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        
+                    @if (@Employee.EmployeeJobModel!=null && Employee.EmployeeContactDetails!=null && Employee.EmployeeBasicDetails!=null)
+                    {
+                            <MudList>
+
+                                 <MudListItem Icon="@Icons.TwoTone.AccountBalance" Text="@Employee.EmployeeJobModel.DepartmentNm" />
+                                 <MudListItem Icon="@Icons.TwoTone.Contacts" Text="@Employee.EmployeeJobModel.Designation" />
+                                 <MudListItem Icon="@Icons.TwoTone.Email" Text="@Employee.EmployeeContactDetails.EmailAddress" />
+                                 <MudListItem Icon="@Icons.TwoTone.PhoneAndroid" Text="@Employee.EmployeeContactDetails.Mobile"/>
+                                 <MudListItem Icon="@Icons.TwoTone.Cake" Text="@Employee.EmployeeBasicDetails.DateOfBirth" />
+
+                            </MudList>
+                    }
+
+                     
+                        
+                    </MudCardContent>
+
+                </MudCard>       
+            </MudItem>
+            
+            <MudItem xs="12" md="5">
+
+                 @if (Employee.LeaveSummary!=null && Employee.LeaveSummary.Count()>0)
+                 {
+                     <TelerikGrid Data=@Employee.LeaveSummary            
+                                Pageable="true"
+                                Sortable="true"
+                                FilterMode="GridFilterMode.FilterMenu"
+                                Resizable="true"
+                                SelectionMode="GridSelectionMode.Multiple"
+                                PageSize="10">
+
+                                <GridColumns>
+                                            <GridColumn Field="@nameof(LeaveSummary.LeaveType)" Title="Leave Type"/>
+                                            <GridColumn Field="@nameof(LeaveSummary.Elagible)" Title="Eligible"/>
+                                            <GridColumn Field="@nameof(LeaveSummary.Taken)" Title="Already Taken"/>
+                                            <GridColumn Field="@nameof(LeaveSummary.Bal)" Title="Balance">
+                                                <Template>
+                                                    @{
+                                                        var itm = context as LeaveSummary;
+                                                        if (itm.Bal<=0)
+                                                        {
+                                                            itm.Bal=0;
+                                                        }
+                                                
+                                                            @itm.Bal;
+                                                     }
+                                                    
+                                                </Template>
+                                            </GridColumn>
+                                            <GridColumn Field="@nameof(LeaveSummary.IsCd01)" Title="Day/Hour" >
+                                                <Template>
+                                                 @{
+                                                    var itm = context as LeaveSummary;
+                                                    if (itm.IsCd01 == 0)
+                                                    {
+                                                        <span>Day</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span>Hour</span>
+                                                    }
+                                                   
+                                                }
+                                                </Template>
+                                            </GridColumn>
+                                </GridColumns>
+                                
+
+                             </TelerikGrid>
+                    @*<MudTable Items="Employee.LeaveSummary" Hover="true" Breakpoint="Breakpoint.Sm" >
+
+                                        <HeaderContent>
+                                            <MudTh>Leave Type</MudTh>
+                                            <MudTh>Eligible</MudTh>
+                                            <MudTh>Already Taken</MudTh>
+                                            <MudTh>Balance</MudTh>
+                                            <MudTh>Day/Hour</MudTh>
+                                           
+                                        </HeaderContent>
+                                        <RowTemplate>
+                                            <MudTd DataLabel="Leave Type">@context.LeaveType</MudTd>
+                                            <MudTd DataLabel="Eligible">@context.Elagible</MudTd>
+                                            <MudTd DataLabel="Already Taken">@context.Taken</MudTd>
+                                            <MudTd DataLabel="Balance" >@((context.Bal>0)?context.Bal:0)</MudTd>
+                                            <MudTd DataLabel="Day/Hour">@(context.IsCd01==0 ? "Day":"Hour")</MudTd>
+                                        </RowTemplate>
+
+                                        <PagerContent>
+                                            <MudTablePager />
+                                        </PagerContent>
+                    </MudTable>*@
+                 }
+        
+            </MudItem>
+        </MudGrid>
+}

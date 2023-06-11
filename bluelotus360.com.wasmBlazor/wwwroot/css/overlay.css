@@ -1,0 +1,143 @@
+﻿.overlay {
+    position: fixed;
+    z-index: 3000;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    opacity: 0;
+    transition: 0.2s opacity ease-out;
+    display: none;
+}
+/*.overlay-footer{
+    position:relative;
+    bottom:50px;
+    left:0;
+    right:0;
+    display:flex;
+    justify-content:flex-end;
+    padding:5px;
+    z-index:3001;
+}*/
+
+    .overlay.visible {
+        display: block;
+        opacity: 1;
+        animation: 0.2s fade-in ease-out;
+    }
+
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+
+    100% {
+        opacity: 1;
+    }
+}
+
+.overlay-contents {
+    background-color: white;
+    padding: 1rem 1.5rem;
+    box-shadow: 0 0 10px 8px rgba(0, 0, 0, .5);
+    position: sticky;
+    transition: 0.2s transform ease-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.overlay-contents-top {
+    top: 0;
+    padding-top: calc(1rem + env(safe-area-inset-top));
+}
+
+@media (orientation: landscape) {
+    .overlay-contents-full {
+        top: 3rem;
+        height: calc(100vh - 6rem);
+        margin: auto;
+        max-width: 50rem;
+        border-radius: 0.75rem;
+    }
+
+    .overlay.visible .overlay-contents-full {
+        animation: 0.6s raise cubic-bezier(.13,.82,0,1);
+    }
+}
+
+@media (orientation: portrait) {
+    .overlay-contents-full {
+        /*top: 3rem;*/
+        /*height: calc(100% - 3rem);*/
+        height: 100%;
+        margin: auto;
+        border-radius: 20px;
+    }
+
+    .overlay.visible .overlay-contents-full {
+        animation: 0.6s slide-up cubic-bezier(.13,.82,0,1);
+    }
+}
+
+.overlay.visible .overlay-contents-top {
+    animation: 0.6s slide-down cubic-bezier(.46,.97,.44,.99);
+}
+
+@keyframes slide-down {
+    0% {
+        transform: translateY(-100%);
+    }
+
+    15% {
+        transform: translateY(-100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes slide-up {
+    0% {
+        transform: translateY(100%);
+    }
+
+    30% {
+        transform: translateY(100%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+@keyframes raise {
+    0% {
+        transform: translateY(5%);
+    }
+
+    100% {
+        transform: translateY(0);
+    }
+}
+
+.overlay-close {
+    border: none;
+    background: none;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.25rem;
+    cursor: pointer;
+}
+
+    .overlay-close:focus {
+        color: blue;
+        outline: none;
+    }
+
+.toolbar {
+    display: flex;
+    align-items: center;
+}

@@ -1,0 +1,264 @@
+﻿@import "_Variables.scss";
+//@import "_variablesDark.scss";
+
+h1, h2, h3, h4, h5, h6 {
+    color: $color-primary-text;
+}
+
+h5 {
+    font-weight: $bold;
+    font-size: $typography-h5-size;
+    line-height: $typography-default-lineheight;
+}
+
+.primary-btn {
+    background: $color-primary;
+    border-radius: $border-radius-default;
+    color: $palette-white;
+    text-transform: none;
+
+    &:hover {
+        background: $color-primary;
+        border-radius: $border-radius-default;
+        color: $palette-white;
+        box-shadow: $box-shadow;
+    }
+}
+
+.info-btn {
+    @include border;
+    background: $palette-white;
+    border-color: $border-color-default;
+    color: $color-primary-text;
+    text-transform: none;
+}
+
+.btn-txt-trun span {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    justify-content: flex-start;
+    display: inline-block;
+    width: fit-content;
+}
+
+.top-button-bar {
+    @include border;
+    border-color: $color-primary;
+    display: flex;
+    justify-content: flex-start;
+    padding-bottom: 3px;
+}
+
+.tab-scroll {
+    height: calc(100vh - 170px);
+    overflow-y: scroll;
+    padding: 0 30px;
+}
+
+.carmart-top-tab .mud-tabs-toolbar-wrapper {
+    width: 100%;
+
+    .mud-tabs-toolbar-wrapper {
+        > .mud-tooltip-root {
+            width: 25%;
+            padding: 3px;
+
+            > div {
+                display: flex;
+                flex-direction: column;
+                min-width: 100%;
+                text-transform: none;
+
+                &:nth-child(2) {
+                    flex: 1;
+                    white-space: nowrap;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    color: $color-primary-text;
+                }
+            }
+        }
+    }
+}
+
+.overview-top-panel {
+    background-color: $palette-gray-2;
+    padding-bottom: 10px;
+    margin-top: 10px;
+}
+
+.search-detail-list-item {
+    @include border;
+    display: flex;
+    border-color: $border-color-default;
+    padding: 12px;
+    cursor: pointer;
+
+    > div {
+        flex-direction: column;
+
+        span {
+            @include typography;
+            text-align: center;
+            color: $color-primary-text;
+        }
+
+        p {
+            @include typography;
+            text-align: center;
+            color: $color-primary-text;
+        }
+
+        strong {
+            @include typography;
+            text-align: center;
+            color: $color-primary-text;
+        }
+    }
+}
+
+.veh-cus-info {
+    margin-top: 25px;
+}
+
+.job-history {
+    margin-top: 20px;
+    justify-content: center;
+
+    h5 {
+        text-align: center;
+    }
+
+    table tr {
+        th {
+            color: $color-primary-text;
+            text-align: center;
+        }
+
+        td {
+            text-align: center;
+        }
+    }
+}
+
+.create-new-work-order {
+    > div:nth-child(1) {
+        background-color: $palette-gray-2;
+        text-align: center;
+        height: 37px;
+        padding: 10px;
+        margin-top: 20px;
+    }
+
+    h5 {
+        text-transform: uppercase;
+    }
+
+    .order-creation-section {
+        @include border;
+        height: 500px;
+        border-color: $border-color-default;
+    }
+
+    .image-section {
+        @include border;
+        height: 500px;
+        border-color: $border-color-default;
+    }
+}
+
+.footer-button-section {
+    position: absolute;
+    bottom: 45px;
+    left: 10px;
+    right: 10px;
+}
+
+.simple-estimate > div:nth-child(1) {
+    background-color: $palette-gray-2;
+    height: 37px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.summery-panel {
+    position: relative;
+    margin-top: 50px;
+    background: $palette-gray-2;
+    border-radius: $border-radius-default;
+    padding: 10px;
+    width: 100%;
+    height: 500px;
+}
+
+.total-summery-bar {
+    @include border;
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    right: 10px;
+    height: 30px;
+    background: $palette-white;
+    border-color: $border-color-default;
+    padding: 6px 20px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.summery-right-panel {
+    margin-top: 50px;
+    width: 100%;
+    height: 500px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    .sub {
+        height: 100px;
+        width: 40%;
+        margin-bottom: 25px;
+    }
+}
+
+.invoice-top-offset {
+    height: 37px;
+    background: $palette-gray-2;
+    margin-bottom: 25px;
+}
+
+.total-amount-section {
+    padding: 5px;
+    background: $palette-gray-2;
+    border-radius: $border-radius-default;
+    margin-bottom: 10px;
+}
+
+.popup-footer-carmart {
+    position: fixed;
+    bottom: -40px;
+    width: 100%;
+    background: $palette-white;
+    left: 0;
+    right: 0;
+    padding: 12px 0px;
+}
+
+.chips {
+    background: $palette-gray-2;
+}
+
+.insurence-btn-section {
+    padding: 5px;
+    background: $palette-gray-2;
+    border-radius: $border-radius-default;
+    margin-bottom: 10px;
+}
+
+@media (max-width:599px) {
+    .carmart-top-tab .mud-tabs-toolbar-wrapper > .mud-tooltip-root > div {
+        font-size: 0;
+    }
+}

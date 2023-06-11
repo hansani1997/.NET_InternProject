@@ -1,0 +1,97 @@
+﻿@using ApexCharts;
+
+<MudDialog>
+
+    <DialogContent>
+
+        <MudContainer Class="@(!isVisible? "d-block":"d-none")" Style="overflow-y: scroll; max-height:900px;padding:16px;">
+
+            <MudItem Class="@(!isVisible? "d-flex justify-content-between align-items-baseline my-2":"d-none")">
+
+                <MudButtonGroup Class="fixed-button-bar">
+
+                        <MudButton>
+                           <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="MudBlazor.Color.Primary" Class="flex-grow-1" OnClick="Back" />
+                        </MudButton>
+
+                        <MudText Typo="Typo.h6">@Header</MudText>
+
+                </MudButtonGroup>
+
+              
+            </MudItem>
+
+            <MudTable Items="@SelectedData" FixedHeader="@fixed_header" Height="@((fixed_header)  ?"430px":"380px")">
+                <HeaderContent>
+                    <MudTh>Account Code</MudTh>
+                    <MudTh>Account Name</MudTh>
+                    <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<Debtors_Creditors_Age_Analysis_DT, object>(x=>x.Amt)">Amount</MudTableSortLabel></MudTh>
+                    <MudTh></MudTh>
+
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Account Code">@context.acccd</MudTd>
+                    <MudTd DataLabel="Account Name">@context.accnm</MudTd>
+                    <MudTd DataLabel="Amt">@context.Amt.ToString("N2")</MudTd>
+                    <MudTd>
+                        <MudButton Color="MudBlazor.Color.Primary" OnClick="@(async()=>{await LoadTransactionDetails(context);})">View Details</MudButton>
+                    </MudTd>
+
+                </RowTemplate>
+
+            </MudTable>
+
+        </MudContainer>
+        
+        <MudContainer Class="@(isVisible? "d-block":"d-none")" Style="overflow-y: scroll; max-height:900px;padding:16px;">
+
+            <MudItem Class="@(isVisible? "d-flex justify-content-between align-items-baseline my-2":"d-none")">
+
+                <MudButtonGroup Class="fixed-button-bar">
+
+                        <MudButton>
+                        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" Color="MudBlazor.Color.Primary" Class="flex-grow-1" OnClick="BackToAccDetails" />
+                        </MudButton>
+
+                    <MudText Typo="Typo.h6">@transaction_header</MudText>
+
+                </MudButtonGroup>
+
+              @*  <MudText Typo="Typo.h6">@transaction_header</MudText>
+                <MudButton OnClick="BackToAccDetails"
+                           Color="MudBlazor.Color.Primary"
+                           Variant="Variant.Filled"
+                           StartIcon="@Icons.TwoTone.ArrowBack">Back</MudButton>*@
+            </MudItem>
+
+
+            <MudTable Items="@transaction_details" FixedHeader="@fixed_header" Height="@((fixed_header)  ?"430px":"380px")">
+                <HeaderContent>
+                    <MudTh>Tran Date</MudTh>
+                    <MudTh>Tran Type</MudTh>
+                    <MudTh>Tran Number</MudTh>
+                    <MudTh>Tran Amount</MudTh>
+                    <MudTh>Due Amount</MudTh>
+                    <MudTh></MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Tran Date">@context.TrnDt</MudTd>
+                    <MudTd DataLabel="Tran Type">@context.TrnTyp</MudTd>
+                    <MudTd DataLabel="Tran Number">@context.TrnNo</MudTd>
+                    <MudTd DataLabel="Tran Number">@context.TrnAmt.ToString("N2")</MudTd>
+                    <MudTd DataLabel="Tran Number">@context.DueAmt.ToString("N2")</MudTd>
+
+                    <MudTd>
+                        @*<MudButton  Color="MudBlazor.Color.Primary">View Details</MudButton>*@
+                    </MudTd>
+
+                </RowTemplate>
+
+            </MudTable>
+
+        </MudContainer>
+
+    </DialogContent>
+
+
+</MudDialog>

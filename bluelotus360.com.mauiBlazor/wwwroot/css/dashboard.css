@@ -1,0 +1,499 @@
+﻿
+/*Bl card*/
+/*sales ruby location */
+.avatar-drop-down p {
+    width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.top-reminder .mud-alert {
+    background: #F2F2F2;
+    border-radius: 10px;
+}
+    .top-reminder .mud-alert .mud-icon-button-label {
+        color: #CA1F1F;
+    }
+    .top-reminder .mud-alert .mud-chip {
+        height: 15px;
+        padding: 0 8px;
+    }
+    .top-reminder .mud-alert p {
+        color: #053B71;
+    }
+.bl-home-calander .mud-picker-calendar-content {
+    display: flex;
+    justify-content: center;
+}
+.coming-soon-page {
+    background: url("/img/coming-soon.svg");
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 100%;
+}
+.monthly_gpft_npft_dl_chart {
+    width: 75%;
+    height: 100%;
+}
+.chart_view {
+    border: 1px dotted #899189;
+    height: 90vh;
+    padding: 12px;
+}
+.chart_view_container {
+    border: 1px solid #063b71ff;
+    height: 100%;
+    padding: 10px;
+}
+.sls-crdhgt {
+    height: 160px;
+}
+.sls-card-header .mud-card-header-content h6{
+    font-weight:bold;
+}
+.bl-card-cont-primary {
+    color: #008ffb;
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+}
+
+.bl-card-conts-secondary {
+    color: #ff4081ff;
+    font-weight: bolder;
+    display: flex;
+    justify-content: center;
+}
+.dash-board-container{
+    margin-top:20px;
+    border-radius:8px;
+}
+
+.bl-avatar {
+    height: 100px !important;
+    width: 100px !important;
+    font-size: 2rem !important;
+    border: 0.3px solid #A8ABAE !important;
+}
+.welcome-panel {
+    display:flex;
+    width: 100%;
+    height: 200px;
+    left: 88px;
+    top: 78px;
+    background: linear-gradient(266.48deg, #F1AD84 47.1%, #A053C5 82.98%);
+    border-radius: 12px;
+}
+.last-access {
+    width: 100%;
+    height: 131px;
+    display:flex;
+    flex-direction:column;
+    text-align:left;
+    background: radial-gradient(97.57% 210.75% at 0.9% 2.98%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%) /* warning: gradient uses a rotation that is not supported by CSS and may not behave as expected */;
+    backdrop-filter: blur(42px);
+    /* Note: backdrop-filter has minimal browser support */
+    border:1px solid white;
+    border-radius: 10px;
+}
+
+.bl-carousel {
+    height: 227px;
+    border-radius: 12px;
+    color: #ffffff !important;
+    background-color: #183153;
+}
+
+    .carousel-img {
+        width: 500px;
+        height: 150px;
+    }
+
+.dashboard-tile-card {
+    width: 100%;
+    height: 100%;
+    background: #FFFFFF;
+    border: 1.5px solid #c2c2c2;
+    border-radius: 12px;
+
+}
+.dashboard-tile-card-header {
+    height: 25px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #c2c2c2;
+    padding-left: 10px;
+}
+.dashboard-tile-icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 75%;
+}
+.dashboard-card-action {
+    background: #063b71ff;
+    height: 25%;
+    border-radius: 0 0 12px 12px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.my-items-card {
+    box-sizing: border-box;
+    width: 268px;
+    height: 300px;
+    border: 1.5px solid #D9D9D9;
+    border-radius: 12px;
+    width:100%;
+}
+
+    .my-items-card .mud-card-header {
+        border-bottom: 1.5px solid #D9D9D9;
+        padding: 10px;
+    }
+    .my-items-card .mud-fab-size-small {
+        width: 25px;
+        height: 25px;
+        min-height: 10px;
+    }
+    .my-items-card .mud-card-header-actions {
+        padding: 10px;
+    }
+    .my-items-card .mud-card-content {
+        padding: 10px;
+        height: 200px;
+        border-bottom: 1.5px solid #D9D9D9;
+    }
+.my-todo-card {
+    box-sizing: border-box;
+    width: 268px;
+    height: 100%;
+    border: 1.5px solid #D9D9D9;
+    border-radius: 12px;
+    width: 100%;
+}
+
+    .my-todo-card .mud-card-header {
+        border-bottom: 1.5px solid #D9D9D9;
+        padding: 10px;
+    }
+
+    .my-todo-card .mud-fab-size-small {
+        width: 25px;
+        height: 25px;
+        min-height: 10px;
+    }
+
+    .my-todo-card .mud-card-header-actions {
+        padding: 10px;
+    }
+
+    .my-todo-card .mud-card-content {
+        padding: 10px;
+        height: 200px;
+        
+    }
+    .my-todo-card .todo-empty {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+    }
+
+        .my-todo-card .todo-empty span {
+            color: #777474;
+            font-size: 12px;
+        }
+
+.chart-card {
+    border: 1px solid #e3e1e1;
+    padding-top:12px;
+}
+    .chart-card .apexcharts-title-text {
+        fill: #373434;
+        font-family: "Montserrat","Roboto", "sans-serif" !important;
+    }
+
+.pin-wrapper {
+    /*background: rgba(242, 242, 242, 0.5);*/
+    border: 2px solid #dbdbdb;
+    border-radius: 10px;
+    padding: 12px;
+}
+    .pin-wrapper .pin-section{
+        height:40%;
+    }
+.pin-button {
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+}
+
+    .pin-button span {
+        width: 100%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font:bold;
+    }
+
+.pin-card {
+    margin: 5px 0px;
+    cursor: pointer;
+    border-radius: 20px !important;
+}
+
+    .pin-card:hover {
+        margin: 5px 0px;
+        cursor: pointer;
+        background: rgba(242, 242, 242, 0.5);
+        border: 1.5px solid #F2F2F2;
+        border-radius: 25px;
+    }
+    .pin-card .mud-card-header {        
+        padding: 0 3px;
+
+    }
+        .pin-card .mud-card-header svg {
+            fill: #ffffff;
+        }
+
+    .pin-card .mud-card-content {
+        
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 6px;
+        width: 100%;
+    }
+        .pin-card .mud-card-content .mud-avatar-medium {
+            height: 120px!important;
+            width: 120px!important;
+            font-size: 2rem!important;
+        }
+        .pin-card .mud-card-content .mud-avatar-filled {
+            color: #000000;
+            background: radial-gradient(97.57% 210.75% at 0.9% 2.98%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+            box-shadow: 3px 3px 7px 0 rgb(0 0 0 / 20%), -4px -4px 9px 0 rgb(255 255 255 / 55%);
+        
+        }
+    .pin-card .mud-card-actions {
+        background: #053B71;
+        border-radius: 0px 0px 20px 20px;
+        padding: 15px;
+    }
+
+            .pin-card .mud-card-actions a {
+                color: white!important;
+                width: 100%;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                resize: horizontal;
+            }
+    .pin-card .mud-card-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-bottom: 20px;
+        height: 100px;
+        padding-left: 21px;
+        padding-right: 21px;
+        text-align:center;
+    }
+        .pin-card .mud-card-content p {
+            color: #ffffff;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+
+.pin-card-empty {
+    margin: 5px 0px;
+    cursor: pointer;
+    border-radius: 25px;
+    border: 1px dashed #053B71;
+}
+
+    .pin-card-empty .mud-card-header {
+        height: 0px;
+        padding: 0 3px;
+    }
+
+    .pin-card-empty .mud-card-content {
+        display: flex;
+        flex-direction:column;
+        justify-content: center;
+        align-items: center;
+        padding: 6px;
+        width: 100%;
+        padding-bottom: 20px;
+    }
+        .pin-card-empty .mud-card-content svg {
+            color: #053B71;
+            fill: #053B71;
+            width:100px;
+            height:55px;
+        }
+        .pin-card-empty .mud-card-content p {
+            color: #053B71;
+        }
+        .pin-card-empty .mud-card-content .mud-avatar-medium {
+            height: 120px !important;
+            width: 120px !important;
+            font-size: 2rem !important;
+        }
+        .pin-card-empty .mud-card-content .mud-avatar-filled {
+            color: #000000;
+            background: radial-gradient(97.57% 210.75% at 0.9% 2.98%, rgba(255, 255, 255, 0.4) 0%, rgba(255, 255, 255, 0) 100%);
+            box-shadow: 3px 3px 7px 0 rgb(0 0 0 / 20%), -4px -4px 9px 0 rgb(255 255 255 / 55%);
+        }
+    .pin-card-empty .mud-card-actions {
+        background: #053B71;
+        border-radius: 0px 0px 20px 20px;
+        padding:15px;
+        text-align:center;
+    }
+
+        .pin-card-empty .mud-card-actions a {
+            color: white !important;
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            resize: horizontal;
+        }
+
+    .pin-card-empty .mud-card-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 137px;
+        text-align:center;
+    }
+.pin-card-empty-space {
+    width: 100%;
+    border: 1px dashed #053B71;
+    border-radius: 20px;
+    background-color: transparent;
+    margin: 5px 0;
+}
+    .pin-card-empty-space .mud-card-content {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 89px;
+        
+    }
+        .pin-card-empty-space .mud-card-content span {
+            color: #053B71;
+        }
+
+.pin-dialog-container .mud-dialog-title {
+    background: #053B71;
+    text-align: center;
+}
+    .pin-dialog-container .mud-dialog-title span {
+        color: #ffffff;
+        text-align: center;
+    }
+.pin-dialog-container .mud-dialog-action {
+    display:flex;
+    justify-content:center;
+}
+.pin-wrapper .dshbrd-section {
+    height: 60%;
+}
+
+@media (max-width:959.5px) {
+            .bl-avatar {
+        height: 150px !important;
+        width: 150px !important;
+        font-size: 4rem !important;
+    }
+        .welcome-panel {
+            position: relative;
+            height: 477px;
+            left: 0;
+            top: -4px;
+            right: 0;
+            background: linear-gradient(180deg, #A053C5 0%, #F1AD84 100%);
+            border-radius: 0px 0px 25px 25px;
+            flex-direction: column;
+        }
+
+    .last-access {
+        width: 100%;
+    }
+        .monthly_gpft_npft_dl_chart {
+            width: 100%;
+            height: 100%;
+        }
+            .monthly_gpft_npft_dl_chart .mud-dialog-content {
+                padding:0px!important;
+            }
+}
+
+@media (max-width:599px) {
+
+    .bl-carousel{
+        height:115px;
+    }
+    .welcome-panel {
+        position:relative;
+        height: 412px;
+        left: 0;
+        top: -5px;
+        right:-5px;
+        background: linear-gradient(180deg, #A053C5 0%, #F1AD84 100%);
+        border-radius: 0px 0px 25px 25px;
+        flex-direction:column;
+
+    }
+
+    .last-access {
+        width: 100%;
+
+    }
+
+    .carousel-img {
+        width: 300px;
+        height: 100px;
+    }
+
+    .pin-button span {
+        display:none;
+    }
+    
+    .pin-card .pin-card-content a {
+        width: 100%;
+    }
+    .pin-card .pin-card-content svg {
+        display:none;
+        width:0%;
+    }
+
+}
+
+@media (max-width:499px) {
+    .pin-card .mud-card-content .mud-avatar-medium {
+        height: 50px !important;
+        width: 50px !important;
+        font-size: 1.2rem !important;
+    }
+
+    .pin-card-empty .mud-card-content .mud-avatar-medium {
+        height: 50px !important;
+        width: 50px !important;
+        font-size: 1.2rem !important;
+    }
+}

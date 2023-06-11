@@ -1,0 +1,87 @@
+﻿.mud-grid-specific{
+
+}
+    .mud-table-pagination-caption{
+        display:none!important;
+    }
+    @media (min-width: 601px) {
+        .mud-grid-specific .mud-toolbar-gutters {
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+    }
+}
+    
+
+    @media (max-width: 600px) {
+        .command-column-cell {
+            justify-content: flex-start !important;
+            padding: 6px 0px !important;
+        }
+
+            .command-column-cell:before {
+                content: " " !important;
+                width: 0 !important;
+            }
+
+        .mud-table-cell {
+            display: flex;
+        }
+
+            .mud-table-cell > * {
+                max-width: 100%;
+                height: auto;
+                display: block;
+            }
+
+            .mud-table-cell:before {
+                content: attr(data-label) "\00a0";
+                font-weight: 500;
+                padding-right: 16px;
+                padding-inline-end: 16px;
+                padding-inline-start: unset;
+                width: 50%;
+            }
+
+            .mud-table-cell > * {
+                flex-grow: 1;
+            }
+
+            .mud-table-cell > .w-50 {
+                max-width: 50%;
+            }
+
+        .mud-table-root {
+            border: 2px solid #d5d1d1;
+            border-radius: 10px;
+        }
+
+
+        .multiple_condition_column > * {
+            flex-grow: 0 !important;
+        }
+
+        .divider-column-cell:before {
+            display: none;
+            width: 0 !important;
+        }
+
+        .mud-table-toolbar {
+            padding-left: 16px;
+            padding-right: 16px;
+            padding-inline-start: 16px;
+            padding-inline-end: 16px;
+        }
+
+        .image-column-cell {
+            justify-content: flex-start !important;
+            padding: 6px 0px !important;
+        }
+
+            .image-column-cell:before {
+                content: " " !important;
+                width: 0 !important;
+                padding-right: 0 !important;
+                padding-inline-end: 0 !important;
+            }
+
+

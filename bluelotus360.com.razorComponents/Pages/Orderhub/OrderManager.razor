@@ -1,0 +1,49 @@
+﻿@page "/Order/Order_Manager"
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <MudAlert Severity="Severity.Normal">Orders are showing From @requestParameters.FromDate to @requestParameters.ToDate</MudAlert>
+
+    <MudItem Style="margin-top:2%">
+    <UIBuilder FormObject="formDefinition"
+           DataObject="_order"
+           InteractionLogics="_interactionLogic"
+           ObjectHelpers="_objectHelpers"
+           @ref="_refBuilder" />
+           </MudItem>
+
+    @if(OrderStatus != null && OrderStatus.Count > 0)
+    {
+        <MudTabs Elevation="2" Rounded="true" Centered="false" Style="margin-top:2%" KeepPanelsAlive=true @ref=tabs Class="orderhub-tab">
+        @foreach (CodeBaseResponse item in OrderStatus)
+        {
+                <MudTabPanel Text="@item.CodeName" Tag='@item.CodeKey' BadgeData='@item.Count' BadgeColor="Color.Error" @onclick="() => TabClick(item)" />
+        }
+        </MudTabs>
+    }
+
+    @if (Grid != null)
+    {
+        <MudItem Style="margin-top:2%">
+            <BLTable FormObject="Grid"
+               DataObject="ListOfOrders"
+               InteractionLogics="_interactionLogic"
+               ObjectHelpers="_objectHelpers"
+               @ref="_blTb" />
+        </MudItem>
+       
+    }
+
+    <bluelotus360.com.razorComponents.Pages.Orderhub.Components.FilterOrder WindowIsVisible="@isOpenFilter" LocationKey="_order.Location.CodeKey" OnCloseButtonClick="HideAllPopups" @ref="_FilterOrderData" blElement="FilterSection" OnOpenClick="LoadFoundOrder"></bluelotus360.com.razorComponents.Pages.Orderhub.Components.FilterOrder>
+    <bluelotus360.com.razorComponents.Pages.Orderhub.Components.GetMoreOrderInformation WindowIsVisible="@isOpenMoreInfo" OnCloseButtonClick="HideAllPopups" @ref="moredata"></bluelotus360.com.razorComponents.Pages.Orderhub.Components.GetMoreOrderInformation>
+    <bluelotus360.com.razorComponents.Pages.Orderhub.Components.EditOrder WindowIsVisible="isOpenEdit" OnCloseButtonClick="HideAllPopups"  blElement="formDefinition" @ref="editOrder" LocationKey="_order.Location.CodeKey"></bluelotus360.com.razorComponents.Pages.Orderhub.Components.EditOrder>
+    <bluelotus360.com.razorComponents.Pages.Orderhub.Components.GetUberRecord WindowIsVisible="isOpenUber" OnCloseButtonClick="HideAllPopups" blElement="UberOrderSection"></bluelotus360.com.razorComponents.Pages.Orderhub.Components.GetUberRecord>
+    <bluelotus360.com.razorComponents.Pages.Orderhub.Components.IncomingNotification WindowIsVisible="isOpenNotification" OnCloseButtonClick="HideNotificationPopup" OnOKClick="RefreshIncomingOrder"></bluelotus360.com.razorComponents.Pages.Orderhub.Components.IncomingNotification>
+} 
+
+    <style>
+    .orderhub-tab .mud-tab
+    {
+        min-width: 250px !important;
+    }
+    </style>

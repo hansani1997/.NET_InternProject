@@ -1,0 +1,54 @@
+﻿@using Telerik.Blazor
+
+<TelerikWindow Modal="true" @bind-Visible="@WindowIsVisible"
+               Centered="true"
+               CloseOnOverlayClick="false" Class="pop-up-z-index" Width="500px">
+
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+            <WindowAction Name="Minimize" />
+            <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+        @PopupTitle
+    </WindowTitle>
+    <WindowContent>
+        <MudList Clickable="false">
+            @foreach (var item in Validator.UserMessages.UserMessages)
+            {
+                <MudListItem Style="Color:darkred" Text="@item.Message" Icon="@Icons.Material.Filled.Error" />
+            }
+        </MudList>
+
+        <MudPaper @ondragenter="@SetDragClass" @ondragleave="@ClearDragClass" @ondragend="@ClearDragClass" Height="300px" Outlined="true" Class="@DragClass">
+
+            @if (IsUploading)
+            {
+                <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+            }
+
+            @if (!Clearing)
+            {
+                <InputFile OnChange="OnInputFileChanged" multiple class="absolute mud-width-full mud-height-full overflow-hidden z-2" style="opacity:0;" />
+            }
+            <MudText Typo="Typo.h6">Drag and drop files here or click</MudText>
+            @foreach (var file in files)
+            {
+                <MudChip Color="Color.Info" Text="@file.FileName" />
+            }
+        </MudPaper>
+
+        <MudTextField @bind-Value="Description" Label="Description" Variant="Variant.Outlined" class="mb-3"></MudTextField>
+
+        <MudToolBar DisableGutters="true" Class="d-flex justify-content-center gap-4">
+            <MudButton OnClick="Upload" Disabled="@(!files.Any())" Color="Color.Primary" Variant="Variant.Filled">Upload</MudButton>
+            <MudButton OnClick="Clear" Disabled="@(!files.Any())" Color="Color.Default" Variant="Variant.Filled">Clear</MudButton>
+        </MudToolBar>
+
+    </WindowContent>
+</TelerikWindow>
+
+

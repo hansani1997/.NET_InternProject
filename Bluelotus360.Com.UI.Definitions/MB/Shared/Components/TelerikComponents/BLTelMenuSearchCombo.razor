@@ -1,0 +1,39 @@
+﻿
+    @if (ComboDataObject == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+
+        @if (ComboDataObject != null)
+        {
+            <div class="row">
+               
+                <div class="col-12">
+                    @if (selectedMenu!=null)
+                    {
+                         <span class="search-combo-wrapper">
+       
+                                <TelerikIcon Icon="zoom" Class="px-3"/>
+                                <TelerikComboBox Data="@blMenus" TextField="MenuCaption" ValueField="MenuId"
+                                                TValue="int" TItem="MenuItem"
+                                                ValueChanged="(int  s)=>OnComboValueChangedTel(s)"
+                                                Value="selectedMenu.MenuId"
+                                                FilterOperator="Telerik.Blazor.StringFilterOperator.Contains"
+                                                Filterable="true"
+                                                Class="search_combo_css"
+                                                Placeholder="Search Menu">
+                                </TelerikComboBox>
+                         </span>
+                        
+                    }
+                </div>
+           
+            </div>
+        }
+
+
+
+
+    }

@@ -1,0 +1,31 @@
+﻿<MudItem xs="@UIElement.GetXsWidth()" sm="@UIElement.GetSmWidth()" md="@UIElement.GetMdWidth()" lg=@UIElement.GetLgWidth() xl=@UIElement.GetXlgWidth() Class=@css_class >
+    @if (ItemRes == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        <MudAutocomplete T="ItemResponse"
+                     Label="@UIElement.ElementCaption" SearchFunc="@OnComboSearch"
+                     Class="@UIElement.CssClass"
+                     Value="selecteditemResponse"
+                     ValueChanged="OnComboValueChangedAsync" Text="@GetComboDisplayText()"
+                     Variant="UIDefaults.DefaultControlVariants" DebounceInterval="700"
+                     ResetValueOnEmptyText="true"
+                     Strict="false"
+                     AdornmentIcon="@IconSvgCode"
+                     Adornment="Adornment.End"
+                     Placeholder="@((UIElement.DefaultValue??""))"
+                     ShowProgressIndicator="true"
+                     @ref="@_refItemCombo">
+
+            <NoItemsTemplate>
+                <MudText Align="Align.Center" Class="px-4 py-1">
+                    No items found
+                </MudText>
+            </NoItemsTemplate>
+
+        </MudAutocomplete>
+    }
+</MudItem>
+

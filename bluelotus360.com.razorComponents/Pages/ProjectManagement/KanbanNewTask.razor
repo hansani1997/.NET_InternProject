@@ -1,0 +1,339 @@
+﻿@page "/Process/NewTask/{NavigateElementKey}/{TaskIdentity}/{SubTaskIdentity}"
+@using BL10.CleanArchitecture.Domain.Entities.ProjectManagement;
+@using Microsoft.AspNetCore.Components.Forms;
+
+@*<MudItem xs="12" Style="margin-left:5% !important">
+    <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" Class="fixed-button-bar">
+        <MudIconButton Icon="fa-solid fa-floppy-disk" @onclick="() => OnSaveClick()"></MudIconButton>
+        <MudIconButton Icon="fa-solid fa-arrow-left" @onclick="() => OnBackClick()"></MudIconButton>
+     </MudButtonGroup>
+
+</MudItem>*@
+@if (KanbanButtonSection != null)
+{
+    <UIRenderere DataObject="new object()" FromSection="KanbanButtonSection" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+}
+
+<MudItem xs="12" Style="margin-top:60px;">
+    <MudCard>
+        @foreach (BLUIElement item in ListOfTabs)
+        {
+            <MudExpansionPanels MultiExpansion="false" Style="margin-top:10px !important;">
+                <MudExpansionPanel Text="@item.ElementCaption" Style="background-color:#E7F1FF; border-radius:10px !important; border:1px solid;border-color:#E7F1FF" @onclick="() => ExpansionPanelClick(item)">
+                    @if (TaskDetails != null && TaskDetails.Children.Count > 0 && item.ElementID == "TaskDetails")
+                    {
+
+                        <MudCard Style="padding:8% 2% !important; border-radius:10px !important">
+                            <UIRenderere FromSection="TaskDetails" DataObject="EditTask" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                        </MudCard>
+                    }
+                    @if (AttachmentDetails != null && item.ElementID == "Attachments" && TaskKey > 11)
+                    {
+                        <MudCard Style="padding:8% 2% !important; border-radius:10px !important">
+                            <MudFileUpload T="IReadOnlyList<IBrowserFile>" MaximumFileCount="3" OnFilesChanged="OnInputFileChanged" Hidden="false" Class="flex-1" InputClass="absolute mud-width-full mud-height-full overflow-hidden z-20" InputStyle="opacity:0"
+                                   @ondragenter="@SetDragClass" @ondragleave="@ClearDragClass" @ondragend="@ClearDragClass">
+                                <ButtonTemplate>
+                                    <MudPaper Height="200px" Outlined="true" Class="@DragClass">
+                                        <MudText Typo="Typo.h5">Drag and drop files here or click. Max file count is 3</MudText>
+                                        @foreach (var file in fileNames)
+                                        {
+                                            <MudChip Color="Color.Dark" Text="@file" />
+                                        }
+                                    </MudPaper>
+                                </ButtonTemplate>
+                            </MudFileUpload>
+                            <div class="d-flex">
+                                <MudItem xs="6">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="width:100% !important" @onclick="() => UploadFiles(TaskKey)">Upload</MudButton>
+                                </MudItem>
+                                <MudItem xs="6">
+                                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" Style="width:100% !important" @onclick="() => ClearFiles()">Cancel</MudButton>
+                                </MudItem>
+                            </div>
+
+                            @if (EditTask.Base64ImageDocument != null && EditTask.Base64Documents.Count > 0)
+                            {
+                                foreach (Base64Document item in EditTask.Base64Documents)
+                                {
+                                    <MudItem xs="12">
+                                        @if (item.Filename.Contains(".pdf"))
+                                        {
+                                            <MudCard Style="border:1px solid; margin-top:5% !important">
+                                                <MudCardHeader Style="padding:10px !important">
+                                                    <CardHeaderAvatar>
+                                                        <MudAvatar Style="background-color:transparent !important">
+                                                            <MudIcon Icon="fa-solid fa-file-pdf" Size="Size.Small" Color="Color.Secondary" />
+                                                        </MudAvatar>
+                                                    </CardHeaderAvatar>
+                                                    <CardHeaderContent>
+                                                        <MudText Typo="Typo.body1">@item.Filename</MudText>
+                                                        <MudText Typo="Typo.body1">@item.FileSize</MudText>
+                                                    </CardHeaderContent>
+                                                </MudCardHeader>
+                                                <MudCardActions>
+                                                    <MudTooltip Text="@item.UploadedBy.UserID">
+                                                        <MudAvatar Color="Color.Secondary">@item.UploadedBy.UserID[0]</MudAvatar>
+                                                    </MudTooltip>
+
+                                                    <MudIconButton Icon="fa-solid fa-download" @onclick="() => DownloadFile(item)" Color="Color.Secondary" />
+                                                    <MudIconButton Icon="fa-solid fa-trash-can" @onclick="() => DeleteFile(item)" Color="Color.Secondary" />
+                                                </MudCardActions>
+                                            </MudCard>
+
+                                        }
+                                        else if (item.Filename.Contains(".xls"))
+                                        {
+                                            <MudCard Style="border:1px solid; margin-top:5% !important">
+                                                <MudCardHeader Style="padding:10px !important">
+                                                    <CardHeaderAvatar>
+                                                        <MudAvatar Style="background-color:transparent !important">
+                                                            <MudIcon Icon="fa-solid fa-file-excel" Size="Size.Small" Color="Color.Secondary" />
+                                                        </MudAvatar>
+                                                    </CardHeaderAvatar>
+                                                    <CardHeaderContent>
+                                                        <MudText Typo="Typo.body1">@item.Filename</MudText>
+                                                    </CardHeaderContent>
+                                                </MudCardHeader>
+                                                <MudCardActions>
+                                                    <MudTooltip Text="@item.UploadedBy.UserID">
+                                                        <MudAvatar Color="Color.Secondary">@item.UploadedBy.UserID[0]</MudAvatar>
+                                                    </MudTooltip>
+
+                                                    <MudIconButton Icon="fa-solid fa-download" @onclick="() => DownloadFile(item)" Color="Color.Secondary" />
+                                                    <MudIconButton Icon="fa-solid fa-trash-can" @onclick="() => DeleteFile(item)" Color="Color.Secondary" />
+                                                </MudCardActions>
+                                            </MudCard>
+                                        }
+                                        else if (item.Filename.Contains(".doc"))
+                                        {
+                                            <MudCard Style="border:1px solid; margin-top:5% !important">
+                                                <MudCardHeader Style="padding:10px !important">
+                                                    <CardHeaderAvatar>
+                                                        <MudAvatar Style="background-color:transparent !important">
+                                                            <MudIcon Icon="fa-solid fa-file-word" Size="Size.Small" Color="Color.Secondary" />
+                                                        </MudAvatar>
+                                                    </CardHeaderAvatar>
+                                                    <CardHeaderContent>
+                                                        <MudText Typo="Typo.body1">@item.Filename</MudText>
+                                                    </CardHeaderContent>
+                                                </MudCardHeader>
+                                                <MudCardActions>
+                                                    <MudTooltip Text="@item.UploadedBy.UserID">
+                                                        <MudAvatar Color="Color.Secondary">@item.UploadedBy.UserID[0]</MudAvatar>
+                                                    </MudTooltip>
+
+                                                    <MudIconButton Icon="fa-solid fa-download" @onclick="() => DownloadFile(item)" Color="Color.Secondary" />
+                                                    <MudIconButton Icon="fa-solid fa-trash-can" @onclick="() => DeleteFile(item)" Color="Color.Secondary" />
+                                                </MudCardActions>
+                                            </MudCard>
+                                        }
+                                        else
+                                        {
+                                            <MudCard Style="border:1px solid; margin-top:5% !important">
+                                                <MudCardHeader Style="padding:10px !important">
+                                                    <CardHeaderAvatar>
+                                                        <MudAvatar Style="background-color:transparent !important">
+                                                            <MudIcon Icon="fa-solid fa-file-image" Size="Size.Small" Color="Color.Secondary" />
+                                                        </MudAvatar>
+                                                    </CardHeaderAvatar>
+                                                    <CardHeaderContent>
+                                                        <MudText Typo="Typo.body1">@item.Filename</MudText>
+                                                    </CardHeaderContent>
+                                                </MudCardHeader>
+                                                <MudCardActions>
+                                                    <MudTooltip Text="@item.UploadedBy.UserID">
+                                                        <MudAvatar Color="Color.Secondary">@item.UploadedBy.UserID[0]</MudAvatar>
+                                                    </MudTooltip>
+
+                                                    <MudIconButton Icon="fa-solid fa-download" @onclick="() => DownloadFile(item)" Color="Color.Secondary" />
+                                                    <MudIconButton Icon="fa-solid fa-trash-can" @onclick="() => DeleteFile(item)" Color="Color.Secondary" />
+                                                </MudCardActions>
+                                            </MudCard>
+                                        }
+                                    </MudItem>
+                                }
+                            }
+
+
+                        </MudCard>
+                    }
+
+                    @if (Teams != null && item.ElementID == "Teams")
+                    {
+                        <MudCard Style="padding:8% 2% !important; border-radius:10px !important">
+                            <UIRenderere FromSection="Teams" DataObject="_resource" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+
+                            <MudItem xs="12">
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="width:100% !important" @onclick="() => AddTeamMembers()">Add</MudButton>
+                            </MudItem>
+
+                            <MudSimpleTable Style="overflow-x: auto;margin-top:3% !important">
+                                <thead>
+                                    <tr style="background-color:#183153; color:white; border-radius:2px">
+                                        <th class="d-none"></th>
+                                        <th>Member</th>
+                                        <th>Hour</th>
+                                        <th>Description</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var row in EditTask.Resources)
+                                    {
+                                        <tr>
+                                            <td class="d-none">@row.ProcessComponentKey</td>
+                                            <td>@row.ComponentAddress.AddressName</td>
+                                            <td>@row.TransactionQuantity</td>
+                                            <td>@row.Description</td>
+                                            <td><MudIconButton Icon="fa-solid fa-trash" Color="Color.Primary" @onclick="() => DeleteTeamMembers(row)"></MudIconButton></td>
+                                        </tr>
+                                    }
+                                </tbody>
+                            </MudSimpleTable>
+
+                        </MudCard>
+                    }
+                    @if (Comment != null && item.ElementID == "Comments" && TaskKey > 11)
+                    {
+                        if (EditTask.Comments != null && EditTask.Comments.Count > 0)
+                        {
+                            foreach (ProcessRemark item in EditTask.Comments)
+                            {
+                                <MudItem xs="12">
+                                    <MudCard Style="margin-top:5% !important">
+                                        <MudCardHeader Style="padding:10px !important">
+                                            <CardHeaderAvatar>
+                                                <MudAvatar Color="Color.Secondary">@item.RemarksAddress.AddressSName</MudAvatar>
+                                            </CardHeaderAvatar>
+                                            <CardHeaderContent>
+                                                <MudText Typo="Typo.body1">@item.RemarksAddress.Alias  @item.commentDateTime</MudText>
+                                            </CardHeaderContent>
+                                        </MudCardHeader>
+                                        <MudCardContent Style="padding:4% !important">
+                                            <MudText Typo="Typo.body2">@item.Remarks</MudText>
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudItem>
+
+                            }
+                        }
+
+                        <MudCard Style="padding:8% 2% !important;margin-top:3% !important">
+                            <UIRenderere FromSection="Comment" DataObject="_Comment" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                        </MudCard>
+                    }
+
+                    @if (SubTasks != null && item.ElementID == "SubTask" && EditTask.SubProcess != null)
+                    {
+                        <MudItem xs="12">
+                            <MudCard Style="margin-top:5% !important; border-radius:10px !important">
+                                <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                                    <MudIconButton Icon="fa-solid fa-plus" Color="Color.Primary" @onclick="() => OnSubTaskAddClick(EditTask.TaskKey)" />
+                                </MudButtonGroup>
+                            </MudCard>
+                        </MudItem>
+                        
+                        if (EditTask.SubProcess.Count > 0)
+                        {
+                            foreach (var item in EditTask.SubProcess)
+                            {
+                                <MudCard Style="margin-top:5% !important; border-radius:10px !important">
+                                    <MudCardHeader>
+                                        <CardHeaderContent>
+                                            <MudText Typo="Typo.h5"><b>@item.TaskId</b></MudText>
+                                        </CardHeaderContent>
+                                    </MudCardHeader>
+
+                                    <MudCardContent Style="padding: 5px !important">
+                                        <MudItem xs="12" Style="padding: 5px !important">
+                                            <MudText Typo="Typo.h5">@item.TaskName</MudText>
+                                        </MudItem>
+                                    </MudCardContent>
+                                    <MudCardActions Style="padding:2% !important">
+                                        <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                                            <MudIconButton Icon="fa-solid fa-plus" Color="Color.Primary" @onclick="() => OnChildSubTaskAddClick(item.TaskKey)" />
+                                            <MudIconButton Icon="fa-solid fa-pen" @onclick="() => OnSubTaskEditClick(item.TaskKey)"></MudIconButton>
+                                        </MudButtonGroup>
+                                    </MudCardActions>
+                                </MudCard>
+                            }
+                        }
+
+
+                    }
+
+                    @if (_CheckList != null && item.ElementID == "CheckList")
+                    {
+                        <MudCard Style="padding:8% 2% !important; border-radius:10px !important">
+
+                            @if (EditTask.CheckList != null && EditTask.CheckList.Count > 0)
+                            {
+                                float TotalTask = EditTask.CheckList.Count;
+                                float MarkedTask = EditTask.CheckList.Where(x => x.isChecked).ToList().Count;
+                                float Percentage = (MarkedTask / TotalTask) * 100;
+                                <div class="d-flex">
+                                    <MudItem xs="10">
+                                        <MudProgressLinear Color="Color.Success" Rounded="true" Size="Size.Large" Value="@Percentage" />
+                                    </MudItem>
+                                    <MudItem xs="2">
+                                        <MudText Typo="Typo.h6"> @Percentage%</MudText>
+                                    </MudItem>
+
+                                </div>
+
+                                <MudItem xs="12">
+                                    <MudCard>
+                                        @foreach (CheckList chk in EditTask.CheckList)
+                                        {
+                                            <MudCardContent>
+                                                <div class="d-flex">
+                                                    <MudItem xs="2">
+                                                        @if (chk.isChecked)
+                                                        {
+                                                            <MudCheckBox Checked="true" Color="Color.Primary" @onclick="() => OnCheckListClick(chk)"></MudCheckBox>
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudCheckBox Checked="false" Color="Color.Primary" @onclick="() => OnUnCheckListClick(chk)"></MudCheckBox>
+                                                        }
+
+                                                    </MudItem>
+                                                    <MudItem xs="8">
+                                                        <MudText Typo="Typo.h5">@chk.Content</MudText>
+                                                    </MudItem>
+                                                    <MudItem xs="2">
+                                                        <MudIconButton Icon="fa-solid fa-trash" Color="Color.Primary" @onclick="() => CheckListDelete(chk)" />
+                                                    </MudItem>
+                                                </div>
+                                            </MudCardContent>
+                                        }
+                                    </MudCard>
+                                </MudItem>
+                            }
+
+
+                            @if (!isChkLstDataEntryView)
+                            {
+                                <UIRenderere FromSection="CheckListBtnSec" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                            }
+                            else
+                            {
+                                <UIRenderere FromSection="CheckListDataEntry" DataObject="_chkLst" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                            }
+
+                        </MudCard>
+                    }
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+        }
+
+
+    </MudCard>
+</MudItem>
+
+
+
+
+
+
+@*<bluelotus360.com.razorComponents.Pages.ProjectManagement.Popup.CreateSubTask WindowIsVisible=isOpenSubTaskOption OnCloseButtonClick="Hidepopup" TaskKey="SubTaskKey" NavigateElementKey="Convert.ToInt64(NavigateElementKey)"></bluelotus360.com.razorComponents.Pages.ProjectManagement.Popup.CreateSubTask>*@

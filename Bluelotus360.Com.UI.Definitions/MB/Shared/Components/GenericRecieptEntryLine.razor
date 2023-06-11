@@ -1,0 +1,41 @@
+﻿<hr />
+<MudGrid>
+    <MudItem sm="3">
+        <MudTextField T='string'
+                      Value="RecieptLine.PaymentMode.CodeName" FullWidth="true"
+                      Label="Payment Mode"
+                      ReadOnly="true"
+                      Variant="UIDefaults.DefaultControlVariants" />
+    </MudItem>
+
+    <MudItem sm="3">
+        <MudTextField T='string'
+                      @bind-Value="RecieptLine.PayementDocumentNumber" FullWidth="true"
+                      Label="Document Number"
+                      ReadOnly="false"
+                      Variant="UIDefaults.DefaultControlVariants" />
+
+
+    </MudItem>
+
+    <MudItem sm="3">
+        <MudDatePicker Label="Doc Date"
+                       AutoClose="true"
+                       @bind-Date="RecieptLine.PayementDocumentDate"
+                       DateFormat="dd/MMM/yyyy"
+                       Variant="UIDefaults.DefaultControlVariants" />
+
+
+    </MudItem>
+    <MudItem sm="3">
+      
+    <MudNumericField T="decimal" @bind-Value="RecieptLine.Amount" 
+                     Label="Amount" Class="child-inp-right"                   
+                     Variant="UIDefaults.DefaultControlVariants" />
+
+
+    </MudItem>
+
+
+
+</MudGrid>

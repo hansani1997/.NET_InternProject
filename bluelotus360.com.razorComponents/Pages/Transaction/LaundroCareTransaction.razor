@@ -1,0 +1,381 @@
+﻿@page "/transaction/laundrocare/"
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Transaction;
+@using bluelotus360.Com.commonLib.Routes;
+
+<UserMessageDialog Messages="@validator.UserMessages" @ref="_refUserMessage" />
+<AddNewAddress OnAddressCreated="OnCustomerCreateSuccess" @ref="_refNewAddressCreation" />
+<GenericReciept Transaction="transaction" @ref="_refgenericReciept"
+                OnCloseClick="OnRecipetClose" OnRecieptSaveSuccess="OnRecieptSavedSuccessfully" ReceiptSavingURL=@TokenEndpoints.SaveAccountRecieptURLExLND />
+
+<FileUploadTelPopUp UploadObject="uploadObj"
+                    WindowIsVisible="ImagePopupShown"
+                    OnCloseButtonClick="HideAllPopups"
+                    PopupTitle="Image Upload"
+                    UploadFileType="Images"
+                    UploaddSuccess="UploadSuccess" />
+
+@if (ReportShown)
+{
+    <div class="report-pop-up @(ReportShown ? "":"d-none")">
+
+        <BLReportViewer ReportSetting="_dayEndReportOption"
+                    CloseReportDelegate="HideAllPopups" />
+
+        <hr />
+    </div>
+}
+@if (UIDefinition == null)
+{
+    <div class="rip-wrap">
+        <div class="lds-ripple">
+            <div>
+            </div><div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <MudPaper Elevation="0" Class="">
+        <div class="detail-wrapper">
+            <div class="header-section">
+
+                <UIBuilder FormObject="UIDefinition"
+                       DataObject="transaction"
+                       InteractionLogics="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"
+                       CssClass="no-flex-break  fixed-header" />
+
+            </div>
+
+            
+            <FindTransactionPopUp ComboDataObject="new object()"
+                              UIElement="@findTrandsactionUI"
+                              InteractionLogics="@_interactionLogic"
+                              ObjectHelpers="@_objectHelpers"
+                              PopupTitle="Find Transaction"
+                              WindowIsVisible="@FindTransactionShown"
+                              OnOpenClick="LoadTransaction"
+                              OnCloseButtonClick="HideAllPopups" />
+
+            <div class="detailsection">
+                <MudGrid>
+                    <MudItem xs=12>
+                        <LaundercareItemPiicker @ref="_refItemPicker"
+                                            Services=Services
+                                            HumanTypes=HumanTypes
+                                            Items=Items
+                                            ItemCategory1=transaction.SelectedLineItem.ItemCategory1
+                                            ItemCategory2=transaction.SelectedLineItem.ItemCategory2
+                                            OnServiceTypeChanged="OnItemCategory2Change"
+                                            OnHumanTypeChanged="OnItemCategory1Change"
+                                            OnSelectedItemChanged="OnTransactionItemChanged" />
+                    </MudItem>
+                    <MudItem xs=12>
+
+
+                        @if (transaction != null && transaction.InvoiceLineItems != null)
+                        {
+                            <MudDataGrid T="TransactionLineItem" 
+                                        Items="@transaction.InvoiceLineItems.Where(x=>x.IsActive==1).ToList()">
+                                <Columns>
+                                    <TemplateColumn T="TransactionLineItem" Title="SL No">
+                                        <CellTemplate>
+                                            @{
+                                                var ctx = context.Item as TransactionLineItem;
+                                                @if(ctx != null)
+                                                {
+                                                    <MudIconButton Icon="@Icons.Material.Filled.EdgesensorHigh" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="@(ctx.IsAllItemScanned()?Color.Success:Color.Info)" OnClick="()=>ShowScanSerialNumber(ctx)" Disabled="@(ctx.TransactionItem.IsWeightItem())"></MudIconButton>
+                                                }
+                                            }
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Serial Numbers">
+                                        <CellTemplate>
+                                            @{
+                                                var ctx = context.Item as TransactionLineItem;
+                                                @if(ctx != null)
+                                                {
+                                                    <span>@($"{string.Join(", ", ctx.SerialNumbers.Select(x => x.SerialNumber))}")</span>
+                                                }
+                                            }
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Image">
+                                        <CellTemplate>
+                                            @{
+                                                var ctx = context.Item as TransactionLineItem;
+                                                @if (ctx != null)
+                                                {
+                                                    if (ctx.Base64Documents.FirstOrDefault() != null)
+                                                    {
+                                                        if (string.IsNullOrEmpty(ctx.Base64Documents.FirstOrDefault().Base64Source))
+                                                        {
+                                                            <MudIconButton Icon="@Icons.Material.Filled.AttachFile" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>ShowUploadPopUp(ctx)" Disabled="@(ctx.ItemTransactionKey<=1)"></MudIconButton>
+                                                        }
+                                                        else
+                                                        {
+                                                            string url = $"data:image/png;base64, {ctx.Base64Documents.FirstOrDefault().Base64Source}";
+                                                            <img src="@url" style="width:75px;height:100%;" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudIconButton Icon="@Icons.Material.Filled.AttachFile" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>ShowUploadPopUp(ctx)" Disabled="@(ctx.ItemTransactionKey<=1)"></MudIconButton>
+                                                    }
+
+                                                }
+                                            }
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Service Name">
+                                         <CellTemplate>
+                                            @if (context.Item.ItemCategory2 != null && !string.IsNullOrEmpty(context.Item.ItemCategory2.CodeName))
+                                            {
+                                                <span>@context.Item.ItemCategory2.CodeName</span>
+                                            }
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Human Type">
+                                        <CellTemplate>
+                                            @if (context.Item.ItemCategory1 != null && !string.IsNullOrEmpty(context.Item.ItemCategory1.CodeName))
+                                            {
+                                                <span>@context.Item.ItemCategory1.CodeName</span>
+                                            }
+                                            
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem"  Title="Article Name">
+                                        <CellTemplate>
+                                            @if (context.Item.TransactionItem != null && !string.IsNullOrEmpty(context.Item.TransactionItem.ItemName))
+                                            {
+                                                <span>@context.Item.TransactionItem.ItemName</span>
+                                            }
+                                            
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Qty">
+                                        <CellTemplate>
+                                                <span>@context.Item.TransactionQuantity</span>
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Peices">
+                                        <CellTemplate>
+                                            <span>@context.Item.Quantity2</span>
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem"  Title="Folding Type">
+                                        <CellTemplate>
+                                            @if (context.Item.Analysis1 != null && !string.IsNullOrEmpty(context.Item.Analysis1.CodeName))
+                                            {
+                                                <span>@context.Item.Analysis1.CodeName</span>
+                                            }
+                                            
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Price">
+                                        <CellTemplate>
+                                            <span>@context.Item.TransactionRate</span>
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Total Markup">
+                                        <CellTemplate>
+                                            @{
+                                                var ctx = context.Item as TransactionLineItem;
+                                                @if (ctx != null)
+                                                {
+                                                    @ctx.GetTotalMarkupAmount().ToString("N2")
+                                                }
+                                            }
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Line Total">
+                                        <CellTemplate>
+                                            @{
+                                                var ctx = context.Item as TransactionLineItem;
+                                                @if (ctx != null)
+                                                {
+                                                    @ctx.GetNetLineTotal().ToString("N2")
+                                                }
+                                            }
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Defects">
+                                       <CellTemplate>
+                                            @if (context.Item.Analysis2 != null && !string.IsNullOrEmpty(context.Item.Analysis2.CodeName))
+                                            {
+                                                <span>@context.Item.Analysis2.CodeName</span>
+                                            }
+                                            
+                                       </CellTemplate>
+                                   </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Color">
+                                        <CellTemplate>
+                                            @if (context.Item.Analysis3 != null && !string.IsNullOrEmpty(context.Item.Analysis3.CodeName))
+                                            {
+                                                <span>@context.Item.Analysis3.CodeName</span>
+                                            }
+                                            
+                                        </CellTemplate>
+                                     </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Brand">
+                                        <CellTemplate>
+                                            @if (context.Item.Analysis5 != null && !string.IsNullOrEmpty(context.Item.Analysis5.CodeName))
+                                            {
+                                                <span>@context.Item.Analysis5.CodeName</span>
+                                            }
+                                           
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem"  Title="Comment">
+                                        <CellTemplate>
+                                            @if (!string.IsNullOrEmpty(context.Item.Description))
+                                            {
+                                                <span>@context.Item.Description</span>
+                                            }
+                                            
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                    <TemplateColumn T="TransactionLineItem" Title="Action">
+                                        <CellTemplate>
+                                            @{
+                                                var ctx = context.Item as TransactionLineItem;
+                                                @if (ctx != null)
+                                                {
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>OnItemEditClick(ctx)" Title="Edit" />
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2" Color="Color.Error" OnClick="()=>OnOrderItemDelete(ctx)" Title="Delete" />
+                                                }
+
+                                            }
+                                        </CellTemplate>
+                                    </TemplateColumn>
+                                </Columns>
+                                <PagerContent>
+                                    <MudDataGridPager T="TransactionLineItem"/>
+                                </PagerContent>
+                            </MudDataGrid>
+                        }
+
+                        
+                    </MudItem>
+                </MudGrid>
+
+            </div>
+
+        </div>
+
+    </MudPaper>
+
+
+}
+
+
+@*<BLTelFindTransaction ComboDataObject="new object()"
+                              UIElement="@findTrandsactionUI"
+                              InteractionLogics="@_interactionLogic"
+                              ObjectHelpers="@_objectHelpers"
+                              PopupTitle="Find Transaction"
+                              WindowIsVisible="@FindTransactionShown"
+                              OnOpenClick="LoadTransaction"
+                              OnCloseButtonClick="HideAllPopups" />*@
+
+@*        @if (transaction != null && transaction.InvoiceLineItems != null)
+                        {
+                            <TelerikGrid Data="@transaction.InvoiceLineItems.Where(x=>x.IsActive==1)"
+                                 Pageable="true"
+                                 Sortable="true"
+                                 FilterMode="@GridFilterMode.FilterMenu">
+                                <GridColumns>
+                                    <GridColumn Title="SL No" TextAlign="ColumnTextAlign.Center">
+                                        <Template>
+                                            @{
+                                                var ctx = context as TransactionLineItem;
+                                                @if (ctx != null)
+                                                {
+                                                    <MudIconButton Icon="@Icons.Filled.EdgesensorHigh" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>ShowScanSerialNumber(ctx)" Disabled="@(ctx.TransactionItem.IsWeightItem())"></MudIconButton>
+                                                }
+
+                                            }
+                                        </Template>
+                                    </GridColumn>
+                                    <GridColumn Field="" Title="Image" TextAlign="ColumnTextAlign.Center">
+                                        <Template>
+                                            @{
+                                                var ctx = context as TransactionLineItem;
+                                                @if (ctx != null)
+                                                {
+                                                    if (ctx.Base64Documents.FirstOrDefault() != null)
+                                                    {
+                                                        if (string.IsNullOrEmpty(ctx.Base64Documents.FirstOrDefault().Base64Source))
+                                                        {
+                                                            <MudIconButton Icon="@Icons.Filled.AttachFile" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>ShowUploadPopUp(ctx)" Disabled="@(ctx.ItemTransactionKey<=1)"></MudIconButton>
+                                                        }
+                                                        else
+                                                        {
+                                                            string url = $"data:image/png;base64, {ctx.Base64Documents.FirstOrDefault().Base64Source}";
+                                                            <img src="@url" style="width:75px;height:100%;" />
+                                                        }
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudIconButton Icon="@Icons.Filled.AttachFile" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>ShowUploadPopUp(ctx)" Disabled="@(ctx.ItemTransactionKey<=1)"></MudIconButton>
+                                                    }
+
+                                                }
+                                            }
+
+                                        </Template>
+                                    </GridColumn>
+                                    <GridColumn Field="ItemCategory2.CodeName" Title="Service Name" TextAlign="ColumnTextAlign.Center" />
+                                    <GridColumn Field="ItemCategory1.CodeName" Title="Human Type" TextAlign="ColumnTextAlign.Center" />
+                                    <GridColumn Field="TransactionItem.ItemName" Title="Article Name" TextAlign="ColumnTextAlign.Center" />
+                                    <GridColumn Field="TransactionQuantity" Title="Qty" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" />
+                                    <GridColumn Field="Quantity2" Title="Peices" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" />
+                                    <GridColumn Field="Analysis1.CodeName" Title="Folding Type" TextAlign="ColumnTextAlign.Center" />
+                                    <GridColumn Field="TransactionRate" Title="Price" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" />
+                                    <GridColumn Field="" Title="Total Markup" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right">
+
+                                        <Template>
+                                            @{
+                                                var ctx = context as TransactionLineItem;
+                                                @if (ctx != null)
+                                                {
+                                                    @ctx.GetTotalMarkupAmount().ToString("N2")
+                                                }
+                                            }
+
+                                        </Template>
+                                    </GridColumn>
+                                    <GridColumn Field="" Title="Line Total" DisplayFormat="{0:N2}" TextAlign="ColumnTextAlign.Right" Filterable=true>
+                                        <Template>
+                                            @{
+                                                var ctx = context as TransactionLineItem;
+                                                @if (ctx != null)
+                                                {
+                                                    @ctx.GetNetLineTotal().ToString("N2")
+                                                }
+                                            }
+
+                                        </Template>
+                                    </GridColumn>
+                                    <GridColumn Field="Analysis2.CodeName" Title="Defects" TextAlign="ColumnTextAlign.Center" />
+                                    <GridColumn Field="Analysis3.CodeName" Title="Color" TextAlign="ColumnTextAlign.Center" />
+                                    <GridColumn Field="Analysis5.CodeName" Title="Brand" TextAlign="ColumnTextAlign.Center" />
+                                    <GridColumn Field="Description" Title="Comment" TextAlign="ColumnTextAlign.Center" />
+                                    <GridColumn Title="Action" TextAlign="ColumnTextAlign.Center">
+                                        <Template>
+                                            @{
+                                                var ctx = context as TransactionLineItem;
+                                                @if (ctx != null)
+                                                {
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>OnItemEditClick(ctx)" Title="Edit" />
+                                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2" Color="Color.Error" OnClick="()=>OnOrderItemDelete(ctx)" Title="Delete" />
+                                                }
+
+                                            }
+                                        </Template>
+
+                                    </GridColumn>
+                                </GridColumns>
+                            </TelerikGrid>
+}*@

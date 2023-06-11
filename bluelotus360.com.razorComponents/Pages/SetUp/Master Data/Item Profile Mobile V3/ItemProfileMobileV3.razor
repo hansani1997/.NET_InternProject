@@ -1,0 +1,678 @@
+﻿@page "/Item/ItemProfileMobileV3"
+@using BL10.CleanArchitecture.Domain.Entities.ItemProfleMobile
+@using bluelotus360.com.razorComponents.MB.Shared.Components
+@using BlueLotus.Com.Domain.Entity;
+@inject IJSRuntime JS
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    //btn group
+    <UIRenderere FromSection="topButtonGroup"
+             DataObject="insertBasicDetailsRequest"
+             InteractionLogics="_interactionLogic"
+             ObjectHelpers="_objectHelpers" />
+
+
+ 
+    <MudCard Elevation="0" Class="@(showstab?"mt-12":"d-none")"  Outlined="false">
+        @if ((breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Md) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Sm) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Xl) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Lg))
+        {
+
+              <MudCard Elevation="0" Class="mt-12">
+                <MudCardContent>
+
+                    <MudTabs Elevation="0" Border="true" HideSlider="true" Rounded="true" Color="Color.Default" ApplyEffectsToContainer="true" PanelClass="pa-6" KeepPanelsAlive="true" Outlined="false">
+                    
+                        @foreach (var tab in tabSection.Children)
+                        {
+                            @if (tab.ElementType != null && tab._internalElementName.Equals("BasicDetails") && tab.IsVisible)
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass >
+
+                                    <MudGrid>
+                                        @foreach (var uic1 in tab.Children)
+                                        {
+                                            if (uic1.ElementType != null && uic1.ElementType.Equals("ImageBox") && uic1.IsVisible)
+                                            {
+                                                
+                                                <MudItem xs="3">
+                                                    <ImageBox Item="@insertBasicDetailsRequest" />
+                                                </MudItem>
+                                               
+                                            }
+
+                                            if (uic1.ElementType != null && uic1.ElementType.Equals("SectnFrmtGrp") && uic1.IsVisible)
+                                            {
+
+                                                <MudItem xs="9">
+                                                   
+                                                        <MudPaper Elevation="1" Outlined="true"> 
+                                                            <MudItem xs="12" sm="uic1.Width" md="uic1.Width" Class="@uic1.ParentCssClass">
+                                                                <UIRenderere FromSection="uic1" DataObject="@insertBasicDetailsRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                            </MudItem>
+                                                        </MudPaper>
+                                                   
+                                                </MudItem>
+
+                                            }
+
+                                        }
+                                    </MudGrid>
+
+
+
+                                    @foreach (var ui2 in tab.Children)
+                                    {
+
+                                        if (ui2.ElementCaption == "OtherInformationSection")
+                                        {
+                                            if (ui2.ElementType != null && ui2.ElementType.Equals("TabSectnFrmtGrp") && ui2.IsVisible && ui2.ElementCaption.Equals("OtherInformationSection"))
+                                            {
+                                                <MudItem xs="12" sm="ui2.Width" md="ui2.Width" Class="@ui2.ParentCssClass">
+                                                    <UIRenderere FromSection="ui2" DataObject="@insertBasicDetailsRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                </MudItem>
+                                            }
+                                        }
+                                        else
+                                        {
+                                            if (ui2.ElementType != null && ui2.ElementType.Equals("TabSectnFrmtGrp") && ui2.IsVisible && ui2.ElementCaption.Equals("PrimaryInformationHeaderSection"))
+                                            {
+                                                <MudItem xs="12" sm="ui2.Width" md="ui2.Width" Class="@ui2.ParentCssClass" Style="position:absolute; top:5px; left:20px">
+                                                    <UIRenderere FromSection="ui2" DataObject="@insertBasicDetailsRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                </MudItem>
+                                            }
+                                        }
+
+                                    }
+
+                                    @*<BLNavigation Itemdatacallback="OnItemNavigation" />*@
+
+                                    </MudTabPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("MultiUnits") && tab.IsVisible)
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass Disabled=@IsDisable02>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.IsVisible)
+                                        {
+                                            if (ui._internalElementName.Equals("GridSection_MultiUnits"))
+                                            {
+                                                <div style="padding-top:10px">
+                                                    <BLTable FormObject=@ui.Children.FirstOrDefault()
+                                                            DataObject=@insertBasicDetailsRequest.MultiUnits.ToList()
+                                                            InteractionLogics="_interactionLogic"
+                                                            ObjectHelpers="_objectHelpers"
+                                                            Height="400px"
+                                                            VersionNumber=1
+                                                            @ref="_multiUnits" />
+                                                </div>
+                                            }
+                                            else
+                                            {
+                                                <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                    <UIRenderere FromSection="ui" DataObject="@selectSingleMultiUnitItemRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                </MudItem>
+                                            }
+
+
+
+
+                                        }
+
+
+
+                                    }
+
+                                </MudTabPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Combinations") && tab.IsVisible)
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass Disabled=@IsDisable03>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+                                        if (ui.IsVisible)
+                                        {
+                                            if (ui.ElementType.Equals("Grid"))
+                                            {
+                                                <BLTable FormObject=@ui
+                                                        DataObject="@_combinationItemList.ToList()"
+                                                        InteractionLogics="_interactionLogic"
+                                                        ObjectHelpers="_objectHelpers"
+                                                        Height="400px"
+                                                        VersionNumber=1
+                                                        @ref="_combinations" />
+                                            }
+                                            else
+                                            {
+                                                <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                            <UIRenderere FromSection="ui" DataObject="@selectSingleCombinationItemRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                </MudItem>
+                                            }
+
+                                        }
+
+
+                                    }
+
+                                </MudTabPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Components") && tab.IsVisible)
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass  Disabled=@IsDisable04>
+
+                                                @foreach (var ui in tab.Children)
+                                                {
+
+                                                    if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                                    {
+                                                        <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                            <UIRenderere FromSection="ui" DataObject="@selectSingleComponentItemRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    }
+                                                    else if (ui.ElementType != null && ui.ElementType.Equals("Grid") && ui.IsVisible)
+                                                    {
+                                                        <BLTable FormObject=@ui
+                                                                 DataObject="@_componentItemList.ToList()"
+                                                                 InteractionLogics="_interactionLogic"
+                                                                 ObjectHelpers="_objectHelpers"
+                                                                 Height="400px"
+                                                                 VersionNumber=1
+                                                                 @ref="_components" />
+
+                                                    }
+
+                                                }
+
+                                            </MudTabPanel>
+                            }
+                            
+                            @* else if (tab.ElementType != null && tab._internalElementName.Equals("ProcessComponent") && othertabpages == true)
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+                                        if (ui._internalElementName.Equals("InputsGridSection_ProcessComponent"))
+                                        {
+                                            <div style="margin-top:50px">
+                                                <BLTable FormObject=@ui.Children.FirstOrDefault()
+                                                        DataObject="processComponentInputsGridDetails.ToList()"
+                                                        InteractionLogics="_interactionLogic"
+                                                        ObjectHelpers="_objectHelpers"
+                                                        Height="200px"
+                                                        VersionNumber=1
+                                                        @ref="_processComponentInputs" />
+                                            </div>
+                                            <div>
+                                                <BLTable FormObject=@ui.Children.FirstOrDefault()
+                                                            DataObject="processComponentOutputsGridDetails.ToList()"
+                                                            InteractionLogics="_interactionLogic"
+                                                            ObjectHelpers="_objectHelpers"
+                                                            Height="200px"
+                                                            VersionNumber=1
+                                                            @ref="_processComponentOutputs" />
+                                            </div>
+                                        }
+                                        else if (ui.ElementType != null && ui.ElementType.Equals("Heading6") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="@insertBasicDetailsRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+                                        else
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="transaction" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+                                    }
+                                   
+
+                                </MudTabPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("AdvanceRelation") && othertabpages == true)
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="@insertBasicDetailsRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+
+                                    }
+
+                                </MudTabPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("AdvanceConfig") && othertabpages == true)
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="transaction" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+                                        else if (ui.ElementType != null && ui.ElementType.Equals("Grid") && ui.IsVisible)
+                                        {
+                                            <BLTable FormObject=@ui
+                                                    DataObject="advanceConfigGridDetails.ToList()"
+                                                    InteractionLogics="_interactionLogic"
+                                                    ObjectHelpers="_objectHelpers"
+                                                    Height="200px"
+                                                    VersionNumber=1
+                                                    @ref="_advanceConfigGrid" />
+                                        }
+
+                                    }
+
+                                </MudTabPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Multilingual") && othertabpages == true)
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="transaction" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+                                        else if (ui.ElementType != null && ui.ElementType.Equals("Grid") && ui.IsVisible)
+                                        {
+                                            <BLTable FormObject=@ui
+                             DataObject="multilingualGridDetails.ToList()"
+                             InteractionLogics="_interactionLogic"
+                             ObjectHelpers="_objectHelpers"
+                             Height="200px"
+                             VersionNumber=1
+                             @ref="_multilingualGrid" />
+                                        }
+
+                                    }
+
+                                </MudTabPanel>
+                            }
+                            else{}*@
+                    }
+                    </MudTabs>
+
+                </MudCardContent>
+               </MudCard>          
+        }
+        else
+        {
+           <MudCard Elevation="0" Class="mt-12">
+                <MudCardContent>
+
+                   <MudExpansionPanels MultiExpansion="true" Elevation="2" Style="background-color:#E7F1FF">
+
+                        @foreach (var tab in tabSection.Children)
+                        {
+                            @if (tab.ElementType != null && tab._internalElementName.Equals("BasicDetails") && tab.IsVisible == true)
+                            {
+                            
+                                <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+                                    <MudGrid>
+                                        @foreach (var uic1 in tab.Children)
+                                        {
+                                            if (uic1.ElementType != null && uic1.ElementType.Equals("ImageBox") && uic1.IsVisible)
+                                            {
+
+                                                <MudItem xs="12">
+                                                    <ImageBox Item="@insertBasicDetailsRequest" />
+                                                </MudItem>
+
+                                            }
+
+                                            if (uic1.ElementType != null && uic1.ElementType.Equals("SectnFrmtGrp") && uic1.IsVisible)
+                                            {
+
+                                                <MudItem xs="12">
+
+                                                    <MudPaper Elevation="1" Outlined="true">
+                                                        <MudItem xs="12" sm="uic1.Width" md="uic1.Width" Class="@uic1.ParentCssClass">
+                                                            <UIRenderere FromSection="uic1" DataObject="@insertBasicDetailsRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    </MudPaper>
+
+                                                </MudItem>
+
+                                            }
+
+                                        }
+                                    </MudGrid>
+                                    <MudGrid>
+
+                                        @foreach (var ui2 in tab.Children)
+                                        {
+
+                                            if (ui2.ElementCaption == "OtherInformationSection")
+                                            {
+                                                if (ui2.ElementType != null && ui2.ElementType.Equals("TabSectnFrmtGrp") && ui2.IsVisible && ui2.ElementCaption.Equals("OtherInformationSection"))
+                                                {
+                                                    <MudItem xs="12" sm="ui2.Width" md="ui2.Width" Class="@ui2.ParentCssClass">
+                                                        <UIRenderere FromSection="ui2" DataObject="@insertBasicDetailsRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                    </MudItem>
+                                                }
+                                            }
+                                            else
+                                            {
+
+                                                if (ui2.ElementType != null && ui2.ElementType.Equals("TabSectnFrmtGrp") && ui2.IsVisible && ui2.ElementCaption.Equals("PrimaryInformationHeaderSection"))
+                                                {
+                                                    <MudItem xs="12" sm="ui2.Width" md="ui2.Width" Class="@ui2.ParentCssClass" Style="position:absolute; top:5px; left:20px">
+                                                        <UIRenderere FromSection="ui2" DataObject="@insertBasicDetailsRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                    </MudItem>
+                                                }
+
+                                            }
+
+                                        }
+
+                                    </MudGrid>
+                                   
+                                        
+
+                                </MudExpansionPanel>
+                            
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("MultiUnits") && tab.IsVisible == true)
+                            {
+                                            <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass Disabled=@IsDisable02>
+                                    
+
+                                                @foreach (var ui in tab.Children)
+                                                {
+
+                                                    if (ui.IsVisible)
+                                                    {
+                                                        if (ui._internalElementName.Equals("GridSection_MultiUnits"))
+                                                        {
+                                                            <div style="padding-top:10px">
+                                                                <BLTable FormObject=@ui.Children.FirstOrDefault()
+                                                                        DataObject=@insertBasicDetailsRequest.MultiUnits.ToList()
+                                                                        InteractionLogics="_interactionLogic"
+                                                                        ObjectHelpers="_objectHelpers"
+                                                                        Height="400px"
+                                                                        VersionNumber=1
+                                                                        @ref="_multiUnits" />
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                                <UIRenderere FromSection="ui" DataObject="@selectSingleMultiUnitItemRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                            </MudItem>
+                                                        }
+
+
+
+
+                                                    }
+
+
+
+                                                }
+
+                                                
+
+                                            </MudExpansionPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Combinations") && tab.IsVisible == true)
+                            {
+                                            <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass Disabled=@IsDisable03>
+
+                                                @foreach (var ui in tab.Children)
+                                                {
+                                                    if (ui.IsVisible)
+                                                    {
+                                                        if (ui.ElementType.Equals("Grid"))
+                                                        {
+                                                            <BLTable FormObject=@ui
+                                                             DataObject="@_combinationItemList.ToList()"
+                                                             InteractionLogics="_interactionLogic"
+                                                             ObjectHelpers="_objectHelpers"
+                                                             Height="400px"
+                                                             VersionNumber=1
+                                                             @ref="_combinations" />
+                                                        }
+                                                        else
+                                                        {
+                                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                                <UIRenderere FromSection="ui" DataObject="@selectSingleCombinationItemRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                            </MudItem>
+                                                        }
+
+                                                    }
+
+
+                                                }
+
+                                            
+                                            </MudExpansionPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Components") && tab.IsVisible == true)
+                            {
+                                            <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass Disabled=@IsDisable04>
+
+                                                @foreach (var ui in tab.Children)
+                                                {
+
+                                                    if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                                    {
+                                                        <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                            <UIRenderere FromSection="ui" DataObject="@selectSingleComponentItemRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    }
+                                                    else if (ui.ElementType != null && ui.ElementType.Equals("Grid") && ui.IsVisible)
+                                                    {
+                                                        <BLTable FormObject=@ui
+                                                         DataObject="@_componentItemList.ToList()"
+                                                         InteractionLogics="_interactionLogic"
+                                                         ObjectHelpers="_objectHelpers"
+                                                         Height="400px"
+                                                         VersionNumber=1
+                                                         @ref="_components" />
+
+                                                    }
+
+                                                }
+
+                                            </MudExpansionPanel>
+                            }
+                           @* else if (tab.ElementType != null && tab._internalElementName.Equals("ProcessComponent"))
+                            {
+                                            <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                                @foreach (var ui in tab.Children)
+                                                {
+                                                    if (ui._internalElementName.Equals("InputsGridSection_ProcessComponent"))
+                                                        {
+                                                            <div style="margin-top:50px">
+                                                                <BLTable FormObject=@ui.Children.FirstOrDefault()
+                                                                        DataObject="processComponentInputsGridDetails.ToList()"
+                                                                        InteractionLogics="_interactionLogic"
+                                                                        ObjectHelpers="_objectHelpers"
+                                                                        Height="200px"
+                                                                        VersionNumber=1
+                                                                        @ref="_processComponentInputs" />
+                                                            </div>
+                                                            <div>
+                                                                <BLTable FormObject=@ui.Children.FirstOrDefault()
+                                                                        DataObject="processComponentOutputsGridDetails.ToList()"
+                                                                        InteractionLogics="_interactionLogic"
+                                                                        ObjectHelpers="_objectHelpers"
+                                                                        Height="200px"
+                                                                        VersionNumber=1
+                                                                        @ref="_processComponentOutputs" />
+                                                            </div>
+                                                        }
+                                                    else if (ui.ElementType != null && ui.ElementType.Equals("Heading6") && ui.IsVisible)
+                                                    {
+                                                        <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                            <UIRenderere FromSection="ui" DataObject="@insertBasicDetailsRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                            <UIRenderere FromSection="ui" DataObject="transaction" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    }
+                                                }
+
+                                            </MudExpansionPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("AdvanceRelation"))
+                            {
+                                            <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                                @foreach (var ui in tab.Children)
+                                                {
+
+                                                    if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                                    {
+                                                        <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                            <UIRenderere FromSection="ui" DataObject="transaction" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    }
+
+                                                }
+                                    
+                                             </MudExpansionPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("AdvanceConfig"))
+                            {
+                                            <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                                @foreach (var ui in tab.Children)
+                                                {
+
+                                                    if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                                    {
+                                                        <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                            <UIRenderere FromSection="ui" DataObject="transaction" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    }
+                                                    else if (ui.ElementType != null && ui.ElementType.Equals("Grid") && ui.IsVisible)
+                                                    {
+                                                        <BLTable FormObject=@ui
+                                                            DataObject="advanceConfigGridDetails.ToList()"
+                                                            InteractionLogics="_interactionLogic"
+                                                            ObjectHelpers="_objectHelpers"
+                                                            Height="200px"
+                                                            VersionNumber=1
+                                                            @ref="_advanceConfigGrid" />
+                                                    }
+
+                                                }
+
+                                               
+                                   
+                                            </MudExpansionPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Multilingual"))
+                            {
+                                            <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                                @foreach (var ui in tab.Children)
+                                                {
+
+                                                    if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                                    {
+                                                        <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                            <UIRenderere FromSection="ui" DataObject="transaction" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    }
+                                                    else if (ui.ElementType != null && ui.ElementType.Equals("Grid") && ui.IsVisible)
+                                                    {
+                                                        <BLTable FormObject=@ui
+                                                            DataObject="multilingualGridDetails.ToList()"
+                                                            InteractionLogics="_interactionLogic"
+                                                            ObjectHelpers="_objectHelpers"
+                                                            Height="200px"
+                                                            VersionNumber=1
+                                                            @ref="_multilingualGrid" />
+                                                    }
+
+                                                }
+
+                                                
+                                    
+                                             </MudExpansionPanel>
+                            }*@
+                            else{}
+                        }
+
+                   </MudExpansionPanels>
+                </MudCardContent>
+
+            </MudCard> 
+        }
+
+    </MudCard>
+
+     
+        @if (showsgrid && gridSection != null)
+        {
+
+            //Grid Section
+            <BLTable FormObject="gridSection"
+             DataObject="new List<Item>()"
+             InteractionLogics="_interactionLogic"
+             ObjectHelpers="_objectHelpers"
+             Height="550px"
+             VersionNumber=2
+             IsServerFilterEnabled=true
+             @ref="_blTb" />
+
+        }
+      
+}
+
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}
+
+<style>
+    .headersection1 {
+        box-sizing: border-box;
+        position: absolute;
+        width: 1150px;
+        height: 140px;
+        left: 286px;
+        top: 50px;
+        border: 1.5px solid #DBDBDB;
+        border-radius: 10px;
+        padding: 10px;
+        margin: 10px; 
+
+      /*  padding-left: 0px;
+        padding-right: 4px;
+*/
+       /* padding: 8px;
+        padding-bottom: 4px;
+        border: 2px solid;
+        border-color: #dbdbdb;
+        border-radius: 5px;
+        padding-left: 0px !important;
+        padding-right: 4px !important;*/
+    }
+</style>

@@ -1,0 +1,103 @@
+﻿@page "/Account/Profile "
+@using BlueLotus360.CleanArchitecture.Domain.Entities.AccountProfile
+
+@if (formDefinition != null && formDefinition.Children.Count() > 0)
+{
+        <div class="@(isTableLoading?"":"d-none")"> 
+      
+            <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+        </div>
+
+
+        <div class="@(ShowInsertDetails?"":"d-none")">
+
+            <BLAccountProfileDetails 
+                    FormObject="insertmodalUIElement"
+                    DataObject="newItem"
+                    InteractionLogics="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    @ref="_refBLAccountProfileDetails" />
+        </div>
+
+
+        <div class="@(ShowRecordItems?"":"d-none")">
+
+            <BLAccountProfileHeader
+                    FormObject="modalUIElement"
+                    DataObject="accountProfileResponse"
+                    InteractionLogics="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    @ref="_refBLAccountProfileHeader" />
+        </div>
+
+    
+
+
+    @if (Showtable)
+    {
+        <UIBuilder FormObject="formDefinition"
+                DataObject="transaction"
+                InteractionLogics="_interactionLogic"
+                ObjectHelpers="_objectHelpers"
+                @ref="_refBuilder" />
+
+
+                <BLTelGrid FormObject="gridUIElement" 
+                        DataObject="gridDetails" 
+                        InteractionLogics="_interactionLogic" 
+                        ObjectHelpers="_objectHelpers" 
+						Height="400px"
+                        @ref="_blTb" />
+
+
+    @*    <div class="@(Showtable ? "":"d-none")">
+
+            @if (gridDetails != null && gridDetails.Count() > 0)
+            {
+
+                <MudTable Class="tdef mt-5" Items="@gridDetails" Height="400px" FixedHeader="true" Filter="new Func<AccountProfileResponse, bool>(FilterCycleCheck)">
+                    
+                    <ToolBarContent> 
+                        <MudTextField 
+                            @bind-Value="searchterm" 
+                            Placeholder="Search" 
+                            Adornment="Adornment.Start" 
+                            AdornmentIcon="@Icons.Material.Filled.Search" 
+                            IconSize="Size.Medium" 
+                            Class="mt-0">
+                        </MudTextField>
+                    </ToolBarContent>
+                    <HeaderContent>
+                        <MudTh></MudTh>
+                        <MudTh Class="profile-table-header"><MudTableSortLabel SortBy="new Func<AccountProfileResponse, Object>(x=>x.AccountCode)">Code</MudTableSortLabel></MudTh>
+                        <MudTh Class="profile-table-header"><MudTableSortLabel SortBy="new Func<AccountProfileResponse, Object>(x=>x.AccountName)">Name</MudTableSortLabel></MudTh>
+                        <MudTh Class="profile-table-header"><MudTableSortLabel SortBy="new Func<AccountProfileResponse, Object>(x=>x.Account.CodeName)">Type</MudTableSortLabel></MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        <MudTd>
+                            <MudIconButton 
+                                Class="profile-table-button" 
+                                @onclick="@(()=>ShowRecord(@context.AccountKey))" 
+                                Size="Size.Small" 
+                                Icon="@Icons.TwoTone.MoreHoriz" 
+                                Color="Color.Tertiary">
+                            </MudIconButton>
+                        </MudTd>
+                        <MudTd DataLabel="AccountCode">@context.AccountCode</MudTd>
+                        <MudTd DataLabel="AccountName">@context.AccountName</MudTd>
+                        <MudTd DataLabel="AccountTypeName">@context.Account.CodeName</MudTd>
+                    </RowTemplate>
+                    <PagerContent>
+                        <MudTablePager />
+                    </PagerContent>
+                </MudTable>
+            }
+
+        </div>*@
+    }
+    <hr/>
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

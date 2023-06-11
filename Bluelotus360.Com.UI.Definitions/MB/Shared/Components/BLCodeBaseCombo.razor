@@ -1,0 +1,25 @@
+﻿
+<MudItem xs="12" Class=@css_class md="@UIElement.Width">
+
+    @if (CodeBaseResponses == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        <MudAutocomplete T="CodeBaseResponse"
+                     Label="@UIElement.ElementCaption"
+                     SearchFunc="@OnComboSearch"
+                     ValueChanged="OnComboValueChanged"
+                     Value="selectedCodeBase"
+                     Disabled="@(!isEditable)"
+                     @ref="_refAutoComplete"
+                     Variant="UIDefaults.DefaultControlVariants"
+                     ResetValueOnEmptyText="true"
+                     data-ui-name="@UIElement.ElementName"
+                     data-ui-internal-name="@UIElement._internalElementName"
+                     
+                     />
+
+    }
+</MudItem>

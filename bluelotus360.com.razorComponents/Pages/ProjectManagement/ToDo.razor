@@ -1,0 +1,309 @@
+﻿@page "/Process/ToDoMobileView"
+@using BL10.CleanArchitecture.Domain.Entities.ProjectManagement;
+
+@if(formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <MudItem xs="12" md="12">
+        <MudCard Style="margin:5px; !important">
+            <UIRenderere FromSection="_headerSection" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+        </MudCard>
+        <MudCard Style="margin:5px;">
+              <MudGrid>
+                  <MudItem xs="6" md="6">
+                    <MudButtonGroup Class="todo-button-group" Color="Color.Primary" Variant="Variant.Outlined">
+                        <MudIconButton Icon="fa-solid fa-border-all" @onclick="() => OnKanbanviewClick()"></MudIconButton>
+                        <MudIconButton Icon="fa-solid fa-table-list" @onclick="() => OnListviewClick()"></MudIconButton>
+                        <MudIconButton Icon="fa-solid fa-calendar-days"></MudIconButton>
+                        @* <MudIconButton Icon="fa-solid fa-list"></MudIconButton>*@
+                        <MudIconButton Icon="fa-solid fa-angles-down" @onclick="() => OnToggeleExpandClick()"></MudIconButton>
+
+                    </MudButtonGroup>
+                  </MudItem>
+                  <MudItem xs="6" md="2">
+                    <UIRenderere FromSection="ToDoButtonSec" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                   @* <MudButton Variant="Variant.Filled" Color="Color.Primary" Style="width:100% !important" @onclick="() => OpenNewTaskPopup()">Create Task</MudButton>*@
+                  </MudItem>
+              </MudGrid>
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" Class="@(!isExpandToggle ? "d-none" : "d-show")">
+        <MudCard Style="margin:5px; !important">
+            <UIRenderere FromSection="_headerSectionExtended" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+          @* <div class="d-flex">
+                <MudItem xs="6">
+                    <MudSwitch Class="MudSwitchIcon" T="bool" Checked=isSwitchOn Color="Color.Dark" UnCheckedColor="Color.Dark" CheckedChanged="OnIsStandupChange">Is Standup</MudSwitch>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudSwitch T="bool" Checked=isSwitchOn Color="Color.Dark" UnCheckedColor="Color.Dark" CheckedChanged="OnIsDevChange">Is Dev</MudSwitch>
+                </MudItem>
+           </div>
+
+            <div class="d-flex">
+                <MudItem xs="6">
+                    <MudSwitch T="bool" Checked=isSwitchOn Color="Color.Dark" UnCheckedColor="Color.Dark" CheckedChanged="OnIsSprintChange">Is Sprint</MudSwitch>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudSwitch T="bool" Checked=isSwitchOn Color="Color.Dark" UnCheckedColor="Color.Dark" CheckedChanged="OnIsConsultantChange">Is Consultant</MudSwitch>
+                </MudItem>
+            </div>
+
+            <div class="d-flex">
+                <MudItem xs="6">
+                    <MudSwitch T="bool" Checked=isSwitchOn Color="Color.Dark" UnCheckedColor="Color.Dark" CheckedChanged="OnIsCEOChange">Is CEO</MudSwitch>
+                </MudItem>
+                <MudItem xs="6">
+                    <MudSwitch T="bool" Checked=isSwitchOn Color="Color.Dark" UnCheckedColor="Color.Dark" CheckedChanged="OnIsCoporateChange">Is Coporate</MudSwitch>
+                </MudItem>
+            </div>
+
+            <div class="d-flex">
+                <MudItem xs="6">
+                    <MudSwitch T="bool" Checked=isSwitchOn Color="Color.Dark" UnCheckedColor="Color.Dark" CheckedChanged="OnIsClientsChange">Is Client</MudSwitch>
+                </MudItem>
+                
+            </div>
+           *@
+           
+            
+            
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" Class="@(!isExpandToggle ? "d-none" : "d-show")" Style="margin-top:5% !important">
+        <MudCard Style="margin:5px !important;">
+            <UIRenderere FromSection="_headerSection2" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+        </MudCard>
+    </MudItem>
+
+    <MudItem xs="12" Class="@(!isKanbanview? "d-none" : "d-show")">
+        @if (ListOfBoards != null && ListOfBoards.Count > 0)
+        {
+             <MudExpansionPanels Style="margin-top:10px !important;">
+            @foreach (CodeBaseResponseExtended board in ListOfBoards)
+            {
+               
+                    <MudExpansionPanel Class="todo-kanban-cards" Text="@board.CdExtraInformation1" Tag="@board.CodeKey" @onclick="() => ExpansionPanelClick(board)">
+                       <MudContainer Style="overflow:auto; height:300px">
+                            @if(ListOfTasks != null && ListOfTasks.Count > 0)
+                            {
+                                @foreach (var item in ListOfTasks)
+                                {
+                                    <MudCard Style="margin:2% !important; border-radius:10px !important">
+                                        <MudCardHeader>
+                                            <CardHeaderContent>
+                                                @if (item.Priority.CodeName == "High")
+                                                {
+                                                    <MudText><b>@item.TaskId</b><MudChip Variant="Variant.Text" style="margin-left:5%" Color="Color.Error">@item.Priority.CodeName</MudChip></MudText>
+                                                }
+                                                else if (item.Priority.CodeName == "Medium")
+                                                {
+                                                    <MudText><b>@item.TaskId</b><MudChip Variant="Variant.Text" style="margin-left:5%" Color="Color.Success">@item.Priority.CodeName</MudChip></MudText>
+                                                }
+                                                else if (item.Priority.CodeName == "Low")
+                                                {
+                                                    <MudText><b>@item.TaskId</b><MudChip Variant="Variant.Text" style="margin-left:5%" Color="Color.Warning">@item.Priority.CodeName</MudChip></MudText>
+                                                }
+                                                else
+                                                {
+                                                    <MudText Typo="Typo.h5"><b>@item.TaskId</b></MudText>
+                                                }
+
+                                            </CardHeaderContent>
+                                            <CardHeaderActions>
+                                                <MudIconButton Icon="fa-solid fa-ellipsis-vertical" @onclick="() => OnViewOptionOpen(item.TaskKey,item.SubTaskCount)" Color="Color.Primary" />
+                                            </CardHeaderActions>
+                                        </MudCardHeader>
+                                        <MudCardContent Style="padding: 5px !important">
+                                            <MudItem xs="12" Style="padding: 5px !important">
+                                                <MudText Typo="Typo.h5">@item.TaskName</MudText>
+                                            </MudItem>
+
+                                            <MudCard>
+                                                <MudCardHeader>
+                                                    <CardHeaderContent>
+                                                        <MudAvatar Size="Size.Small" Color="Color.Warning" Variant="Variant.Filled">@item.Lead.AddressSName</MudAvatar>
+                                                        <MudAvatar Size="Size.Small" Color="Color.Success" Variant="Variant.Filled">@item.CurrentResponsible.AddressSName</MudAvatar>
+                                                    </CardHeaderContent>
+                                                    <CardHeaderActions>
+                                                        <MudItem Style="margin-right:10px !important">
+                                                            <MudBadge Content="@item.SubTaskCount" Overlap="true" Origin="Origin.TopRight">
+                                                                <MudIcon Icon="fa-solid fa-code-branch" Color="Color.Primary" />
+                                                            </MudBadge>
+                                                        </MudItem>
+
+                                                    </CardHeaderActions>
+                                                </MudCardHeader>
+
+                                            </MudCard>
+
+                                            <MudItem xs="12">
+                                                <MudCard>
+                                                    <MudCardContent Style="background-color:#183153 !important; border-radius:10px !important">
+                                                        <div class="d-flex">
+                                                            <MudItem xs="6">
+                                                                @if (item.IsPlaying)
+                                                                {
+                                                                    <MudIconButton Icon="fa-solid fa-stop fa-sm" Style="color:white" @onclick="() => StopButtonClick(item.TaskKey)"></MudIconButton>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <MudIconButton Icon="fa-solid fa-play fa-sm" Style="color:white" @onclick="() => PlayButtonClick(item.TaskKey)"></MudIconButton>
+                                                                }
+                                                               
+                                                            </MudItem>
+                                                            <MudItem xs="6">
+                                                                <MudText Typo="Typo.h5" Style="color:white">@item.ElapsedTime</MudText>
+                                                            </MudItem>
+                                                        </div>
+                                                       
+                                                        @*<MudIconButton Icon="fa-solid fa-pause fa-sm" Style="color:white"></MudIconButton>*@
+                                                        @*<MudIconButton Icon="fa-solid fa-stop fa-sm" Style="color:white"></MudIconButton>*@
+                                                        @* <MudIconButton Icon="fa-solid fa-xmark fa-sm" Style="color:white"></MudIconButton>*@
+
+                                                       
+
+                                                    </MudCardContent>
+                                                </MudCard>
+                                            </MudItem>
+
+                                        </MudCardContent>
+
+                                        <MudCardActions Style="padding:2% !important">
+                                            <MudItem xs="12" Style="padding: 5px !important">
+                                                <MudDivider></MudDivider>
+                                                <MudItem Style="margin-top:1% !important">
+                                                    <MudText Typo="Typo.h5">Budgeted Hours: @item.TotalBudgetTime</MudText>
+                                                </MudItem>
+
+                                                <MudItem Style="margin-top:1% !important">
+                                                    <MudText Typo="Typo.h5">Actual Hours: @item.ActualQuantity</MudText>
+                                                </MudItem>
+
+
+                                            </MudItem>
+                                        </MudCardActions>
+                                    </MudCard>
+                                }
+                            }
+                           
+                       </MudContainer>
+                       
+
+                    </MudExpansionPanel>
+               
+            }
+            </MudExpansionPanels>
+            @*<MudDropContainer T="Process" ondrag="return false;" @ref="@_dropContainer" Items="@ListOfTasks" ItemsSelector="@((item,column) => item.ApproveStatus.CodeName == column)" ItemDropped="ItemUpdated" Class=" d-flex flex-column">
+                <ChildContent>
+                    @foreach (CodeBaseResponseExtended item in ListOfBoards)
+                    {
+                        <MudExpansionPanels Style="margin-top:10px !important;">
+                            <MudExpansionPanel Text="@item.CdExtraInformation1" Tag="@item.CodeKey" @onclick="() => ExpansionPanelClick(item)" Style="background-color:#E7F1FF; border-radius:10px !important; border:1px solid;border-color:#E7F1FF">
+
+                                <MudPaper Elevation="0" MinHeight="400px" Class="pa-4 d-flex flex-column mud-background-white rounded-lg" Style="overflow:auto; height:100vh;background-color:#E7F1FF;">
+                                    <MudDropZone T="Process" Identifier="@item.CodeName" Class="mud-height-full" CanDrop="@((item) => false)" />
+                                </MudPaper>
+                            </MudExpansionPanel>
+                        </MudExpansionPanels>
+
+                    }
+                </ChildContent>
+                <ItemRenderer>
+                    <MudCard Style="margin-top:5% !important; border-radius:10px !important">
+                        <MudCardHeader>
+                            <CardHeaderContent>
+                                @if (context.Priority.CodeName == "High")
+                                {
+                                    <MudText><b>@context.TaskId</b><MudChip Variant="Variant.Text" style="margin-left:5%" Color="Color.Error">@context.Priority.CodeName</MudChip></MudText>
+                                }
+                                else if (context.Priority.CodeName == "Medium")
+                                {
+                                    <MudText><b>@context.TaskId</b><MudChip Variant="Variant.Text" style="margin-left:5%" Color="Color.Success">@context.Priority.CodeName</MudChip></MudText>
+                                }
+                                else if (context.Priority.CodeName == "Low")
+                                {
+                                    <MudText><b>@context.TaskId</b><MudChip Variant="Variant.Text" style="margin-left:5%" Color="Color.Warning">@context.Priority.CodeName</MudChip></MudText>
+                                }
+                                else
+                                {
+                                    <MudText Typo="Typo.h5"><b>@context.TaskId</b></MudText>
+                                }
+
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudIconButton Icon="fa-solid fa-ellipsis-vertical" @onclick="() => OnViewOptionOpen(context.TaskKey,context.SubTaskCount)" Color="Color.Default" />
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        <MudCardContent Style="padding: 5px !important">
+                            <MudItem xs="12" Style="padding: 5px !important">
+                                <MudText Typo="Typo.h5">@context.TaskName</MudText>
+                            </MudItem>
+
+                            <MudCard>
+                                <MudCardHeader>
+                                    <CardHeaderContent>
+                                        <MudAvatar Size="Size.Small" Color="Color.Warning" Variant="Variant.Filled">@context.Lead.AddressSName</MudAvatar>
+                                        <MudAvatar Size="Size.Small" Color="Color.Success" Variant="Variant.Filled">@context.CurrentResponsible.AddressSName</MudAvatar>
+                                    </CardHeaderContent>
+                                    <CardHeaderActions>
+                                        <MudItem Style="margin-right:10px !important">
+                                            <MudBadge Content="@context.SubTaskCount" Overlap="true" Origin="Origin.TopRight">
+                                                <MudIcon Icon="fa-solid fa-code-branch" Color="Color.Default" />
+                                            </MudBadge>
+                                        </MudItem>
+
+                                    </CardHeaderActions>
+                                </MudCardHeader>
+
+                            </MudCard>
+
+
+
+                        </MudCardContent>
+
+                        <MudCardActions Style="padding:2% !important">
+                            <MudItem xs="12" Style="padding: 5px !important">
+                                <MudDivider></MudDivider>
+                                <MudItem Style="margin-top:1% !important">
+                                    <MudText Typo="Typo.h5">Budgeted Hours: @context.TotalBudgetTime</MudText>
+                                </MudItem>
+
+                                <MudItem Style="margin-top:1% !important">
+                                    <MudText Typo="Typo.h5">Actual Hours: @context.ActualQuantity</MudText>
+                                </MudItem>
+
+
+                            </MudItem>
+                        </MudCardActions>
+                    </MudCard>
+                </ItemRenderer>
+            </MudDropContainer>
+*@
+
+
+
+
+
+        }
+    </MudItem>
+
+    <MudItem xs="12" Class="@(!Listview? "d-none" : "d-show")">
+        
+          <MudItem Style="margin-top:2%">
+            <BLTable FormObject="Tableview"
+               DataObject="ListOfTasks"
+               InteractionLogics="_interactionLogic"
+               ObjectHelpers="_objectHelpers"
+               @ref="_blTb" />
+        </MudItem>
+           
+      
+    </MudItem>
+
+
+}
+
+<bluelotus360.com.razorComponents.Pages.ProjectManagement.Popup.Viewoption WindowIsVisible=isOpenViewOption OnCloseButtonClick="Hidepopup" SelectedTaskKey="TaskIdentity" Count="Count" NavigateElementKey="NavigateElementKey"></bluelotus360.com.razorComponents.Pages.ProjectManagement.Popup.Viewoption>
+
+

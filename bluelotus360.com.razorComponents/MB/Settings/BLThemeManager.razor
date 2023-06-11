@@ -1,0 +1,109 @@
+﻿@using bluelotus360.com.razorComponents.MB.Settings.Theme.Components
+@using bluelotus360.com.razorComponents.MB.Settings.Theme.Models;
+@using bluelotus360.com.razorComponents.MB.Settings.Theme.Enums;
+
+<MudDrawer Anchor="@Anchor"
+           DisableOverlay="@DisableOverlay"
+           Elevation="25"
+           Open="@Open"
+           Variant="@DrawerVariant.Temporary"
+           Width="270px" Class="theme-preset-sidemenu">
+
+    <MudDrawerHeader Class="align-center">
+
+        <MudIconButton Color="Color.Default"
+                       Icon="@Icons.Material.TwoTone.ArrowBackIos"
+                       OnClick="@(() => OpenChanged.InvokeAsync(false))"
+                       Size="Size.Medium" />
+        <MudText> Themes </MudText>
+       
+    </MudDrawerHeader>
+    @if (Configuration!=null) 
+    {
+        <div class="mt-2">
+            @if (Configuration.ShowPresetThemeSection)
+            {
+                <div class="px-4">
+                    <MudSelect Dense="true"
+                           Label="Preset Themes"
+                           T="string"
+                           Value="_themeManagerTheme.PresetThemes"
+                           ValueChanged="OnPresetThemeChanged"
+                           Variant="Variant.Outlined">
+                        <MudSelectItem Value="@(PresetThemes.Custom)" />
+                        <MudSelectItem Value="@(PresetThemes.MuiDark)" />
+                    </MudSelect>
+                </div>
+            }
+
+            <div class="px-4">
+                @if (_themeManagerTheme.PresetThemes == PresetThemes.Custom)
+                {
+                    @if (Configuration.ShowModeSection)
+                    {
+                        <BLTmMode Mode="_themeManagerTheme.Mode"
+                               ModeChanged="ToggleMode" />
+                    }
+
+                    @if (_themeManagerTheme.Mode==Modes.Light && Configuration.ShowLayoutSection)
+                    {
+                        <BLTmSection SectionOptions="Configuration.LayoutSectionOptions"
+                                  Title="Layout">
+                            <MudSlider Max="25"
+                                   Min="0"
+                                   Step="1"
+                                   T="int"
+                                   Value="@_themeManagerTheme.DefaultBorderRadiusAsInt"
+                                   ValueChanged="UpdateBorderRadius">
+                                <MudText Class="mb-2"
+                                     Typo="Typo.body2">
+                                    <b> @(
+                                    $"Border Radius: {_themeManagerTheme.DefaultBorderRadiusAsInt}px"
+                                    )</b>
+                                </MudText>
+                            </MudSlider>
+                        </BLTmSection>
+                    }
+
+
+                    @if (_themeManagerTheme.Mode == Modes.Light &&  Configuration.ShowColorSections)
+                    {
+                        <BLTmSection SectionOptions="Configuration.ColorSectionOptions"
+                                  Title="Colors">
+                            @foreach (var item in Configuration.ColorSections.Where(x => x.Value.Display))
+                            {
+                                <BLTmColorItem ColorChanged="UpdateColor"
+                                            ColorSection="@item" />
+                            }
+                        </BLTmSection>
+                    }
+
+
+                    <MudPaper Class="@(_themeManagerTheme.Mode==Modes.Dark?"d-none":"d-flex flex-column mt-3 gap-3" )">
+                     <MudDivider/>
+                        <MudButton  Variant="Variant.Outlined" Color="Color.Secondary" OnClick="@(() => ResetTheme())" Disabled=@(_themeManagerTheme.Mode==Modes.Dark)>Reset</MudButton>
+                        <MudButton  OnClick="SaveTheme" 
+                                    Variant="Variant.Filled" 
+                                    Color="Color.Primary" 
+                                    Style="color:var(--mud-palette-secondary)"
+                                    Disabled=@(_themeManagerTheme.Mode==Modes.Dark)>Save</MudButton>
+                        
+                    </MudPaper>
+
+                }
+                else
+                {
+                    <MudText Class="mt-4 px-2"
+                         Typo="Typo.body2">
+                        Preset themes cannot be customized.
+                    </MudText>
+                }
+            </div>
+        </div>
+    }
+</MudDrawer>
+
+<MudOverlay DarkBackground="false"
+            OnClick="@(() => OpenChanged.InvokeAsync(false))"
+            Visible="Open"
+            VisibleChanged="OpenChanged" />

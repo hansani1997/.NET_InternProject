@@ -1,0 +1,32 @@
+﻿
+
+
+
+<MudGrid>
+        @if (list.Count > 0)
+        {
+            @foreach (var title in list)
+            {
+                <MudItem xs="12" md="6" lg="4" xl="3" @onclick="@(async()=> await NavigateToNewTab(title.PageUrl))">
+                    <MudCard Class="report-recent-card">
+                        <MudCardContent>
+
+                            <MudGrid>
+
+                                <MudItem xs="6" Class="d-flex align-center justify-start">
+                                    <span class="rpt-card-caption">@title.PageName</span>
+                                </MudItem>
+                                <MudItem xs="6" Class="d-flex align-center justify-end">
+                                    <span class="rpt-icon-icon"><MudIcon Icon="@Icons.Material.Filled.OpenInNew" Title="Open Report" /></span>
+
+                                </MudItem>
+
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                </MudItem>
+            }
+        }
+    </MudGrid>
+
+    

@@ -1,0 +1,20 @@
+﻿<TelerikWindow Modal="true" @bind-Visible="@WindowIsVisible"
+               Centered="true"
+               CloseOnOverlayClick="false" Class="pop-up-z-index">
+    <WindowTitle>
+        Filter Order
+    </WindowTitle>
+    <WindowActions>
+        <WindowAction Name="Close" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowContent>
+        <div class="md-col-4">
+            <UIRenderere FromSection="blElement"
+                         DataObject="new object()"
+                         InteractionLogics="InteractionLogics"
+                         ObjectHelpers="ObjectHelpers" />
+        </div>
+
+
+    </WindowContent>
+</TelerikWindow>

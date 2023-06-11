@@ -1,0 +1,15 @@
+﻿@using System.Security.Claims
+
+<MudNavMenu Class="mud-width-full"> 
+    <div class="d-flex justify-content-between ml-1">
+        <MudIconButton   Icon="@Icons.Material.Outlined.Menu" Color="Color.Inherit" OnClick="@((e) => DrawerToggle.InvokeAsync(null))" />
+        
+    </div>
+    <MudNavLink Href="/" Match="Microsoft.AspNetCore.Components.Routing.NavLinkMatch.Prefix" Icon="fa-solid fa-house">Home</MudNavLink>
+	<MiniSideMenu Menu="Menus" IconDictionary="icon_dict"/>
+    <MudNavLink Href="/waitList" Match="Microsoft.AspNetCore.Components.Routing.NavLinkMatch.Prefix" Icon="fa-solid fa-arrows-rotate">Wait List</MudNavLink>
+    @if (_iModeDetection.isDebugMode())
+    {
+        <MudNavLink Href="/cachedList" Match="Microsoft.AspNetCore.Components.Routing.NavLinkMatch.Prefix" Icon="fa-solid fa-arrows-rotate">Cached List</MudNavLink>
+    }
+</MudNavMenu>

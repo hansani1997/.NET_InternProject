@@ -1,0 +1,45 @@
+﻿@using Telerik.Blazor
+
+
+
+<TelerikWindow  Modal="true" @bind-Visible="@WindowIsVisible"
+                Centered="true"  
+                CloseOnOverlayClick="true" Class="pop-up-z-index">
+ 
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+            <WindowAction Name="Minimize" />
+            <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" />
+    </WindowActions>
+    <WindowTitle>
+        @PopupTitle
+    </WindowTitle>
+    <WindowContent>
+        @if(ModalUIElement!=null){
+            <div class="px-3">
+                <UIRenderere FromSection="ModalUIElement" DataObject="DataObject" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+            </div>
+				
+		}
+        <hr/>
+        
+        <div>
+            <TelerikGrid Data="@FoundTransfer"
+             Pageable="true"
+             Sortable="true"
+             FilterMode="@GridFilterMode.FilterMenu">
+                <GridColumns>
+                    <GridColumn Field="Prefix" Title="Prefix" />
+                    <GridColumn Field="TrnNo" Title="Trn No" />
+                    <GridColumn Field="TrnDt" Title="TrnDt" />
+                    <GridColumn Title="Action" />
+                </GridColumns>
+            </TelerikGrid>
+
+        </div>
+    </WindowContent>
+</TelerikWindow>
+

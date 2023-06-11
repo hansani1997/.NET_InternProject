@@ -1,0 +1,52 @@
+﻿@using BlueLotus360.CleanArchitecture.Application.Validators.MessageSystem
+
+<TelerikWindow Modal="true" @bind-Visible="@WindowIsVisible"
+               Centered="true"
+               CloseOnOverlayClick="false" Class="pop-up-z-index k-dialog-titlebar-error" MinWidth="300px;">
+
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+            <WindowAction Name="Minimize" />
+            <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+        Errors
+    </WindowTitle>
+    <WindowContent>
+        <MudContainer Style="overflow-y: scroll; max-height:450px;padding:16px;">
+            <MudList Clickable="false">
+                @foreach (var item in ValidationMessages)
+                {
+                    <MudListItem Style="Color:darkred" Text="@item.Message" Icon="@Icons.Material.Filled.Error" />
+                }
+            </MudList>
+            
+
+        </MudContainer>
+
+    </WindowContent>
+</TelerikWindow>
+
+@code {
+
+    public bool WindowIsVisible { get; set; }
+    [Parameter] public IList<UserMessage> ValidationMessages { get; set; } = new List<UserMessage>();
+    bool HideMinMax { get; set; } = false;
+
+    private async void OnCloseClick()
+    {
+        WindowIsVisible = false;
+        //StateHasChanged();
+    }
+
+    public void ShowUserMessageWindow()
+    {
+        WindowIsVisible = true;
+
+        //StateHasChanged();
+    }
+
+}

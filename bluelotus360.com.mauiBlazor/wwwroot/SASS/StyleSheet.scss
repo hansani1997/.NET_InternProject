@@ -1,0 +1,1634 @@
+﻿@import "_Variables.scss";
+//@import "_variablesDark.scss";
+@import "_site.scss";
+@import "_custom.scss";
+@import "_dashboard.scss";
+@import "_appstyles.scss";
+@import "_loader.scss";
+@import "_itemprofile.scss";
+@import "_hr.scss";
+@import "_grid.scss";
+@import "_generic.scss";
+@import "_carmart.scss";
+@import "_app.scss";
+@import "_overlay.scss";
+@import "_qr.scss";
+@import "_report.scss";
+@import "_SalesOrderMAUI.scss";
+@import "_ThemeManager.scss";
+@import "_login.scss";
+@import "_todo.scss";
+@import "_ReportDashboard.scss";
+@import "_GaminiPOS.scss";
+
+@font-face {
+    font-family: 'Cera_Round_Pro';
+    src: url('../fonts/ceraround_medium.otf')format('opentype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Cera_Round_Pro';
+    src: url('../fonts/ceraround_regular.otf')format('opentype');
+    font-weight: lighter;
+}
+
+@font-face {
+    font-family: 'Cera_Round_Pro';
+    src: url('../fonts/ceraround_bold.otf')format('opentype');
+    font-weight: bold;
+}
+
+.mud-card-content {
+    padding: 0px;
+}
+
+* {
+    box-sizing: border-box;
+    font-family: $typography-default-family;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    border-style: $border-style-default;
+    -webkit-font-smoothing: antialiased;
+}
+
+.mud-primary {
+    background-color: $color-primary !important;
+}
+
+.mud-fab-primary {
+    background-color: $color-primary;
+}
+
+.mud-appbar {
+    background-color: $appbar-background-color;
+}
+
+.mud-main-content {
+    background: $ui-background-color;
+}
+
+.hardcoded-btn {
+    border-color: $color-primary;
+    color: $color-primary;
+}
+
+body {
+    @include typography;
+    background-color: $color-primary;
+    overscroll-behavior-y: contain;
+}
+
+.w-100 {
+    width: 100% !important;
+}
+
+.mud-select.mud-autocomplete--with-progress .progress-indicator-circular--with-adornment {
+    padding-right: 2rem;
+}
+
+.mud-select.mud-autocomplete--with-progress .progress-indicator-circular {
+    top: 10px;
+}
+
+.mud-progress-circular.mud-progress-small {
+    height: 15px;
+    width: 15px;
+}
+
+.mb-6, .my-6 {
+    margin-bottom: 2px !important;
+}
+
+/*.mt-1, .my-1 {
+    margin-top: 1px !important;
+}*/
+
+.mud-dialog-fullscreen {
+    width: 100%;
+    height: 100%;
+    margin: 0 0 0 56px;
+    max-width: 100%;
+    max-height: none;
+    border-radius: 0;
+}
+
+.mud-dialog-title {
+    .mud-toolbar-gutters {
+        padding: 0px;
+    }
+
+    .mud-toolbar .mud-input-control {
+        margin-top: 0;
+        top: 0;
+    }
+}
+
+.mud-dialog .mud-dialog-title {
+    padding: 16px 12px;
+}
+
+//bottom margin issue fix
+::-webkit-scrollbar {
+    width: 0px !important;
+    height: 4px !important;
+    border-radius: $border-radius-default;
+    z-index: 1;
+}
+
+/*curson-pointer on combos*/
+.mud-select.mud-autocomplete .mud-select-input {
+    cursor: pointer;
+}
+
+/*form name positioning*/
+.ml-3, .mx-3 {
+    margin-left: -8px !important;
+    margin-top: -12px;
+}
+
+//typography
+/*h6, h5, h4, h3 font sizes*/
+.mud-typography-h3 {
+    @include typography;
+    font-size: $typography-h3-size;
+    font-weight: bold;
+}
+
+.mud-typography-h4 {
+    @include typography;
+    font-size: $typography-h4-size;
+    //font-weight: $bold;
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+
+.mud-typography-h5 {
+    @include typography;
+    font-size: $typography-h5-size;
+    font-weight: $bold;
+}
+
+.mud-typography-h6 {
+    @include typography;
+    font-size: $typography-h6-size;
+    font-weight: $regular;
+}
+
+.mud-typography-body1 {
+    @include typography;
+    font-weight: $medium;
+}
+
+.mud-typography-body2 {
+    @include typography;
+    font-weight: $medium;
+}
+
+/*Company name*/
+.mud-typography-caption {
+    @include typography;
+    font-size: $typography-default-size;
+    color: $color-secondary-text;
+    font-weight: $regular;
+}
+
+/* Transaction Number */
+.header-summary-section h6 {
+    color: $color-light-text;
+    font-size: $typography-default-size;
+}
+
+/*form name color*/
+.mud-dark-text {
+    color: $color-primary-text !important;
+}
+
+.form-name {
+    margin-left: 50px; /*24px*/
+    font-size: $typography-form-name-size;
+    font-weight: $bold;
+    width: auto;
+}
+
+.mud-elevation-1 {
+    box-shadow: none;
+}
+
+.k-input.k-input-solid {
+    font-weight: $bold;
+}
+
+.column-header {
+    display: block;
+}
+
+.col-12 {
+    -ms-flex: 0 0 100%;
+    flex: 0 0 100%;
+    max-width: 100%;
+    font-weight: bold;
+}
+
+.mud-thememanager-color-picker .mud-paper, .mud-input {
+    color: #e8dbdb !important;
+    background-color: transparent !important;
+}
+
+//Button
+
+.mud-button {
+    padding: 6px 4px;
+    @include typography;
+    font-size: $typography-button-size;
+    font-weight: $bold;
+    min-width: 64px;
+    box-sizing: border-box;
+    transition: background-color 250ms cubic-bezier(.4,0,.2,1) 0ms,box-shadow 250ms cubic-bezier(.4,0,.2,1) 0ms,border 250ms cubic-bezier(.4,0,.2,1) 0ms;
+    /*border-style: $border-style-default;
+    border-width: $border-width-default;*/
+    //background-color: $color-primary;
+    //color: $color-secondary;
+}
+
+.mud-button-filled {
+    .mud-button-filled-primary {
+        color: $color-secondary;
+        /*box-shadow: $box-shadow;*/
+        background-color: $color-primary;
+        border: none;
+    }
+    /* cannot write for ":" it will apply to an inner class*/
+    &:focus-visible {
+        background-color: $color-primary;
+        box-shadow: $box-shadow;
+        color: $color-secondary;
+    }
+
+    &:hover {
+        background-color: $color-primary;
+        color: $color-secondary;
+    }
+
+    .mud-button-filled-secondary {
+        color: $color-primary;
+        box-shadow: $box-shadow;
+        background-color: none;
+        border-style: $border-style-default;
+        border-width: $border-width-default;
+        border-color: $color-primary;
+
+        &:hover {
+            background-color: none;
+            color: $color-primary;
+        }
+
+        &:focus-visible {
+            background-color: none;
+            color: $color-primary;
+        }
+    }
+}
+
+.mud-button-label {
+    width: 100%;
+    display: inherit;
+    align-items: inherit;
+    justify-content: inherit;
+    //color: $color-secondary;
+    text-transform: initial;
+}
+
+.bl-btn-secondary {
+    @include border;
+    border-color: $color-primary;
+    color: $color-primary;
+    background-color: transparent !important;
+    height: 32px;
+
+    &:hover {
+        color: $color-primary;
+    }
+
+    &.mud-button-label {
+        color: $color-primary;
+    }
+}
+
+/*Top button group*/
+.mud-button-group-outlined.mud-button-group-override-styles.mud-button-group-outlined-primary .mud-button-root {
+    color: $color-primary;
+    @include border();
+    border-color: $border-color-default;
+    margin: 6px;
+    margin-top: 0px;
+    margin-right: 6px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    height: $button-group-height-width;
+    width: $button-group-height-width;
+}
+
+// Top button group Icon Color
+.mud-button-group-root {
+    .mud-icon-root.mud-svg-icon {
+        fill: $color-primary;
+    }
+}
+
+.mud-button-outlined.mud-button-outlined-secondary {
+    @include border;
+    color: $color-primary;
+    border-color: $color-primary;
+}
+
+.mud-button-outlined.mud-button-outlined-secondary:hover, .mud-button-outlined.mud-button-outlined-secondary:focus-visible {
+    @include border;
+    border-color: $color-primary;
+}
+
+// SVG size - button group
+.mud-button-group-root {
+    .mud-button-root.mud-icon-button {
+        .mud-icon-root {
+            font-size: $button-group-icon-size;
+            border-color: $color-primary;
+        }
+    }
+}
+
+.mud-icon-button.mud-button {
+    border-radius: $border-radius-default;
+}
+
+/*Top button group*/
+.fixed-button-bar {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    background: $ui-background-color;
+    top: 52px;
+    z-index: 1000;
+    border-bottom-width: $border-width-default;
+    border-bottom-style: $border-style-default;
+    border-bottom-color: $border-color-default;
+    border-radius: 0px;
+}
+
+.fixed-button-bar > .mud-button-group-root {
+    margin-left: 58px;
+}
+
+.order-manager-fixed-button-bar > .mud-button-group-root {
+    margin-left: 58px;
+}
+
+.fixed-button-bar + div {
+    margin-top: 32px !important;
+}
+
+.fixed-dashboard-button-bar {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    background: $ui-background-color;
+    top: 52px;
+    z-index: 1000;
+    border-bottom-width: $border-width-default;
+    border-bottom-style: $border-style-default;
+    border-bottom-color: $border-color-default;
+    border-radius: 0px;
+
+    & > .mud-button-group-root {
+        margin-left: 58px;
+    }
+}
+
+.mud-button-filled.mud-button-filled-primary {
+    color: $color-secondary;
+}
+
+.mud-button-filled.mud-button-filled-primary:hover, .mud-button-filled.mud-button-filled-primary:focus-visible {
+    background-color: $color-primary;
+}
+
+.mud-button-outlined.mud-button-outlined-primary {
+    border: $border-width-default $border-style-default $border-color-default !important;
+    background-color: $ui-background-color !important;
+}
+
+//switch
+
+.mud-switch .mud-ltr {
+    display: flex;
+    flex-direction: column-reverse;
+    align-items: flex-start;
+}
+
+.mud-switch-label-medium {
+    font-size: $typography-default-size !important;
+    font-weight: $regular;
+    color: $color-primary-text;
+    margin-left: 10px;
+}
+
+/*.mud-switch-button .mud-switch-thumb-medium {
+    background-color: $color-primary !important;
+}*/
+
+/*.mud-switch-span .mud-switch-track {
+    transition: opacity 150ms cubic-bezier(.4,0,.2,1) 0ms,background-color 150ms cubic-bezier(.4,0,.2,1) 0ms;
+    background-color: $color-secondary;
+    border-radius: 50px;
+    opacity: initial;
+}
+
+.mud-dark {
+    background-color: $color-primary !important;
+}*/
+
+//Date picker
+.mud-picker-datepicker-toolbar {
+    &.mud-button-label.mud-button-year {
+        color: $color-light-text;
+    }
+
+    &.mud-button-date {
+        color: $color-light-text;
+    }
+}
+//Avatar
+
+.mud-avatar-filled {
+    color: $palette-white;
+    font-family: $typography-default-family;
+    font-weight: $bold;
+    /*background-color: $color-primary !important;*/
+
+    .mud-avatar-filled-primary {
+        background-color: $color-primary;
+    }
+}
+
+.mud-avatar.mud-avatar-medium {
+    width: $avatar-height-width;
+    height: $avatar-height-width;
+    font-size: $typography-default-size;
+    color: $palette-white;
+    margin: auto;
+    //margin-right: 10px;
+}
+
+/*.mud-list-item {
+    align-items: baseline;
+}*/
+
+//Input fields
+/*Remove underline*/
+.mud-input {
+    @include typography;
+    font-weight: $regular;
+    position: relative;
+    color: $color-secondary-text;
+    cursor: text;
+    display: inline-flex;
+    box-sizing: border-box;
+    align-items: center;
+}
+
+.mud-input {
+    /*Remove underline*/
+    &.mud-input-underline {
+        &:before {
+            border-bottom: none !important;
+        }
+        /*Remove underline*/
+        &:after {
+            border-bottom: none !important;
+        }
+        /*Remove underline - hover*/
+        &:hover {
+            &:not(.mud-disabled) {
+                &:before {
+                    border-bottom: none !important;
+                }
+            }
+        }
+    }
+}
+
+/*Text field*/
+
+.mud-input {
+    > input.mud-input-root,
+    div.mud-input-slot.mud-input-root {
+        height: $input-field-height;
+        padding: 0px 8px 0px;
+        color: $color-secondary-text;
+        font-size: $typography-default-size;
+        font-weight: $regular;
+        font-family: $typography-default-family;
+    }
+}
+
+.mud-input > textarea.mud-input-root {
+    @include typography;
+    font-weight: $regular;
+    color: $color-secondary-text;
+    width: 100%;
+    margin: 6px 0px 6px;
+    padding: 6px 16px 6px;
+    display: block;
+    min-width: 0;
+    background: none;
+    position: relative;
+    box-sizing: content-box;
+    /*border: solid 2px #dbdbdb;*/
+    border-radius: $border-radius-default;
+}
+
+.mud-shrink {
+    ~ label.mud-input-label-inputcontrol {
+        transform: none;
+        transform-origin: top left;
+        font-family: $typography-default-family;
+    }
+}
+
+.mud-input:focus-within {
+    ~ label.mud-input-label.mud-input-label-inputcontrol {
+        transform: none;
+        transform-origin: top left;
+        font-family: $typography-default-family;
+    }
+}
+/*Label bottom/Left margin*/
+.mud-input-label-inputcontrol {
+    top: -6px;
+    /*left: 8px;*/
+    position: absolute;
+    font-family: $typography-default-family;
+    transform: none;
+}
+
+/*text area scroll bar*/
+.mud-input > textarea.mud-input-root::-webkit-scrollbar-thumb {
+    background: $color-primary;
+    border-radius: $border-radius-default;
+}
+/*text input field label*/
+.mud-shrink ~ label.mud-input-label.mud-input-label-inputcontrol {
+    color: $color-primary-text;
+    font-size: $typography-default-size;
+    font-weight: $regular;
+    font-family: $typography-default-family;
+}
+
+.mud-shrink ~ label.mud-input-label.mud-input-label-inputcontrol, .mud-input:focus-within ~ label.mud-input-label.mud-input-label-inputcontrol {
+    transform: none !important;
+    transform-origin: top left;
+}
+
+.mud-input-control {
+    border: 0;
+    margin: 0px;
+    padding: 0;
+    display: flex;
+    flex: 1 1 auto;
+    max-width: 100%;
+    position: relative;
+    flex-direction: column;
+    vertical-align: top;
+    margin-top: -9px; /*-4px*/
+    top: -5px;
+}
+/*text area label*/
+.mud-input-control > .mud-input-control-input-container > .mud-input-label-inputcontrol {
+    @include typography;
+    font-weight: $regular;
+    color: $color-primary-text;
+    padding: 0;
+    line-height: 1;
+    z-index: 0;
+    pointer-events: none;
+}
+
+.mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text {
+    /*margin-top: 12px;*/
+    @include border;
+    border-color: $border-color-default;
+}
+
+.mud-input.mud-input-outlined .mud-input-outlined-border {
+    height: 100%;
+    text-align: start;
+    transition: border-width,border-color 200ms cubic-bezier(.4,0,.2,1) 0ms;
+    border-style: none;
+    border-width: $border-width-default;
+    border-color: $input-lines;
+    border-radius: $border-radius-default;
+    pointer-events: none;
+    max-width: 100%;
+    width: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    box-sizing: border-box;
+    position: absolute;
+    display: flex;
+    /*background-color: $palette-white;
+    opacity: 0.1;*/
+}
+
+.mud-input > input.mud-input-root-outlined.mud-input-root:-webkit-autofill, div.mud-input-slot.mud-input-root-outlined.mud-input-root:-webkit-autofill {
+    border-radius: inherit;
+    height: 37px;
+}
+
+.mud-input.mud-input-underline.mud-disabled:before {
+    border-bottom-style: none;
+}
+
+.mud-input > input.mud-input-root:disabled, div.mud-input-slot.mud-input-root:disabled {
+    opacity: 1;
+    color: $color-secondary-text;
+}
+
+// Side Menu
+.mud-drawer {
+    display: flex;
+    flex-shrink: 0;
+    flex-grow: 1;
+    flex: 0 0 auto;
+    outline: 0;
+    position: fixed;
+    overflow-y: auto;
+    flex-direction: column;
+    color: $palette-white;
+    background-color: $color-primary;
+    --mud-drawer-content-height: 0;
+    // Side menu font color
+    .mud-drawer-content {
+        height: 100%;
+        max-height: 100%;
+        display: flex;
+        flex-shrink: 0;
+        flex-grow: 1;
+        flex: 0 0 auto;
+        flex-direction: column;
+        //color: $palette-white;
+    }
+}
+
+.mud-drawer-content .mud-icon-root.mud-svg-icon {
+    fill: $color-secondary;
+    font-size: $side-menu-icon-size;
+}
+
+.mud-drawer-header {
+    padding: -1px !important;
+    background: url(/img/LogoTransparent.png) no-repeat $color-primary center;
+    background-size: contain;
+    padding-top: 64px;
+}
+
+.mud-drawer.mud-drawer-mini.mud-drawer-pos-left.mud-drawer--open .mud-drawer-header {
+    margin-left: 6px;
+    margin-top: 8px;
+    background-image: url("/img/bl-logo.svg");
+    background-repeat: no-repeat;
+    background-color: $color-primary;
+    background-size: contain;
+}
+
+.mud-drawer.mud-drawer-temporary.mud-drawer-pos-left {
+    width: fit-content;
+}
+
+// .mud-nav-link .fa-solid
+.mud-nav-link {
+    .fa-solid {
+        color: $color-secondary !important;
+        font-size: $side-menu-icon-size;
+    }
+}
+
+// Side menu drop down style fix
+.mud-nav-link {
+    .mud-nav-link-expand-icon {
+        margin-left: 20px !important;
+    }
+}
+
+.mud-drawer:not(.mud-drawer-fixed) {
+    position: fixed;
+}
+
+//Icons
+.mud-icon-root {
+    /*icon color*/
+    &.mud-svg-icon {
+        fill: $color-icon-default;
+        font-size: $input-icon-default-size;
+    }
+
+    &.mud-input-adornment .mud-input-adornment-start .mud-select-input {
+        margin: 0 5px !important;
+    }
+
+    &.mud-drawer .mud-drawer-content .mud-svg-icon {
+        fill: $color-secondary;
+        font-size: $typography-default-size;
+    }
+}
+
+/*add the icon inside the border - adornment*/
+.mud-input-adornment-end {
+    margin-left: 0px;
+    margin-inline-start: -44px;
+    margin-inline-end: unset;
+}
+
+.mud-input-adornment .mud-icon-size-medium {
+    font-size: $adornment-icon-size;
+    margin-right: 4px;
+    margin-left: 6px;
+}
+
+.mud-select .mud-select-input .mud-input-adornment-end {
+    margin-left: -24px;
+}
+
+.mud-drawer.mud-drawer-mini.mud-drawer-pos-left.mud-drawer--closed .mud-drawer-content .mud-icon-root.mud-svg-icon {
+    visibility: hidden;
+}
+
+//Radio Button
+.mud-radio > .mud-radio-content {
+    color: $color-primary;
+}
+
+.mud-paper {
+    color: $color-primary-text;
+    background-color: $ui-background-color; /*var(--mud-palette-surface) = white*/
+    transition: box-shadow 300ms cubic-bezier(.4,0,.2,1) 0ms;
+
+    .mud-picker-inline-paper {
+        position: relative !important;
+        border-radius: $border-radius-default;
+    }
+}
+
+//need to have this here, because the style in login.scss gets overriden by the above style (background color for dark theme)
+.bl-login-card {
+    background-color: $color-primary;
+}
+
+.mud-avatar-filled.mud-avatar-filled-primary {
+    background-color: $color-primary;
+}
+
+//GRIDS AND TABLES
+
+.mud-table {
+    background-color: $ui-background-color;
+}
+
+.header-summary-section > .mud-grid-spacing-xs-3 > .mud-grid-item {
+    padding: 60px !important;
+    color: $color-error;
+}
+
+.mud-grid-spacing-xs-3 > .mud-grid-item {
+    padding: 12px;
+    color: $color-primary;
+}
+
+.mud-theme-primary {
+    background-color: $color-primary !important;
+}
+
+.mud-table-cell {
+    @include typography;
+    border-bottom: none;
+}
+
+.mud-table-sticky-header * .mud-table-root .mud-table-head * .mud-table-cell:last-child {
+    border-radius: 0 $border-radius-table $border-radius-table 0;
+    border-right: none;
+}
+
+.mud-table-root .mud-table-head .mud-table-cell {
+    background-color: $color-primary;
+    border-radius: $border-radius-table;
+    border-width: 2px;
+    border-color: white;
+    color: $color-light-text;
+    line-height: 13px;
+}
+
+.mud-table-root .mud-table-body .mud-table-cell {
+    border-right: 1px solid $color-table-lines;
+    color: $color-primary-text;
+}
+
+//Have to implement this for data grid as well - get Buddi's help
+/*.mud-table-striped .mud-table-container .mud-table-root .mud-table-body .mud-table-row:nth-of-type(odd) {
+    background-color: var(--mud-palette-table-striped);
+}*/
+
+//Table Pagination
+.mud-table-pagination-actions {
+    display: flex;
+}
+
+.mud-table-pagination-select .mud-input > input.mud-input-root, div.mud-input-slot.mud-input-root {
+    background: none !important;
+}
+
+.mud-table-pagination-select.mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text {
+    /*border: 0;*/
+    top: 7px;
+}
+
+.mud-table-sticky-header .mud-table-container {
+    overflow-x: scroll;
+}
+
+.mud-table-sticky-header {
+    * .mud-table-root {
+        .mud-table-head {
+            * .mud-table-cell:first-child {
+                border-radius: $border-radius-table 0 0 $border-radius-table;
+                width: 8px;
+                border-left: none;
+            }
+        }
+    }
+}
+
+.mud-table-sticky-header {
+    * .mud-table-root {
+        .mud-table-head {
+            * .mud-table-cell {
+                @include border;
+                background-color: $color-primary;
+                color: $color-light-text;
+                font-size: $typography-default-size;
+                position: sticky;
+                z-index: 2;
+                top: 0;
+                height: 46px;
+                padding: 8px;
+                border-radius: 0; //$border-radius-table;
+                text-align: center;
+                border-color: $border-color-default;
+                border-right-color: #fefefe;
+                border-left-color: #fefefe;
+            }
+        }
+    }
+}
+
+.mud-table-sticky-footer {
+    * .mud-table-root {
+        .mud-table-foot * {
+            .mud-table-cell {
+                background-color: $ui-background-color;
+                color: $color-primary-text;
+            }
+        }
+    }
+}
+
+.mud-table-sort-label {
+    &:hover {
+        color: $color-secondary;
+    }
+}
+
+.mud-table-pagination-select {
+    &.mud-input {
+        &.mud-input-root {
+            max-width: 80px;
+            cursor: pointer;
+            margin-top: 2px;
+            @include border;
+            border-color: $color-primary;
+            @include typography;
+            color: $color-primary-text !important;
+        }
+    }
+}
+
+.mud-table-pagination {
+    color: $color-primary-text;
+}
+
+.mud-table-pagination-select {
+    &.mud-input {
+        > input.mud-input-root {
+            color: $color-primary-text !important;
+        }
+    }
+}
+
+div.mud-input-slot.mud-input-root {
+    color: $color-primary-text !important;
+}
+
+.mud-simple-table {
+    .mud-table-sticky-header {
+        * table thead {
+            * th {
+                background-color: $color-primary;
+                z-index: 1;
+                top: 0;
+                color: $color-light-text;
+            }
+        }
+    }
+}
+
+/********** Simple Table**********/
+.mud-simple-table table * tr > td, .mud-simple-table table * tr th {
+    @include border;
+    @include typography;
+    display: table-cell;
+    padding: 12px;
+    text-align: start;
+    border-color: $palette-white;
+    border-radius: $border-radius-table;
+    vertical-align: inherit;
+}
+
+/*mud table*/
+.mud-table-root {
+    &.mud-table-head {
+        &.mud-table-cell {
+            @include border;
+            color: $color-light-text;
+            font-weight: $regular;
+            line-height: $typography-default-lineheight;
+            background: $color-primary;
+            border-color: $palette-white;
+            border-radius: $border-radius-table;
+        }
+    }
+}
+
+.mud-table-root .mud-icon-root.mud-svg-icon {
+    fill: $color-primary; /*$color-light-text*/
+}
+
+//popovers - combo box
+.mud-popover .mud-list {
+    margin: 8px;
+}
+
+.mud-list-item-clickable {
+    border-radius: $border-radius-default;
+}
+
+//Order Manager Sync Orders Button Adornment
+.mud-button-icon-size-medium > *:first-child {
+    display: none;
+}
+
+/*shows white background in default mode - nav bar - active status*/
+.mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
+    background-color: $ui-background-color;
+    border-top-left-radius: $border-radius-default;
+    border-bottom-left-radius: $border-radius-default;
+}
+
+/*hides white background in expanded mode - nav bar*/
+.mud-drawer.mud-drawer-mini.mud-drawer-pos-left.mud-drawer--open {
+    .mud-navmenu.mud-navmenu-default .mud-nav-link.active:not(.mud-nav-link-disabled) {
+        background-color: transparent;
+    }
+}
+
+//app footer navigation
+.app-footer {
+    background-color: $color-primary;
+    height: 54px;
+    width: auto !important;
+    border-radius: 0px !important;
+    right: 0;
+    //margin-left: 0;
+    //margin-right: 0;
+}
+
+.app-footer .mud-icon-root.mud-svg-icon {
+    fill: $color-secondary;
+    font-size: 22px;
+    margin: 16px;
+}
+
+//Please wait while we fetch form definitions
+
+.mud-alert-outlined-info {
+    @include border;
+    color: $color-primary;
+    border-color: $color-primary;
+}
+
+//location wise stock dashboard empty chart img
+.empty-chart {
+    margin-top: 50px;
+    width: 20%;
+    height: 20%;
+    opacity: 0.5;
+}
+
+//Audit trail dashboard chip
+.mud-chip.mud-chip-size-large {
+    border-radius: $border-radius-default;
+    margin-top: 20px;
+}
+
+//Order Manager alert position
+.mud-alert {
+    margin-top: 44px;
+    margin-bottom: 16px;
+}
+
+//order manager fixed button bar
+.order-manager-fixed-button-bar {
+    position: fixed;
+    left: 0;
+    height: 56px;
+    top: 52px;
+    width: 100%;
+    background: white;
+    z-index: 1000;
+    border-bottom-color: $border-color-default;
+    border-bottom-style: $border-style-default;
+    border-bottom-width: $border-width-default;
+    border-radius: 0px;
+    margin-top: 2px;
+}
+
+//overrides
+.mud-dialog-width-sm {
+    max-width: max-content;
+}
+
+.mud-tab.mud-tab-active {
+    color: var(--mud-palette-primary);
+    background: $color-secondary;
+    border-radius: 15px 15px 0px 0px;
+}
+
+.mud-tab.mud-tab-active:hover {
+    background-color: $color-secondary
+}
+
+//----------Replacement of inline stylings-------------------------------------------------
+//BLMiniDrawer.razor
+.logout-item {
+    display: inline-block;
+
+    img {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 25px;
+        height: 15%;
+        width: 15%;
+        filter: invert(13%) sepia(67%) saturate(1109%) hue-rotate(185deg) brightness(95%) contrast(89%);
+    }
+}
+
+.switch-item {
+    display: inline-block;
+
+    img {
+        display: inline-block;
+        vertical-align: middle;
+        margin-right: 25px;
+        height: 15%;
+        width: 15%;
+        filter: invert(13%) sepia(67%) saturate(1109%) hue-rotate(185deg) brightness(95%) contrast(89%);
+    }
+}
+
+.botttom-notification-badge .mud-badge.mud-badge-top.right.mud-badge-overlap {
+    inset: auto auto calc(100% - 35px) calc(100% - 35px);
+}
+
+#unique_id_scroll_section {
+    overflow: auto;
+    position: relative;
+    height: 100vh;
+}
+
+//GeoAttendance.razor
+.inline-1 {
+    display: flex;
+    justify-content: space-around;
+    align-items: center
+}
+
+//SalesByLocation.razor & //HRAdminDashboard.razor
+.custom-card {
+    border-radius: $border-radius-default;
+    box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+    background-color: $palette-gray;
+}
+
+//JournalLis.razor
+.journal-lite-btn-grp {
+    width: 75%;
+    flex-basis: auto;
+}
+
+.journal-lite-trnNo {
+    flex-basis: 100%;
+}
+
+//HRAdminDashboard.razor
+.inline-2 {
+    font-family: $typography-default-family;
+    opacity: 1;
+    font-size: $typography-default-size;
+    font-weight: $bold;
+}
+
+//ScanItemTransfer.razor
+.text-box-border {
+    .mud-input > input.mud-input-root,
+    div.mud-input-slot.mud-input-root {
+        padding: 0;
+    }
+
+    .mud-input {
+        position: relative;
+        color: $color-primary;
+        cursor: text;
+        display: inline-flex;
+        font-size: 1rem;
+        box-sizing: border-box;
+        align-items: center;
+        font-weight: 400;
+        line-height: 1.1876em;
+        letter-spacing: .00938em;
+        margin-top: 0 !important;
+        padding: 5px;
+    }
+}
+
+//QuotationForm.razor
+.ordsts-hidden {
+    display: none;
+}
+
+//KanbanNewTask.razor
+.mud-expand-panel .mud-expand-panel-content {
+    padding-left: 2% !important;
+    padding-right: 2% !important;
+}
+
+//HybridReportDesign.razor
+#wrd1 {
+    position: relative;
+    width: 100%;
+    height: 1880px;
+    padding-right: 50px;
+}
+
+//BLProjectCombo.razors
+.mud-select.mud-autocomplete--with-progress {
+    .progress-indicator-circular--with-adornment {
+        padding-right: 2rem;
+    }
+
+    .progress-indicator-circular {
+        top: 10px;
+    }
+}
+
+.mud-progress-circular.mud-progress-small {
+    height: 15px;
+    width: 15px;
+}
+
+//BLSwitch.razor
+.mud-switch-span {
+    width: 70px;
+    height: 50px;
+
+    .mud-switch-track {
+        border-radius: $border-radius-default;
+        background: $color-primary !important;
+    }
+}
+
+//BLTaskCombo.razor
+.mud-select.mud-autocomplete--with-progress {
+    .progress-indicator-circular--with-adornment {
+        padding-right: 2rem;
+    }
+
+    .progress-indicator-circular {
+        top: 10px;
+    }
+}
+
+.mud-progress-circular.mud-progress-small {
+    height: 15px;
+    width: 15px;
+}
+
+//UIGrid.razor
+.mud-table-smalldevices-sortselect {
+    .mud-input > input.mud-input-root,
+    div.mud-input-slot.mud-input-root {
+        border: none;
+        border-radius: $border-radius-default;
+        height: 18px;
+        padding: 0px 16px 0px;
+        font-size: 12px;
+        font-weight: $bold;
+        font-family: $typography-default-family;
+        background: $palette-white;
+    }
+
+    .mud-select {
+        .mud-select-input {
+            .mud-input-adornment-end {
+                margin-left: 0px;
+            }
+        }
+    }
+}
+
+.mud-table {
+    .mud-toolbar {
+        .mud-toolbar-gutters {
+            padding-right: 0px !important;
+        }
+    }
+}
+
+//FinanceDashboard.razor
+.finc-spinner-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+//CachedList.razor
+.inline-3 {
+    width: 80vw;
+    word-wrap: break-word;
+    color: $palette-white;
+}
+
+//BLTmColorItem.razor
+.mud-theme-manager-color-picker {
+    .mud-overlay .mud-overlay-scrim.mud-overlay-dark {
+        border-color: var(--mud-palette-overlay-dark);
+        background-color: transparent;
+    }
+
+    .mud-paper,
+    .mud-input {
+        color: var(--mud-palette-text-primary);
+        background-color: $color-light-text;
+    }
+}
+
+//BLThemeProvider.razor
+.mud-chart-serie:hover {
+    filter: url(#lighten);
+}
+
+//GenericReceipt.razor
+.scroll-receipt {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+//BLReportViewer.razor
+.trv-report-viewer {
+    width: 100%;
+    height: 100%;
+    padding: 50px;
+    align-content: center;
+    padding-top: 10px;
+}
+
+//ScanInvoiceTransfer.razor
+.text-box-border {
+    .mud-input > input.mud-input-root,
+    div.mud-input-slot.mud-input-root {
+        padding: 0;
+    }
+
+    .mud-input {
+        position: relative;
+        color: $color-primary;
+        cursor: text;
+        display: inline-flex;
+        font-size: 1rem;
+        box-sizing: border-box;
+        align-items: center;
+        font-weight: 400;
+        line-height: 1.1876em;
+        letter-spacing: .00938em;
+        margin-top: 0 !important;
+        padding: 5px;
+    }
+}
+
+//Carousel
+.mud-carousel-item.mud-carousel-item-primary {
+    color: $color-primary-text;
+    background-color: $color-primary;
+}
+
+//switch
+.mud-primary-text {
+    color: $color-secondary !important;
+}
+
+.mud-dark {
+    background-color: $color-light-text !important;
+}
+
+.mud-dialog {
+    background-color: $ui-background-color;
+}
+
+//Swisstek DSR Geo Attendance
+
+.day-start-end {
+    padding: 18px 90px;
+    background: $color-secondary;
+    border-radius: $border-radius-default;
+    color: $color-light-text;
+    font-size: 24px;
+
+    &:hover {
+        background-color: $color-secondary;
+        color: $color-light-text;
+        box-shadow: $box-shadow;
+    }
+}
+
+.dsr-simple-table table * tr th {
+    background-color: $color-primary !important;
+    color: $color-light-text !important;
+    border-radius: $border-radius-table !important;
+    font-weight: 600;
+}
+
+.dsr-simple-table table * tr > td {
+    border-color: $border-color-default;
+    border-radius: 0 !important;
+}
+
+.posifixed {
+    position: fixed;
+    bottom: 54px;
+    left: 12px;
+    right: 12px;
+    z-index: 2;
+    background: $palette-white;
+    padding: 4px 0px;
+}
+
+//Swisstek Customer Outstanding styles
+
+.footer-of-customer-outstanding {
+    background-color: $color-info-box-background;
+    border-radius: $border-radius-default;
+    padding: 19px 54px;
+}
+
+.footer-of-customer-outstanding .mud-list-item-icon {
+    min-width: 20px;
+}
+
+.numeric-box-bold input {
+    font-weight: bold !important;
+}
+
+//------------------------------------------------------------------------------------------------------------------------------------------
+//MEDIA QUERIES
+/*form name position*/
+@media (min-width: 600px) {
+    .mud-toolbar-gutters {
+        padding-left: 2px; /*24px*/
+        padding-right: 24px;
+    }
+
+    .mud-appbar {
+        .mud-toolbar-appbar {
+            height: 52px;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .mud-toolbar-gutters {
+        padding-left: 24px;
+        padding-right: 2px;
+    }
+
+    //DSR Geo Attendance Mobile
+    .employee-detail-card > .mud-typography-h3{
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+    .day-start-end{
+        padding: 18px 30px;
+    }
+}
+
+@media (max-width:960px) {
+    .mud-dialog-fullscreen {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        max-width: 100%;
+        max-height: none;
+        border-radius: 0;
+    }
+
+    .max-width-50 {
+        max-width: 50%;
+    }
+
+    .ml-5, .mx-5 {
+        margin-left: 0px !important;
+    }
+
+    .header-summary-section {
+        margin-top: 42px;
+        margin-bottom: -40px;
+    }
+
+    .fixed-button-bar > .mud-button-group-root {
+        margin-left: 2px;
+    }
+
+    .fixed-dashboard-button-bar > .mud-button-group-root {
+        margin-left: 2px;
+    }
+
+    .order-manager-fixed-button-bar > .mud-button-group-root {
+        margin-left: 2px;
+    }
+
+    //order manager fixed button bar
+    .order-manager-fixed-button-bar {
+        position: fixed;
+        left: 0px;
+        height: 56px;
+        top: 52px;
+        width: 100%;
+        background: white;
+        z-index: 1000;
+        border-bottom-color: $border-color-default;
+        border-bottom-style: $border-style-default;
+        border-bottom-width: $border-width-default;
+        border-radius: 0px;
+    }
+
+    .mud-card-content {
+        padding: 6px;
+    }
+}
+
+@media (max-width: 600px) {
+    .form-name {
+        margin-left: 0;
+        font-size: 16px;
+        font-weight: $bold;
+        text-align: center;
+        width: 250px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+
+    .fixed-button-bar + div {
+        margin-top: 20px !important;
+        margin-bottom: 10px;
+    }
+
+    .mud-input {
+        > input.mud-input-root,
+        div.mud-input-slot.mud-input-root {
+            height: 25px;
+            padding: 0px 8px 0px;
+            font-size: $typography-default-size;
+        }
+    }
+
+    .mud-input-adornment {
+        .mud-icon-size-medium {
+            font-size: $typography-default-size;
+        }
+    }
+
+    .mud-shrink {
+        ~ label.mud-input-label {
+            .mud-input-label-inputcontrol {
+                font-size: $typography-default-size;
+            }
+        }
+    }
+
+    .header-summary-section {
+        margin-top: 50px;
+        margin-bottom: -50px;
+    }
+
+    /*.pl-3, .px-3 {
+        padding-left: 2px !important;
+    }
+
+    .pr-3, .px-3 {
+        padding-right: 2px !important;
+    }*/
+
+    .mud-toolbar-gutters {
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    .mud-alert {
+        margin-top: 48px;
+        margin-left: 10px;
+        margin-right: 10px;
+    }
+
+    .overlay-contents {
+        padding: 0;
+    }
+}
+
+@media screen and (min-width: 960px) {
+    .mt-md-6,
+    .my-md-6 {
+        margin-top: 12px !important;
+    }
+}
+/*@media screen and (min-width: 600px) {
+    .mud-data-grid {
+        .mud-table-cell {
+            .column-header {
+                display: block;
+            }
+        }
+    }
+}*/
+
+@media only screen and (max-width: 960px) {
+    .fixed-button-bar {
+        left: 0;
+        height: 56px;
+        top: 52px;
+        width: 100%;
+        background: $appbar-background-color;
+        z-index: 1000;
+        border-bottom-color: $border-color-default;
+        border-bottom-style: $border-style-default;
+        border-bottom-width: $border-width-default;
+        border-radius: 0px;
+        //padding-bottom: 0px !important;
+    }
+}
+
+@media screen and (max-width: 960px) {
+    .mt-md-2, .my-md-2 {
+        margin-top: 0px !important;
+    }
+
+    .fixed-button-bar + div {
+        margin-top: -30px !important;
+    }
+
+    .mud-icon-size-large {
+        font-size: 25px !important;
+    }
+
+    .form-name {
+        margin-left: 0px;
+        font-size: $typography-form-name-size;
+        font-weight: $bold;
+        width: auto;
+    }
+}
+
+//home screen right side part alignment issue
+@media screen and (min-width: 960px) {
+    .mt-md-2, .my-md-2 {
+        margin-top: 0px !important;
+    }
+}

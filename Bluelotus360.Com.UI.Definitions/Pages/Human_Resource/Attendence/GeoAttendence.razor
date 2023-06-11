@@ -1,0 +1,123 @@
+﻿@page "/HumanResource/Geo-Attendence"
+@implements IAsyncDisposable
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    @if (showAlert)
+    {
+        <BLAlert CloseAlert="(()=>showAlert=false)" AlertContent="@alertMessage" AlertStatus="Error" />
+    }
+    
+    <MudPaper Width="100%" Class="pa-3 mb-3">
+        <MudText Typo="Typo.h6" >@headerName </MudText>
+    </MudPaper>
+    
+    <UIBuilder FormObject="formDefinition"
+                   DataObject="_manualAttendance"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_refBuilder" />
+
+    @if (IsProcessing)
+    {
+        <MudItem Class="d-flex justify-content-md-end mb-2">
+            <MudText Typo="Typo.h6">Processing...</MudText>
+            <MudProgressCircular Color="Color.Primary" Size="Size.Small" Indeterminate="true"/>
+        </MudItem>
+    }
+
+
+            <MudSimpleTable  FixedHeader="@fixedheader"  Style="@(fixedheader?"height:300px;":"")" Class="mb-3">
+                <thead>
+                    <tr>
+
+                        <th  class="@(hasUserPermissionForEdit?"":"d-none")"></th>
+                        <th>In Time</th>
+                        <th>Out Time</th>
+                        <th>Worked Hours</th>
+                        <th>Work Location</th>
+                        <th class="d-none d-md-table-cell">IN Latitude</th>
+                        <th class="d-none d-md-table-cell">IN Longitude</th>
+                        <th class="d-none d-md-table-cell">Out Latitude</th>
+                        <th class="d-none d-md-table-cell">Out Longitude</th>
+                        
+                    </tr>
+                </thead>
+                 <tbody>
+                       @if (IsDataLoading)
+                        {
+                                    <tr>
+                                        <td colspan="9">
+                                             <div class="d-flex justify-content-center align-items-center my-4">
+                                                    <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+                                             </div>
+                                        </td>  
+                                       
+                                    </tr>
+                        }
+                        else
+                        {
+                            @if(_multiAtnAnlysis_Responses!=null && _multiAtnAnlysis_Responses.Count()>0){
+
+                            }
+                               @foreach (var att in _multiAtnAnlysis_Responses)
+                                {
+                                    <tr>
+                                               <td class="@(hasUserPermissionForEdit?"":"d-none")">
+                                                   <MudButtonGroup  Color="Color.Primary" Variant="Variant.Text">
+                                                       <MudIconButton Icon="@Icons.TwoTone.Edit" Color="Color.Primary" OnClick=@(async()=>{await ShowEditAttendence(att);})></MudIconButton>
+                                                       @*<MudIconButton Icon="@Icons.TwoTone.Delete" Color="Color.Secondary" ></MudIconButton>*@
+                                                   </MudButtonGroup>
+                                               </td>
+                                               @if (att.InDtm==null)
+                                               {
+                                                   <td></td>
+                                               }
+                                               else
+                                               {
+                                                   <td>@att.InDtm.Value.ToString("HH:mm")</td>
+                                               }
+
+                                               @if (att.OutDtm==null)
+                                               {
+                                                   <td></td>
+                                               }
+                                               else
+                                               {
+                                                   <td>@att.OutDtm.Value.ToString("HH:mm")</td>
+                                               }
+                                               <td>@(Math.Abs(att.GetWorkHours().Hours)+":"+Math.Abs(att.GetWorkHours().Minutes))</td>
+                                               <td>@att.Location.CodeName</td>
+
+                                               
+                                               <td class="d-none d-md-table-cell">@att.INLatitude</td>
+                                               <td class="d-none d-md-table-cell">@att.INLongitude</td>
+                                               <td class="d-none d-md-table-cell">@att.OutLatitude</td>
+                                               <td class="d-none d-md-table-cell">@att.OutLongitude</td>
+                                               
+                                               </tr>
+                                
+                                  }
+                        }
+                        <tr>
+                            <td colspan="3" class="h6 font-weight-light">Total Hours From Attendence</td>
+                            <td class="h6 font-weight-light">@(Math.Abs(_totalHoursFromAttendence.Hours)+":"+Math.Abs(_totalHoursFromAttendence.Minutes))</td>
+                            <td colspan="4"></td>
+                        </tr>
+         
+
+                </tbody>
+            </MudSimpleTable>
+    
+
+    <MudPaper Width="100%" Class="pa-3 my-3 text-center">
+        <MudText Typo="Typo.h6"><b>Total Hours From Attendence :@(Math.Abs(_totalHoursFromAttendence.Hours)+":"+Math.Abs(_totalHoursFromAttendence.Minutes))</b></MudText>
+    </MudPaper>
+    
+
+}
+else
+{
+     <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons... </MudAlert>
+}
+
+

@@ -1,0 +1,12 @@
+﻿<MudItem xs="12" Class=@css_class md="@UIElement.Width">
+    <MudTextField T='string'
+                  Value="TextValue" FullWidth="true" Immediate="true"
+                  Label="@UIElement.ElementCaption"
+                  Class="textAlignment"
+                  Variant="UIDefaults.DefaultControlVariants"
+                  @ref="multilineReference"
+                  ValueChanged="OnBlTextChanged"
+                  OnKeyDown="OnTextBoxKeyDown"
+                  Disabled="editable"
+                  Lines="3" />
+</MudItem>

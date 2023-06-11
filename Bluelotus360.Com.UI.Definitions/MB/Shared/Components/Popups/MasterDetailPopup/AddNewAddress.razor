@@ -1,0 +1,36 @@
+﻿
+<div class="bl-pop-up @(IsPopUpShown ? "":"d-none")">
+    <MudGrid class="pop-up-wrap">
+
+        <div class="pop-up-ui">
+
+           @if(InitiatorElement!=null){
+                <UIRenderere DataObject="addressMaster"
+                         FromSection="InitiatorElement"
+                         InteractionLogics="InteractionLogics"
+                         ObjectHelpers="ObjectHelpers" />
+           }
+
+
+            @if (validator.ValidationMessages.UserMessages.Count > 0)
+            {
+                <MudItem xs="12">
+                    <MudList Clickable="false">
+                        @foreach (var item in validator.ValidationMessages.UserMessages)
+                        {
+                            <MudListItem IconColor="Color.Error" Text=@item.Message Icon="@Icons.Filled.Error" />
+
+                        }
+                    </MudList>
+
+                </MudItem>
+
+               
+            }
+        </div>
+
+
+    </MudGrid>
+
+
+</div>

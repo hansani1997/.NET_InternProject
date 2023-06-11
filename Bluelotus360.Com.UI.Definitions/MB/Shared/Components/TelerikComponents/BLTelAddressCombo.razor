@@ -1,0 +1,39 @@
+﻿
+<MudItem xs="12" Class=@css_class md="@UIElement.Width">
+    @if (AddressResponse == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        @if (selectedAddress != null)
+        {
+            <div class="w-100">
+                <div class="col-12">
+                <TelerikTooltip TargetSelector=".tooltip-target" />
+                    <div class="bk-k-lable tooltip-target" title="@UIElement.ElementCaption">@UIElement.ElementCaption</div>
+            </div>
+            <div class="col-12">
+                <span class="@(!string.IsNullOrEmpty(UIElement.IconCss)?"search-combo-wrapper":"")">
+
+                        @if (!string.IsNullOrEmpty(UIElement.IconCss))
+                        {
+                            <TelerikIcon Icon="zoom" Class="px-3" />
+                        }
+                            <TelerikComboBox Data="@AddressResponse" TextField="AddressName" ValueField="AddressKey"
+                                         Placeholder="Select an item..." ClearButton="true"
+                                         Value="@selectedAddress.AddressKey"
+                                         TValue="long" TItem="AddressResponse"
+                                         ValueChanged="(long AddressKey)=>OnComboValueChangedTel(AddressKey)"
+                                         FilterOperator="Telerik.Blazor.StringFilterOperator.Contains"
+                                         Filterable="true"
+                                         Class="@combo_css">
+                            </TelerikComboBox>
+                </span>
+            </div>
+            </div>
+
+        }
+
+    }
+</MudItem>

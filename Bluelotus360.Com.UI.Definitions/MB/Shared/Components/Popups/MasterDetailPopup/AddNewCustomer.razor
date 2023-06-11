@@ -1,0 +1,77 @@
+﻿
+<TelerikWindow Modal="true" @bind-Visible="@IsPopUpShown" Centered="true" CloseOnOverlayClick="false" Class="pop-up-z-index" Height="400px" Width="1000px" Resizable=false>
+
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+            <WindowAction Name="Minimize" />
+            <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+        Add New Customer
+    </WindowTitle>
+    <WindowContent>
+        @if (InitiatorElement != null)
+        {
+
+            <UIRenderere DataObject="customer"
+                     FromSection="InitiatorElement"
+                     InteractionLogics="InteractionLogics"
+                     ObjectHelpers="ObjectHelpers" />
+        }
+
+        @if (validator.ValidationMessages.UserMessages.Count > 0)
+        {
+            <MudItem xs="12">
+                <MudList Clickable="false">
+                    @foreach (var item in validator.ValidationMessages.UserMessages)
+                    {
+                        <MudListItem IconColor="Color.Error" Text=@item.Message Icon="@Icons.Filled.Error" />
+
+                    }
+                </MudList>
+
+            </MudItem>
+
+
+        }
+    </WindowContent>
+</TelerikWindow>
+
+@*<div class="bl-pop-up @(IsPopUpShown ? "":"d-none")">
+
+    <MudGrid class="pop-up-wrap">
+
+        <div class="pop-up-ui">
+
+            @if(InitiatorElement!=null){
+
+                    <UIRenderere DataObject="customer"
+                        FromSection="InitiatorElement"
+                        InteractionLogics="InteractionLogics"
+                        ObjectHelpers="ObjectHelpers" />
+            }
+
+            @if (validator.ValidationMessages.UserMessages.Count > 0)
+            {
+                <MudItem xs="12">
+                    <MudList Clickable="false">
+                        @foreach (var item in validator.ValidationMessages.UserMessages)
+                        {
+                            <MudListItem IconColor="Color.Error" Text=@item.Message Icon="@Icons.Filled.Error" />
+
+                        }
+                    </MudList>
+
+                </MudItem>
+
+               
+            }
+
+        </div>
+
+    </MudGrid>
+
+</div>*@

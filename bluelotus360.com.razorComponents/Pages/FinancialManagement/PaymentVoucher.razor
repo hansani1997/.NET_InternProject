@@ -1,0 +1,22 @@
+﻿@page "/Payment/PaymentVoucher"
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <UIBuilder FormObject="formDefinition"
+               DataObject="_pettyCash"
+               InteractionLogics="_interactionLogic" 
+               ObjectHelpers="_objectHelpers" />
+
+    @if (__paymentVoucherGrid is not null)
+    {
+        <BLTable FormObject="__paymentVoucherGrid"
+                 DataObject="_paymentList"
+                 InteractionLogics="_interactionLogic"
+                 ObjectHelpers="_objectHelpers"
+                 @ref="_mudGrid" />
+    }
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

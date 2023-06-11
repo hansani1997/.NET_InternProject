@@ -1,0 +1,42 @@
+﻿@page "/Order/Order_Manager"
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <MudAlert Severity="Severity.Normal">Orders are showing From @requestParameters.FromDate to @requestParameters.ToDate</MudAlert>
+
+    <MudItem Style="margin-top:2%">
+    <UIBuilder FormObject="formDefinition"
+           DataObject="_order"
+           InteractionLogics="_interactionLogic"
+           ObjectHelpers="_objectHelpers"
+           @ref="_refBuilder" />
+           </MudItem>
+
+
+    @if(OrderStatus != null && OrderStatus.Count > 0)
+    {
+        <MudTabs Elevation="2" Rounded="true" Centered="false" Style="margin-top:2%">
+        @foreach (CodeBaseResponse item in OrderStatus)
+        {
+             <MudTabPanel Text="@item.CodeName" Tag='@item.CodeKey' BadgeData='@item.Count' BadgeColor="Color.Error" @onclick="() => TabClick(item.CodeKey)"/>
+            
+        }
+        </MudTabs>
+    }
+
+    @if (Grid != null)
+    {
+        <MudItem Style="margin-top:2%">
+            <BLTelGrid FormObject="Grid"
+               DataObject="ListOfOrders"
+               InteractionLogics="_interactionLogic"
+               ObjectHelpers="_objectHelpers"
+               @ref="_blTb" />
+        </MudItem>
+       
+    }
+
+    <BlueLotus360.Com.UI.Definitions.Pages.OrderHub.Component.GetMoreOrderInformation WindowIsVisible="isOpenMoreInfo" OnCloseButtonClick="HideAllPopups" @ref="moredata"/>
+    <BlueLotus360.Com.UI.Definitions.Pages.OrderHub.Component.FilterOrder WindowIsVisible="isOpenFilter" OnCloseButtonClick="HideAllPopups" @ref="_FilterOrderData" blElement="FilterSection" LocationKey="_order.Location.CodeKey" OnOpenClick="LoadFoundOrder" />
+       
+} 

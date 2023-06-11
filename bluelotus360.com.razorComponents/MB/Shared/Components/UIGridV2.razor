@@ -1,0 +1,265 @@
+﻿@using bluelotus360.Com.commonLib.Routes;
+@using bluelotus360.com.razorComponents.Extensions;
+
+@implements IDisposable
+@typeparam TItem
+
+
+
+<MudDataGrid Items="@_mainList"
+             Filterable="true" 
+             SortMode="@SortMode.Multiple" 
+             Groupable="false" 
+             Hideable="true" 
+             HorizontalScrollbar="true"
+             Bordered="true"
+             QuickFilter="new Func<TItem,bool>(FilterFunc1)"
+             ColumnResizeMode="ResizeMode.Column"
+             Virtualize="@IsServerFilterEnabled" 
+             FixedHeader="@IsServerFilterEnabled"
+             Height="@Height"
+             FilterMode="@(IsServerFilterEnabled?DataGridFilterMode.ColumnFilterRow:DataGridFilterMode.Simple)"
+             @ref="@_table">
+    <ToolBarContent>
+        <MudTextField Immediate="true" @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start"
+                      AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="@(!IsServerFilterEnabled?"":"d-none")"></MudTextField>
+    </ToolBarContent>
+    <Columns>
+       
+            @foreach (var row in FormObject.Children)
+            {
+                @if (row.ElementType != null && row.ElementType.Equals("GridParameter") && row.IsVisible)
+                {
+                    if (row.ElementType != null && row.ElementID.Equals("MultipleCoditionColumn"))
+                    {
+                        <TemplateColumn T=TItem Title="@row.ElementCaption" CellClass="multiple_condition_column" Filterable="false">
+                            <CellTemplate>
+                                @{
+                                    @if (context.Item.GetType().GetProperty(row.DefaultAccessPath)?.GetValue(context.Item, null) != null)
+                                {
+                                    int bitVal = Convert.ToInt32(context.Item.GetType().GetProperty(row.DefaultAccessPath)?.GetValue(context.Item, null));
+                                    @if (bitVal == 0)
+                                    {
+                                        <MudChip title="No" Size="Size.Small" Class="bl-chip-small" Style="@($"background-color:#ff7373;")"></MudChip>
+                                    }
+                                    else if (bitVal == 1)
+                                    {
+                                        <MudChip title="Yes" Size="Size.Small" Class="bl-chip-small" Style="@($"background-color:#6cd66c;")"></MudChip>
+                                    }
+                                    else
+                                    {
+                                        <MudButton Variant="Variant.Outlined" Size="Size.Small" Color="Color.Default" Class="ma-0">N/A</MudButton>
+                                    }
+                                }
+                                }
+                            </CellTemplate>
+                        </TemplateColumn>
+                    }
+                    else if (row.ElementType != null && row.ElementID.Equals("ImageColumn"))
+                    {
+                        <TemplateColumn T=TItem Title="@row.ElementCaption" Filterable="false">
+                            <CellTemplate>
+                                @{
+                                    string imageName = SetGridValues(context.Item, row.DefaultAccessPath);
+
+                                    if (!string.IsNullOrEmpty(imageName))
+                                    {
+                                        <img class="rounded" 
+                                             id="@imageName.Trim()" 
+                                             src="@($"{BaseEndpoint.ProductImageURL}/{imageName.Trim()}.jpg")"
+                                             width="50%"
+                                             onerror="this.onerror=null;this.src='./img/Noim.jpg';this.width=10;this.height=10;" />
+                                    }
+                                    else
+                                    {
+                                            <MudSkeleton Animation="Animation.Wave" />
+                                    }
+
+
+                                }
+                            </CellTemplate>
+                        </TemplateColumn>
+                    }
+                    else if (row.ElementType != null && row.ElementID.Equals("CommandColumn"))
+                    {
+                        <TemplateColumn T=TItem Title="@row.ElementCaption" Filterable="false" StickyRight=row.IsFreeze>
+                            <CellTemplate>
+                                @{
+                                    @if (row != null && row.Children.Count() > 0)
+                                    {
+                                        <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                                            @foreach (var child in row.Children)
+                                            {
+                                                if (!string.IsNullOrEmpty(child.IconCss))
+                                                {
+                                                    <BLToolButton DataObject="context.Item" FromSection="child" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+                                                else
+                                                {
+                                                    <BLButton DataObject="context.Item" FromSection="child" InteractionLogics="InteractionLogics" />
+                                                }
+
+                                            }
+
+                                        </MudButtonGroup>
+
+                                    }
+
+                                }
+                            </CellTemplate>
+                        </TemplateColumn>
+                    }
+                    else
+                    {
+                        @if (row.Children.Count() > 0)
+                        {
+                            <TemplateColumn Title="@row.ElementCaption" StickyLeft=row.IsFreeze>
+                                    <CellTemplate>
+                                        @foreach (var child in row.Children)
+                                        {
+                                            @if (child.ElementType != null && (child.ElementType.Equals("Cmb") || child.ElementType.Equals("TelCmb")))
+                                            {
+                                                if (child.ElementID != null && child.ElementID.Equals("CodeBase"))
+                                                {
+                                                    <BLCodeBaseCombo UIElement="child" ComboDataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+                                                if (child.ElementID != null && child.ElementID.Equals("Item"))
+                                                {
+                                                    <BLItemCombo UIElement="child" ComboDataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+                                                if (child.ElementID != null && child.ElementID.Equals("Unit"))
+                                                {
+                                                    <BLUnitCombo UIElement="child" ComboDataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+                                                if (child.ElementID != null && child.ElementID.Equals("Account"))
+                                                {
+                                                    <BLAccountCombo UIElement="child" ComboDataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+                                                if (child.ElementID != null && child.ElementID.Equals("ApprovedStatus"))
+                                                {
+                                                    <BLCodeBaseCombo UIElement="child" ComboDataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+
+                                                }
+                                            }
+                                            @if (child.ElementType != null && (child.ElementType.Equals("NumericBox") || child.ElementType.Equals("TelNumericBox")))
+                                            {
+
+                                                <BLNumericBox UIElement="child" DataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                            }
+                                            @if (child.ElementType != null && (child.ElementType.Equals("DatePicker") || child.ElementType.Equals("TelDatePicker")))
+                                            {
+                                                <BLDatePicker DataObject="@context.Item" InteractionLogics="InteractionLogics" UIElement="child" ObjectHelpers="ObjectHelpers" />
+                                            }
+                                            @if (child.ElementType != null && (child.ElementType.Equals("Switch") || child.ElementType.Equals("TelSwitch")))
+                                            {
+                                                <BLSwitch FromSection="child" DataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLSwitch>
+                                            }
+                                            @if (child.ElementType != null && (child.ElementType.Equals("Button") || child.ElementType.Equals("TelButton")) && string.IsNullOrEmpty(child.IconCss))
+                                            {
+                                                 <BLButton DataObject="@context.Item" InteractionLogics="InteractionLogics" FromSection="child" ObjectHelpers="ObjectHelpers" />
+                                            }
+                                            @if (child.ElementType != null && (child.ElementType.Equals("Button") || child.ElementType.Equals("TelButton")) && !string.IsNullOrEmpty(child.IconCss))
+                                            {
+                                                 <BLToolButton DataObject="@context.Item" InteractionLogics="InteractionLogics" FromSection="child" ObjectHelpers="ObjectHelpers" />
+                                            }
+                                            @if (child.ElementType != null && (child.ElementType.Equals("TextBox") || child.ElementType.Equals("TelTextBox")))
+                                            {
+                                                <BLTextBox UIElement="child" DataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLTextBox>
+                                            }
+                                            @if (child.ElementType != null && child.ElementType.Equals("Label"))
+                                            {
+                                                <BLLabel UIElement="child" DataObject="@context.Item" ObjectHelpers="ObjectHelpers"></BLLabel>
+                                            }
+                                            @if (child.ElementType != null && child.ElementType.Equals("CheckBox"))
+                                            {
+                                                <BLCheckBox UIElement="child" DataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLCheckBox>
+                                            }
+                                            @if (child.ElementType != null && child.ElementType.Equals("MultiRadio"))
+                                            {
+                                                <BLMultiRadio UIElement="child" DataObject="@context.Item" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLMultiRadio>
+                                            }
+                                            @if (child.ElementType != null && child.ElementType.Equals("ButtonGroup"))
+                                            {
+                                                <BLGroupButton DataObject="@context.Item" InteractionLogics="InteractionLogics" FromSection="child" />
+                                            }
+                                            @if (child.ElementType != null && child.ElementType.Equals("TimePicker"))
+                                            {
+                                                <BLTimePicker DataObject="@context.Item" InteractionLogics="InteractionLogics" UIElement="child" ObjectHelpers="ObjectHelpers" />
+                                            }
+                                            @if (child.ElementType != null && child.ElementType.Equals("ImageBox"))
+                                            {
+                                               
+
+                                            }
+                                            @if (child.ElementType != null && child.ElementType.Equals("Chip"))
+                                            {
+                                                <BLChip DataObject="@context.Item" InteractionLogics="InteractionLogics" UIElement="child" ObjectHelpers="ObjectHelpers" />
+                                            }
+
+
+                                        }
+                                </CellTemplate>
+                        </TemplateColumn>
+                    }
+                        else
+                        {
+                             @if (IsServerFilterEnabled)
+                            {
+                                     <PropertyColumn Property="x=>x.GetGridPropertyValue(row.DefaultAccessPath)"
+                                    Title="@row.ElementCaption"
+                                    SortBy="new Func<TItem,object>(x=>SortingFunc(x,row.DefaultAccessPath))"
+                                    >
+                                     <FilterTemplate>
+                                   
+                                       
+                                             <MudIconButton OnClick="@(()=>{row.IsFilterOpen=true;})" Icon="@Icons.Material.Outlined.FilterAlt" Size="@Size.Small" />
+                                            <MudOverlay Visible="@row.IsFilterOpen" OnClick="@(() => row.IsFilterOpen = false)" />
+                                            <MudPopover Open="@row.IsFilterOpen" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Class="pa-3">
+                                                <MudStack Spacing="0">
+
+                                                <MudStack Row="true">
+                                                    <MudSelect T="string" @bind-Value="@row.ColumnFilteringCriteriaType" FullWidth="true" Label="Column" Dense="true" Margin="@Margin.Dense" Class="filter-field">
+                                                        <MudSelectItem T="string" Value="@("contains")">contains</MudSelectItem>
+                                                        <MudSelectItem T="string" Value="@("Equals")">Equals</MudSelectItem>
+                                                    </MudSelect>
+                                                    <MudTextField T=string Immediate="true" @bind-Value="@row.ColumnSearchString" Placeholder="Search" />
+                                                </MudStack>
+                                                    <MudStack Row="true">
+                                                        <MudButton OnClick="@(() => ClearFilterAsync(context,row))">Clear</MudButton>
+                                                        <MudButton Color="@Color.Primary" OnClick="@(() => ApplyFilterAsync(context,row))">Filter</MudButton>
+                                                    </MudStack>
+
+                                                </MudStack>
+                                            </MudPopover>
+                                    </FilterTemplate>
+                                    </PropertyColumn>
+                               
+                             }
+                            else
+                            {
+                                <PropertyColumn Property="x=>x.GetGridPropertyValue(row.DefaultAccessPath)"
+                                                Title="@row.ElementCaption"
+                                                SortBy="new Func<TItem,object>(x=>SortingFunc(x,row.DefaultAccessPath))" />
+                            }
+
+                        }
+                    }
+                }
+            
+            }
+        
+
+    </Columns>
+    <PagerContent>
+        <MudPagination SelectedChanged="PageChanged" Count="@((GridCount / _table.RowsPerPage)+1)" Class="pa-4"/>
+    </PagerContent>
+</MudDataGrid>
+
+<style>
+    .mud-table-root .mud-icon-root.mud-svg-icon
+    {
+        fill: white;
+    }
+</style>
+
+

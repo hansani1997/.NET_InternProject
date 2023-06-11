@@ -1,0 +1,9 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+
+    <VehicleSummaryTable SelectedVehicle="DataObject.SelectedVehicle" />
+    <CustomerSummerytable SelectedVehicle="DataObject.SelectedVehicle" />
+
+
+@code{
+    [Parameter] public WorkOrder DataObject{ get; set; }
+}

@@ -1,0 +1,266 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.Booking
+@using Telerik.Blazor
+
+
+<div class="tab-scroll">
+@if(UIScope!=null && DataObject!=null){
+
+    <ValidationPopUp ValidationMessages="validator.UserMessages.UserMessages" @ref="_refUserMessage" />
+
+    <div class="top-button-bar mt-3">
+        <MudIconButton  Icon="@Icons.TwoTone.ArrowBack" 
+                        Variant="Variant.Outlined" 
+                        Color="Color.Primary" Size="Size.Small" OnClick="OnBack" Disabled="@isBackButtonDisabled"/>
+    </div>
+
+    <div class="row">
+         
+        <div id="overview-section1" class="col-12">
+            <UIRenderere FromSection="@SerachSection"
+                     DataObject="DataObject"
+                     InteractionLogics="InteractionLogic"
+                     ObjectHelpers="ObjectHelpers" />
+
+            <AddNewCustomer @ref="_refnewCustomer" OnCustomerCreated="OnCustomerCreateSuccess" />
+        </div>
+
+        <div id="overview-section2" class="col-12">
+            <ul class="mt-6">
+                    @if (isVehicleLoading)
+                    {
+                        <li class="d-flex justify-content-center align-items-center">
+                            <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+                        </li>
+                    }
+                    else
+                    {
+                        if (SelectedVehicleList!=null && SelectedVehicleList.Count>0)
+                        {
+                            @foreach (var itm in SelectedVehicleList)
+                            {
+                                <li class="search-detail-list-item row my-2" @onclick="@(()=>{LoadCusVehicleDetails(itm);})">
+                                    <div class="col-12 col-md-3">
+                                        <strong>@itm.VehicleRegistration.ItemCode</strong>
+                                        <br>
+                                        <div class="d-flex">
+                                            <span class="text-truncate">Warranty Status:</span><p class="text-truncate">@itm.VehicleWarrannty.WarranrtyStatus</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <div class="d-flex">
+                                            <span class="text-truncate">Chasis No:</span><p class="text-truncate">@itm.SerialNumber.SerialNumber</p>
+                                        </div>
+
+                                        <div class="d-flex">
+                                            <span class="text-truncate">Maintenance Package:</span><p class="text-truncate">@itm.MaintenancePackage</p>
+                                        </div>
+
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <div class="d-flex">
+                                            <span class="text-truncate">Make:</span><p class="text-truncate">@itm.Brand</p>
+                                        </div>
+
+                                        <div class="d-flex">
+                                            <span class="text-truncate">Previous Mileage:</span><p class="text-truncate">@itm.PreviousMilage</p>
+                                        </div>
+                                    </div>
+                                    <div class="col-12 col-md-3">
+                                        <div class="d-flex">
+                                            <span class="text-truncate">Model:</span><p class="text-truncate">@itm.Model</p>
+                                        </div>
+                                    </div>
+                                </li>
+                            }
+                        }
+                        else
+                        {
+                            <li class="d-flex justify-content-center align-items-center">
+                                <MudText Typo="Typo.h6">No Vehicle Found!</MudText>
+                            </li>
+                        }
+
+                    }
+                    
+            </ul>
+        </div>
+
+        <div id="overview-section3" class="col-12 veh-cus-info d-none">
+            <div  class="d-flex text-center justify-content-between align-items-baseline">
+                <div></div>
+                <h5>@((pagePosition == 3) ? $"Work Order({DataObject.OrderCategory1.CodeName})-{DataObject.OrderPrefix.CodeName + DataObject.OrderNumber}" : "Vehicle & Customer Information")</h5>
+                <div>
+                    @*<MudButton Class="@((pagePosition==3) ?"primary-btn my-2":"d-none")">Update</MudButton>*@
+                </div>
+                
+            </div>
+            <VehicleSummaryTable SelectedVehicle="DataObject.SelectedVehicle" />
+            <CustomerSummerytable SelectedVehicle="DataObject.SelectedVehicle" />
+            <div class="@((pagePosition==3) ?"d-none":"text-center")">
+                <MudButton Class="primary-btn my-2" OnClick="ShowCreateNewOrder"> Create New Work Order </MudButton>
+            </div>
+        </div>
+
+        <div id="overview-section4" class="col-12 job-history d-none">
+                <JobHistory DataObject="@DataObject" ObjectKey="@UIScope.ElementKey" LoadWorkOrder="LoadWorkorder" />
+        </div>
+
+        <div id="overview-section5" class="col-12 create-new-work-order d-none">
+            <div><h5>create new work order</h5></div>
+            <div class="row mt-6">
+                <div class="col-6">
+                    <div class="order-creation-section">
+                       <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined" DisableElevation="true" Class="mt-2 mb-3 px-3">
+                                <MudIconButton Icon="@Icons.TwoTone.ArrowRightAlt" OnClick="NavigateToMaterialAddPage" Color="Color.Primary" Disabled="IsMaterialAndServiceItemNavButtonEnable" aria-label="Go to material & service  page " />
+                                <MudIconButton Icon="@Icons.TwoTone.Search" OnClick="FindWorkOrder" aria-label="Find" Color="Color.Primary" />
+                                <MudIconButton Icon="@Icons.TwoTone.Close"  OnClick="ClearWorkOrder" aria-label="Clear" Color="Color.Secondary" />
+                       </MudButtonGroup>
+                        <UIRenderere FromSection="@CreateNewWorkOrderSection"
+                                     DataObject="DataObject"
+                                     InteractionLogics="InteractionLogic"
+                                     ObjectHelpers="ObjectHelpers" />
+                        <div class="ma-3 d-flex flex-column">
+                            <span>Booking:
+                                @if (DataObject.SelectedVehicle.LatestBook != null && DataObject.SelectedVehicle.LatestBook.ProcessDetailsKey>10)
+                                {
+                                    <MudChip Text="green" Variant="Variant.Filled" Color="Color.Success">Found</MudChip> 
+                                    @DataObject.SelectedVehicle.LatestBook.FromDate.ToString("dd/MM/yyyy")
+                                }
+                                else
+                                {
+                                    <MudChip Text="red" Variant="Variant.Filled" Color="Color.Error">Not Found</MudChip>
+                                }
+                            </span>
+
+                            <table class="table w-100">
+                                
+                                <tbody>
+                                    <tr>
+                                        <td>Vehicle No</td>
+                                        <td>:@DataObject.SelectedVehicle.VehicleRegistration.ItemCode</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Customer</td>
+                                        <td>:@DataObject.SelectedVehicle.RegisteredCustomer.AddressName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Service Advisor</td>
+                                        <td>:@(auth.AuthenticatedUser.UserID??"")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                           
+
+                        </div>
+                        <div class="footer-button-section">
+                            <div class="d-flex justify-content-end ma-3 gap-3">
+                                @*<MudButton Variant="Variant.Filled" EndIcon="@Icons.Material.Filled.ArrowRight" Color="Color.Primary"
+                                       OnClick="NavigateToMaterialAddPage"
+                                       Disabled="IsMaterialAndServiceItemNavButtonEnable">Material & Service Add</MudButton>*@
+
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnProceedToCreateNewWorkOrder" Disabled="!IsMaterialAndServiceItemNavButtonEnable">Proceed</MudButton>
+                                @*<MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.ZoomIn" Color="Color.Primary" OnClick="FindWorkOrder">Find</MudButton>
+                                <MudButton Variant="Variant.Filled" StartIcon="@Icons.Material.Filled.Close" Color="Color.Error" OnClick="ClearWorkOrder">Clear</MudButton>*@
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col-6">
+                    <div class="image-section">
+                        <ImageSlider/>
+                    </div>
+                    <MudDivider></MudDivider>
+                    <div class="d-flex justify-content-center mt-2">
+                       
+                        <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Filled.CloudUpload"
+                               for="fileInput112" OnClick="ShowUploadPopUp">
+                            Upload your images
+                        </MudButton>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+
+        <div id="overview-section6" class="col-12 my-3 d-none">
+
+            <CustomerComplainSection CustomerComplains="@DataObject.CustomerComplains" />
+            
+        </div>
+
+        <div id="overview-section7" class="col-12 my-3 d-none simple-estimate">
+
+            <SimpleEstimate MaterialSection=Estimate_MaterialCombo
+                            ServiceSection="EstImate_ServiceCombo"
+                            DataObject=DataObject 
+                            ObjectKey="@UIScope.ElementKey"/>
+            <div class="d-flex justify-content-end mt-3">
+                <span class="font-weight-bold">Estimate subject to dismantling and is valid for 30 days </span>
+            </div>
+        </div>
+
+        <div id="overview-section8" class="col-12 my-3 d-none">
+            <PlaningSection UI="@PlainingSection"
+                            DataObject="DataObject"
+                            ObjectKey="UIScope.ElementKey"
+                            OnProceedPlaning="OnProceedEnDateUpdate" />
+
+           
+        </div>
+
+    </div>
+    <FindWorkOrdersPopUp OnCloseButtonClick="HideAllPopups"
+                         ObjectKey="UIScope.ElementKey"
+                         WorkOrderHistory="JobHistories"
+                         WindowIsVisible="isFindWorkOrderPopUpShown"
+                         OpenOrderCallBack="LoadWorkorder"/>
+
+    <AddProjectNamePopUp OnCloseButtonClick="HideAllPopups"
+                         WindowIsVisible="IsAddProjectNamePopUopShown"
+                         WorkOrder="@DataObject"
+                         ObjectKey="UIScope.ElementKey"
+                         AddCustomerComplainPopUpShow="AddCustomerComplainPopUpShow" />
+
+    <AddCustomerComplaintPopup OnCloseButtonClick="HideAllPopups"
+                               WindowIsVisible="isAddCustomerComplaintPopUpShown"
+                               WorkOrder="@DataObject"
+                               SuccessfullPopUpShow="CreateNewWorkOrderSuccessfullPopUpShow" 
+                               PopUI=@CustomerNotes ObjectKey="UIScope.ElementKey"/>
+
+    <UnClosedProjectDetailsPopUp OnCloseButtonClick="HideAllPopups"
+                             DataObject="@DataObject"
+                             WindowIsVisible="IsProjectListPopUpShown"
+                             ProjectList="@ProjectList"
+                             AddCustomerComplainPopUpShow="AddCustomerComplainPopUpShow" />
+
+    <FileUploadTelPopUp UploadObject="uploadObj"
+                    WindowIsVisible="ImagePopupShown"
+                    OnCloseButtonClick="HideAllPopups"
+                    PopupTitle="Image Upload"
+                    UploadFileType="Images"
+                    UploaddSuccess="UploadSuccess" />
+
+    <MudDialog @bind-IsVisible="IsCrateNewWorkOrderSuccessfullPopUpShown" >
+        
+        <DialogContent>
+
+            <div class="d-flex flex-column justify-content-center">
+                <span>Created Successfully</span>
+                <span>WO No:@(DataObject.Prefix+DataObject.OrderNumber)</span>
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="WorkOrderDetailShow">OK</MudButton>
+            </div>
+            
+            
+        </DialogContent>
+        
+    </MudDialog>
+
+    
+
+    
+}
+</div>

@@ -1,0 +1,28 @@
+﻿@page "/transaction/stockcountmaui"
+@using bluelotus360.com.razorComponents.MB.Shared.Components.Popups
+
+@if (formDefinition != null)
+{
+    <UIBuilder FormObject="formDefinition"
+        DataObject="_transaction" 
+        InteractionLogics="_interactionLogic"
+        ObjectHelpers="_objectHelpers"
+        @ref="_refBuilder" />
+}
+@if (stockCountGrid!=null)
+{
+    <div>
+        <BLTable FormObject="stockCountGrid" DataObject="_transaction.InvoiceLineItems" InteractionLogics="_interactionLogic" VersionNumber="2"
+             ObjectHelpers="_objectHelpers" />
+    </div>
+}
+@if (FindTransactionShown)
+{
+    <div class="bl-pop-up @(FindTransactionShown ? "":"d-none")">
+
+        <FindTransaction UIElement="findTransactionUI"
+                    OnCloseButtonClick="HideAllPopups"
+                    OnOpenClick="LoadTransaction" />
+    </div>
+
+}

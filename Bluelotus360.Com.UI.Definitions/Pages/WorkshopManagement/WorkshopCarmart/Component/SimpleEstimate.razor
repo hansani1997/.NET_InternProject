@@ -1,0 +1,147 @@
+﻿@using Telerik.Blazor
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Order
+
+<div class="d-flex justify-content-between align-items-center">
+    <div></div>
+    <h5>ESTIMATE</h5>
+    <MudIconButton Variant="Variant.Outlined" Icon="@Icons.TwoTone.Print"/>
+
+</div>
+
+@if (DataObject.WorkOrderSimpleEstimation != null)
+{
+    @if (DataObject.WorkOrderSimpleEstimation.EstimatedMaterials != null)
+    {
+
+        <TelerikGrid Data="@DataObject.WorkOrderSimpleEstimation.EstimatedMaterials.Where(x=>x.IsActive==1).ToList()"
+                    EditMode="@GridEditMode.Incell"
+                    OnUpdate="@UpdateMaterialHandler"
+                    OnEdit="@EditMaterialHandler"
+                    OnDelete="@DeleteMaterialHandler"
+                    SelectionMode="@GridSelectionMode.Multiple"
+                    SelectedItemsChanged="@((IEnumerable<OrderItem> materialList) => OnSelectMaterial(materialList))"
+                    @ref=GridRef1>
+            <GridToolBar>
+                <div class="d-flex align-items-center">
+                    <span class="fw-bold">Materials</span>
+                    @if (MaterialSection != null && MaterialSection.Children.Count > 0)
+                    {
+
+                        <UIRenderere FromSection="@MaterialSection"
+                                    DataObject="DataObject"
+                                    InteractionLogics="InteractionLogic1"
+                                    ObjectHelpers="ObjectHelpers1" />
+
+
+                    }
+                </div>
+                
+            </GridToolBar>
+            <GridColumns>
+                <GridCheckboxColumn></GridCheckboxColumn>
+                <GridCommandColumn Width="100px">
+                    <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+                </GridCommandColumn>
+                <GridColumn Field="TransactionItem.ItemName" Title=" " />
+                <GridColumn Field="TransactionRate" Title="Rate" TextAlign="ColumnTextAlign.Right" DisplayFormat="{0:N2}" />
+                <GridColumn Field="" Title=" " TextAlign="ColumnTextAlign.Center" Width="50px">
+                    <Template>
+                        <span>X</span>
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="TransactionQuantity" Title="Quantity  " DisplayFormat="{0:N2}" />
+                <GridColumn Field="SubTotal" Title="Amount" TextAlign="ColumnTextAlign.Right" Editable="false" DisplayFormat="{0:N2}"/>
+                <GridColumn Field=" " Title="Total" TextAlign="ColumnTextAlign.Right" Editable="false" DisplayFormat="{0:N2}" >
+                <FooterTemplate>
+                        <div style="text-align:right;">
+
+                            <span class="font-weight-bold">@calculateEstimatedMaterial().ToString("N2")</span>
+
+                        </div>
+
+                    </FooterTemplate>
+                </GridColumn>
+                
+            </GridColumns>
+        </TelerikGrid>
+    }
+
+
+    @if (DataObject.WorkOrderSimpleEstimation.EstimatedServices != null)
+    {
+        <TelerikGrid Data=@DataObject.WorkOrderSimpleEstimation.EstimatedServices.Where(x=>x.IsActive==1).ToList() 
+            EditMode="@GridEditMode.Incell" 
+            OnUpdate="@UpdateServiceHandler" 
+            OnEdit="@EditServiceHandler"
+             OnDelete="@DeleteServiceHandler"
+             OnCreate="@CreateHandler" 
+            OnCancel="@OnCancelHandler"
+            SelectionMode="@GridSelectionMode.Multiple"
+             SelectedItemsChanged="@((IEnumerable<OrderItem> serviceList) => OnSelectService(serviceList))">
+
+            <GridToolBar>
+                <div class="d-flex align-items-center">
+                    <span class="mr-2">Services </span>
+                    <GridCommandButton Command="Add" Icon="add">Add Service</GridCommandButton>
+                    @if (ServiceSection != null && ServiceSection.Children.Count > 0)
+                    {
+                        <UIRenderere FromSection="@ServiceSection"
+                                    DataObject="DataObject"
+                                    InteractionLogics="InteractionLogic2"
+                                    ObjectHelpers="ObjectHelpers2" />
+
+
+                    }
+                    
+                </div>
+                
+            </GridToolBar>
+            <GridColumns>
+                <GridCheckboxColumn></GridCheckboxColumn>
+                <GridCommandColumn Width="100px">
+                    <GridCommandButton Command="Delete" Icon="delete">Delete</GridCommandButton>
+                </GridCommandColumn>
+                <GridColumn Field="TransactionItem.ItemName" Title=" " Editable="true" />
+                <GridColumn Field="TransactionRate" Title=" " TextAlign="ColumnTextAlign.Right" Editable="true" DisplayFormat="{0:N2}" />
+                <GridColumn Field="" Title=" " TextAlign="ColumnTextAlign.Center" Width="50px">
+                    <Template>
+                        <span>X</span>
+                    </Template>
+                </GridColumn>
+                <GridColumn Field="TransactionQuantity" Title=" " DisplayFormat="{0:N2}" />
+                <GridColumn Field="SubTotal" Title=" " TextAlign="ColumnTextAlign.Right" Editable="false" DisplayFormat="{0:N2}"/>
+                <GridColumn Field="" Title=" " TextAlign="ColumnTextAlign.Right" Editable="false" DisplayFormat="{0:N2}">
+                    <FooterTemplate>
+                        <div style="text-align:right;">
+
+                            <span class="font-weight-bold">@calculateEstimatedServices().ToString("N2")</span>
+
+                        </div>
+
+                    </FooterTemplate>
+                </GridColumn>
+                
+            </GridColumns>
+        </TelerikGrid>
+
+    }
+}
+<div class="estimate-total">
+    <span class="font-weight-bold">Total</span>
+    <span class="font-weight-bold">@((calculateEstimatedServices() + calculateEstimatedMaterial()).ToString("N2"))</span>
+</div>
+
+ <style>
+    
+     .estimate-total{
+        height: 50px;
+        padding: 14px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        width: 100%;
+        background: #F2F2F2;
+        font-size: 18px;
+    }
+     
+ </style>

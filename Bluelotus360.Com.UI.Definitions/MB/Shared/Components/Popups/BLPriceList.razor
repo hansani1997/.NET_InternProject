@@ -1,0 +1,94 @@
+﻿@using Toolbelt.Blazor.HotKeys;
+@using BlueLotus360.CleanArchitecture.Domain.Settings;
+
+<MudGrid class="price_list">
+
+ 
+
+    <MudTable Items="GetPriceListResponses()" Dense="true" Hover="true" Bordered="false" Striped="true" @bind-SelectedItem="SelectedListItem"
+              Filter="new Func<PriceListResponse,bool>(FilterPriceList)" Style="width:85%;"
+              FixedFooter="true" FixedHeader="true" Height="70vh"
+              RowClassFunc="RowClassSelection"
+              T="PriceListResponse"
+              @ref="_refTable"
+              On>
+        <ToolBarContent>
+            <MudGrid>
+                <MudItem xs="6"> <MudText Typo="Typo.h6">Price List - <b>@SelectedPriceListName</b> </MudText></MudItem>
+                <MudItem xs="12" sm="4" class="d-flex flex-row-reverse">
+                    <MudTextField Placeholder="Search By Item Code"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                                  IconSize="Size.Medium" Class="mt-0"
+                                  @ref="_refSearchBox"
+                                  @bind-Value="SearchQuery"
+                                  DebounceInterval="600"
+                                  AutoFocus="true"
+                                  T="string">
+                    </MudTextField>
+                    <MudTextField Placeholder="Search By Price"
+                                  Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search"
+                                  IconSize="Size.Medium" Class="mt-0"
+                                  ValueChanged="OnSearchQueryChanged"
+                                  DebounceInterval="600"
+                                  AutoFocus="true"
+                                  T="string">
+                    </MudTextField>
+                </MudItem>
+                <MudItem xs="12" sm="2" class="d-flex flex-row-reverse">
+                    <MudButton Variant="Variant.Filled" Color="Color.Secondary" OnClick="OnPriceListCloseButtonClick" accesskey="x">Close</MudButton>
+                    &nbsp;
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="RefreshPriceListClick" accesskey="x">Refresh</MudButton>
+                </MudItem>
+                <MudItem xs="12" class="d-flex">
+
+                </MudItem>
+            </MudGrid>
+            <MudSpacer />
+        </ToolBarContent>
+        <HeaderContent>
+
+            <MudTh>Item Code</MudTh>
+            <MudTh>Name</MudTh>
+            <MudTh>EAN</MudTh>
+            <MudTh>Loose Unit</MudTh>
+            <MudTh>Loose Unit Price</MudTh>
+            <MudTh>Pack Unit</MudTh>
+            <MudTh>Pack Size</MudTh>
+            <MudTh>Pack Price</MudTh>
+            <MudTh>Batch</MudTh>
+             <MudTh>ExpDt</MudTh>
+            <MudTh>#</MudTh>
+        </HeaderContent>
+        <RowTemplate>
+            <MudTd DataLabel="Item Code">@context.ItemCode</MudTd>
+            <MudTd DataLabel="Item Name">@context.ItemName</MudTd>
+            <MudTd DataLabel="EAN">@context.EAN</MudTd>
+            <MudTd DataLabel="Loose Unit">@context.LooseUnit.UnitName</MudTd>
+            <MudTd DataLabel="Loose Unit Price">@context.LooseUnitPrice.ToString(BLMathSettings.NumberFormat)</MudTd>
+            <MudTd DataLabel="Pack Unit">@context.PackUnit.UnitName</MudTd>
+            <MudTd DataLabel="Pack Unit">@context.PackSize.ToString(BLMathSettings.NumberFormat)</MudTd>
+            <MudTd DataLabel="Pack Unit Price">@context.PackUnitPrice.ToString(BLMathSettings.NumberFormat)</MudTd>
+            <MudTd DataLabel="Batch">@context.PriceListProject.ProjectId</MudTd>
+            <MudTd DataLabel="Batch">@(context.PriceListProject.ExpiryDate.IsDefaultDate()?"-":context.PriceListProject.ExpiryDate.ToString("dd-MMM-yyyy"))</MudTd>
+            <MudTd DataLabel="#">
+                <MudButton Variant="Variant.Filled" Size="Size.Small" Color="Color.Success" OnClick="()=>OnItemSelect(context)">Select</MudButton>
+
+            </MudTd>
+
+        </RowTemplate>
+        <PagerContent>
+            <MudTablePager />
+        </PagerContent>
+    </MudTable>
+
+
+</MudGrid>
+
+<MudMessageBox @ref="mbox" Title="Warning" CancelText="Cancel">
+    <MessageContent>
+        Cannot Add Since Loose Unit Price Or Pack Unit Price Not defined.
+    </MessageContent>
+    <YesButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" StartIcon="@Icons.Material.Filled.Warning">OK!</MudButton>
+    </YesButton>
+</MudMessageBox>

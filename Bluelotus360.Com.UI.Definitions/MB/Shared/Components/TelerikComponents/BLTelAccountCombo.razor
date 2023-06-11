@@ -1,0 +1,37 @@
+﻿
+
+<MudItem xs="width" Class=@css_class md="@UIElement.Width">
+    @if (AccountResponses == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        @if (selectedAccount!=null)
+        {
+            <div class="w-100">
+                <div class="col-12">
+                    <TelerikTooltip TargetSelector=".tooltip-target" />
+                    <div class="bk-k-lable tooltip-target" title="@UIElement.ElementCaption">@UIElement.ElementCaption</div>
+                </div>
+                <div class="col-12">
+                    <TelerikComboBox Data="@AccountResponses" TextField="AccountName" ValueField="AccountKey"
+                             TValue="long" TItem="AccountResponse"
+                             ValueChanged="(long  s)=>OnComboValueChangedTel(s)"
+                             Value="selectedAccount.AccountKey"
+                             FilterOperator="Telerik.Blazor.StringFilterOperator.Contains" Filterable="true" ClearButton="true"
+                             Enabled="@isEditable"
+                             Class="@combo_css">
+                    </TelerikComboBox>
+
+                </div>
+            </div>
+        }
+        
+
+
+
+    }
+</MudItem>
+
+

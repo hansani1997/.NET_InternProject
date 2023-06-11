@@ -1,0 +1,147 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+	<!--[if gte mso 9]>
+	<xml>
+	  <o:OfficeDocumentSettings>
+		<o:AllowPNG/>
+		<o:PixelsPerInch>96</o:PixelsPerInch>
+	  </o:OfficeDocumentSettings>
+	</xml>
+	<![endif]-->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="x-apple-disable-message-reformatting">
+	<!--[if !mso]><!-->
+	<meta http-equiv="X-UA-Compatible" content="IE=edge"><!--<![endif]-->
+	<title></title>
+
+
+
+
+	<!--[if !mso]><!-->
+	<link href="https://fonts.googleapis.com/css?family=Lato:400,700&display=swap" rel="stylesheet" type="text/css">
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet" type="text/css"><!--<![endif]-->
+	<style media="print">
+
+	</style>
+</head>
+
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body p-0">
+						<div class="row p-5">
+							<div class="col-md-6">
+								@if (CompanyInofrmation.b64Logo != null)
+								{
+									<img src="data:image/jpeg;base64 @(CompanyInofrmation.b64Logo)">
+								}
+								else
+								{
+									@CompanyInofrmation.CompanyName
+								}
+							</div>
+
+							<div class="col-md-6 text-right">
+								<p class="font-weight-bold mb-1">
+									@CompanyInofrmation.Address<br />
+									@CompanyInofrmation.Town @CompanyInofrmation.City<br />
+									@CompanyInofrmation.Country
+								</p>
+
+							</div>
+						</div>
+
+						<hr>
+
+						<div class="row pb-5 p-5">
+							<div class="col-md-6">
+								<p class="mb-1">@ReportOrder.OrderCustomer.AddressName</p>
+
+							</div>
+
+							<div class="col-md-6 text-right">
+								<p class="font-weight-bold mb-4">SO : @ReportOrder.OrderNumber</p>
+								<p class="mb-1"><span class="text-muted">Date :</span>@ReportOrder.OrderDate.ToString("dd/MMM/yyyy")</p>
+								<p class="mb-1"><span class="text-muted">Payement Mode: </span>@ReportOrder.OrderPaymentTerm.CodeName</p>
+
+							</div>
+						</div>
+
+						<div class="row p-5">
+							<div class="col-md-12">
+								<table class="table table-bordered">
+									<thead>
+										<tr>
+											<th class="font-weight-bold">Item</th>
+											<th class="font-weight-bold">Rate</th>
+											<th class="font-weight-bold">Quantity</th>
+											<th class="font-weight-bold">Dis(%)</th>
+											<th class="font-weight-bold">Dis Amt</th>
+											<th class="font-weight-bold">VAT</th>
+											<th class="font-weight-bold">SVAT</th>
+											<th class="font-weight-bold">Amt</th>
+										</tr>
+									</thead>
+									<tbody>
+										@foreach (var item in ReportOrder.OrderItems)
+										{
+											@if(item.IsActive==1){
+												<tr>
+													<td class="text-right">@item.TransactionItem.ItemName</td>
+													<td class="text-right">@item.TransactionRate.ToString("N2")</td>
+													<td class="text-right">@item.TransactionQuantity.ToString("N2")</td>
+													<td class="text-right">@item.DiscountPercentage.ToString("N2")</td>
+													<td class="text-right">@item.GetLineDiscount().ToString("N2")</td>
+													<td class="text-right">@item.GetItemTaxType1().ToString("N2")</td>
+													<td class="text-right">@item.GetItemTaxType4().ToString("N2")</td>
+													<td class="text-right">@item.GetLineTotalWithTax().ToString("N2")</td>
+												</tr>
+											}
+											
+										}
+										<tr style="border-top:1.1px black solid;">
+											<td class=" font-weight-bold text-right">Total</td>
+											<td class=" font-weight-bold text-right">@ReportOrder.GetOrderRateTotal().ToString("N2")</td>
+											<td class=" font-weight-bold text-right">@ReportOrder.GetQuantityTotal().ToString("N2")</td>
+											<td></td>
+											<td class=" font-weight-bold text-right">@ReportOrder.GetOrderDiscountTotal().ToString("N2")</td>
+											<td class=" font-weight-bold text-right">@ReportOrder.GetTotalTaxType1().ToString("N2")</td>
+											<td class=" font-weight-bold text-right">@ReportOrder.GetTotalTaxType4().ToString("N2")</td>
+											<td style="border-bottom:6px black double;" class=" font-weight-bold text-right">@ReportOrder.GetOrderTotalWithTaxes().ToString("N2")</td>
+										</tr>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+						@*<div class="d-flex  p-4">
+							<div class="py-3 px-5 text-right">
+								<div class="mb-2">Total Amount</div>
+								<div class="h2 font-weight-light">@ReportOrder.GetOrderTotalWithTaxes().ToString("N2")</div>
+							</div>
+
+							<div class="py-3 px-5 text-right">
+								<div class="mb-2">Discount</div>
+								<div class="h2 font-weight-light">@ReportOrder.GetOrderDiscountTotal().ToString("N2") </div>
+							</div>
+
+							<div class="py-3 px-5 text-right">
+								<div class="mb-2">Total Amount</div>
+								<div class="h2 font-weight-light">@ReportOrder.GetOrderTotalWithDiscounts().ToString("N2")</div>
+							</div>
+						</div>*@
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+	</div>
+</body>
+
+</html>

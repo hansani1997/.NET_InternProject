@@ -1,0 +1,139 @@
+﻿<h3>Shortcuts</h3>
+
+
+@if (pincards != null && pincards.Count() > 0)
+{
+    @foreach (var pincard in pincards)
+    {
+        @if (!pincard.MenuCaption.Equals("Add Shortcuts"))
+        {
+            <MudItem xs="6" md="2" @onclick="@(async()=> await NavigateToNewTab(pincard.GetPathURL()))">
+                <MudCard Class="pin-card" Style="@($"background:{@color_arr[pincards.IndexOf(pincard)]};")" title="@pincard.MenuCaption">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+                            <MudMenu Icon="@Icons.Material.Filled.MoreVert" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.CenterLeft">
+                                <MudMenuItem OnClick="@(async()=>await Unpin(pincard.MenuCaption))"><MudIcon Icon="@Icons.TwoTone.BookmarkRemove"></MudIcon> Unpin</MudMenuItem>
+                            </MudMenu>
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        @if (!string.IsNullOrEmpty(pincard.MenuCaption) && pincard.MenuCaption.Length > 0)
+                        {
+                            <MudText>@pincard.MenuCaption</MudText>
+                        }
+
+                    </MudCardContent>
+                </MudCard>
+            </MudItem>
+        }
+        else
+        {
+            <MudItem xs="6" md="2" @onclick="@OpenPinpoup">
+                <MudCard Class="pin-card-empty">
+                    <MudCardHeader>
+                        <CardHeaderContent>
+
+                        </CardHeaderContent>
+                        <CardHeaderActions>
+
+                        </CardHeaderActions>
+                    </MudCardHeader>
+                    <MudCardContent>
+                        <MudIcon Icon="@Icons.TwoTone.Add"></MudIcon>
+                        <MudText>Add Shortcut</MudText>
+                    </MudCardContent>
+
+                </MudCard>
+            </MudItem>
+        }
+    }
+    @if (pincards.Count() == 1)
+    {
+        <MudItem xs="6" md="10">
+            <MudCard Class="pin-card-empty-space">
+                <MudCardHeader>
+                    <CardHeaderContent>
+
+                    </CardHeaderContent>
+                    <CardHeaderActions>
+
+                    </CardHeaderActions>
+                </MudCardHeader>
+                <MudCardContent>
+                    <span>Nothing Pinned yet!</span>
+                </MudCardContent>
+                <MudCardActions>
+
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+    }
+
+}
+else
+{
+    <MudPaper Class="mx-auto pa-6">
+        <MudItem xs="12" Class="d-flex justify-content-center align-items-center">
+            <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+        </MudItem>
+    </MudPaper>
+}
+
+
+
+<PopUpLayout @ref="overlay" OverlayStyle="PopUpLayout.Style.FullScreen" CssClass="jusify-content-center" OnCloseRequested="Dismiss">
+
+    <MudContainer>
+        @if (PinnedMenus != null && PinnedMenus.SubMenus != null && PinnedMenus.SubMenus.Count() > 0)
+        {
+
+            <MudIconButton Icon="@Icons.Material.TwoTone.Save" Variant="Variant.Filled" Color="Color.Primary" OnClick="@UpdatePinSection" Class="mr-2" />
+            <MudIconButton Icon="@Icons.Material.TwoTone.Cancel" Variant="Variant.Filled" Color="Color.Primary" OnClick="@CloseDialog" />
+
+
+            <MudTable Items="@PinnedMenus.SubMenus" FixedHeader="true" Height="450px" Filter="new Func<MenuItem,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1" @ref="@_table">
+                @*350px*@
+
+                <ToolBarContent>
+                    <MudSpacer />
+                    @*  <div style="padding-top: 30px;">*@
+                    <MudTextField Immediate="true" Style="flex:0.5" @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    @*    </div>*@
+                </ToolBarContent>
+
+
+                <HeaderContent>
+                    <MudTh>MenuCaption</MudTh>
+                    <MudTh>IsPinned</MudTh>
+                </HeaderContent>
+
+
+                <RowTemplate>
+                    <MudTd title="@context.MenuCaption" DataLabel="MenuCaption">@context.MenuCaption.Truncate(20)</MudTd>
+                    <MudTd DataLabel="IsPinned">
+
+                        @{
+                            if (context != null)
+                            {
+
+                                <MudCheckBox Checked="@context.Ispinned"
+                                 CheckedChanged="(bool value) => {ChangeHandler(value, context.MenuCaption);}" />
+
+                            }
+                        }
+
+                    </MudTd>
+                </RowTemplate>
+
+                @*<PagerContent>
+            <MudPagination SelectedChanged="PageChanged" Count="@((_table.GetFilteredItemsCount() + _table.RowsPerPage - 1) / _table.RowsPerPage)" Class="pa-4" />
+            </PagerContent>*@
+            </MudTable>
+
+        }
+
+    </MudContainer>
+</PopUpLayout>

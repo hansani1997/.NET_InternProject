@@ -1,0 +1,46 @@
+﻿
+
+<div class="col-12 d-flex justify-content-end">
+    <MudToggleIconButton 
+        Toggled="@Changed"
+        ToggledChanged="OnToggledChanged"
+        Icon="@Icons.TwoTone.JoinLeft"
+        ToggledIcon="@Icons.TwoTone.JoinRight"/>
+</div>
+
+<div id="add-services" class="col-12 d-none">
+    <div class="d-flex justify-content-center"><h5>ADD SERVICES</h5></div>
+    <hr/>
+    <UIRenderere FromSection="@AddServicesSection"
+                 DataObject="DataObject"
+                 InteractionLogics="InteractionLogic"
+                 ObjectHelpers="ObjectHelpers" />
+
+    <BLTelGrid FormObject="@ServicesUISection"
+               DataObject="DataObject.WorkOrderServices"
+               InteractionLogics="InteractionLogic"
+               ObjectHelpers="ObjectHelpers"
+               Height="200px"
+               @ref="_servicesTrns" />
+</div>
+
+<div id="add-materials" class="col-12 d-none">
+    <div class="d-flex justify-content-center"><h5>ADD MATERIAL</h5></div>
+    <hr />
+    <UIRenderere FromSection="@AddMaterialSection"
+                 DataObject="DataObject"
+                 InteractionLogics="InteractionLogic"
+                 ObjectHelpers="ObjectHelpers" />
+
+    <BLTelGrid FormObject="@MaterialUISection"
+               DataObject="DataObject.WorkOrderMaterials"
+               InteractionLogics="InteractionLogic"
+               ObjectHelpers="ObjectHelpers"
+               Height="200px"
+               @ref="_MaterialTrns" />
+
+</div>
+
+<div class="col-12 d-flex justify-content-center mt-3">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnProceed">Proceed</MudButton>
+</div>

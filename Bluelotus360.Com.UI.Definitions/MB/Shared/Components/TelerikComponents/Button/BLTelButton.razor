@@ -1,0 +1,9 @@
+﻿
+<MudItem xs="12" md="@FromSection.Width" Class="@css_class">
+    <TelerikButton OnClick="@OnButtonClick"
+                    Class="@btn_css"
+                    Enabled="@IsComponentEnabled" 
+                    Title="@FromSection.ElementCaption"
+                    Icon="@FromSection.IconCss">
+        @FromSection.ElementCaption</TelerikButton>
+</MudItem>

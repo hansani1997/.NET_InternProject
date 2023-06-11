@@ -1,0 +1,148 @@
+﻿@typeparam TItem
+
+
+<MudTable Items="DataObject" Hover="true" Bordered="true" Striped="true" FixedHeader="true" Height="@Height" SortLabel="Sort By">
+    <ToolBarContent>
+        <MudText Typo="Typo.h6">@FormObject.ElementCaption</MudText>
+        <MudSpacer />
+        @*<MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>*@
+    </ToolBarContent>
+
+    <HeaderContent>
+
+        @foreach (var hd in FormObject.Children)
+        {
+            if (hd.ElementType != null && hd.ElementType.Equals("GridParameter"))
+			{
+                
+			        <MudTh Class="table-text-overflow" >
+                        <MudTooltip Text="@hd.ElementCaption" Arrow="true" Placement="Placement.Top" >
+                            <MudTableSortLabel  Enabled="true" InitialDirection="SortDirection.Ascending" SortBy="new Func<TItem, object>(x=>x.GetType().GetProperty(hd.DefaultAccessPath)?.GetValue(x, null))">@hd.ElementCaption</MudTableSortLabel>
+                        </MudTooltip>
+                    </MudTh>
+               
+			}
+        }
+        
+    </HeaderContent>
+    <RowTemplate>
+        
+                @foreach (var row in FormObject.Children)
+                {
+                    @if (row .ElementType != null && row.ElementType.Equals("GridParameter"))
+		        	{
+                           <MudTd DataLabel="@row.ElementCaption">
+                                @if (row.Children.Count()>0)
+                                {
+                                    @foreach (var child in row.Children)
+                                    {
+                                           @if (child.ElementType != null && child.ElementType.Equals("Cmb"))
+                                           {
+                                                @if (child.ElementID != null && child.ElementID.Equals("CodeBase"))
+                                                {
+                                                    <BLCodeBaseCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+                                                @if (child.ElementID != null && child.ElementID.Equals("Address"))
+                                                {
+                                                    <BLAddressCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" />
+                                                }
+
+                                                @if (child.ElementID != null && child.ElementID.Equals("Item"))
+                                                {
+                                                    <BLItemCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+
+                                                @if (child.ElementID != null && child.ElementID.Equals("Unit"))
+                                                {
+                                                    <BLUnitCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+
+                                                @if (child.ElementID != null && child.ElementID.Equals("Account"))
+                                                {
+                                                    <BLAccountCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+                                                @if (child.ElementID != null && child.ElementID.Equals("NextStatusCombo"))
+                                                {
+                                                    <NextApproveStatusCombo UIElement="child" ComboDataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                }
+
+                                        }
+                                        @if (child.ElementType != null && child.ElementType.Equals("NumericBox"))
+                                        {
+
+                                            <BLNumericBox UIElement="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                        }
+
+                                        @if (child.ElementType != null && child.ElementType.Equals("TextBox"))
+                                        {
+
+                                            <BLTextBox UIElement="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLTextBox>
+                                        }
+                                        @if (child.ElementType != null && child.ElementType.Equals("TextArea"))
+                                        {
+
+                                            <BLTextArea UIElement="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLTextArea>
+                                        }
+
+                                        @if (child.ElementType != null && child.ElementType.Equals("Label"))
+                                        {
+
+                                            <BLLabel UIElement="child" DataObject="@context" ObjectHelpers="ObjectHelpers"></BLLabel>
+                                        }
+                                        @if (child.ElementType != null && child.ElementType.Equals("Switch"))
+                                        {
+                                           <BLSwitch FromSection="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLSwitch>
+                                        }
+                                        @if (child.ElementType != null && child.ElementType.Equals("CheckBox"))
+                                        {
+                                           <BLCheckBox UIElement="child" DataObject="DataObject" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLCheckBox>
+                                        }
+                                        @if (child.ElementType != null && child.ElementType.Equals("MultiRadio"))
+                                        {
+                                            <BLMultiRadio UIElement="child" DataObject="@context" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers"></BLMultiRadio>
+                                        }
+
+                                        @if (child.ElementType != null && child.ElementType.Equals("ButtonGroup"))
+                                        {
+                                            <BLGroupButton DataObject="@context" InteractionLogics="InteractionLogics" FromSection="child" />
+                                        }
+
+                                        @if (child.ElementType != null && child.ElementType.Equals("Button"))
+                                        {
+                                            <BLButton DataObject="@context" InteractionLogics="InteractionLogics" FromSection="child" ObjectHelpers="ObjectHelpers"/>
+                                        }
+
+
+                                        @if (child.ElementType != null && child.ElementType.Equals("DatePicker"))
+                                        {
+                                            <BLDatePicker DataObject="@context" InteractionLogics="InteractionLogics" UIElement="child" ObjectHelpers="ObjectHelpers" />
+                                        }
+                                        @if (child.ElementType != null && child.ElementType.Equals("TimePicker"))
+                                        {
+                                            <BLTimePicker DataObject="@context" InteractionLogics="InteractionLogics" UIElement="child" ObjectHelpers="ObjectHelpers" />
+                                        }
+
+                                        @if (child.ElementType != null && child.ElementType.Equals("ImageBox"))
+                                        {
+                                            <BLImageBox DataObject="@context" InteractionLogics="InteractionLogics" UIElement="child" ObjectHelpers="ObjectHelpers" />
+
+                                        }
+                                    
+                                    }
+
+                                }
+                                else{
+                                        @(SetGridValues(context,row.DefaultAccessPath))
+                                }
+                    
+                    
+                          </MudTd>
+
+		        	}
+                }
+
+    </RowTemplate>
+    <PagerContent>
+        <MudTablePager />
+    </PagerContent>
+</MudTable>

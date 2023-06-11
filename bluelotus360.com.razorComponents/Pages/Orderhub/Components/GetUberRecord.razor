@@ -1,0 +1,94 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities;
+@using Newtonsoft.Json;
+@using bluelotus360.Com.commonLib.Helpers;
+@using bluelotus360.com.razorComponents.Extensions;
+
+<MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions">
+    <TitleContent>
+        Find Uber Order
+    </TitleContent>
+    <DialogContent>
+        <UIRenderere FromSection="blElement"
+                     DataObject="new object()"
+                     InteractionLogics="InteractionLogics"
+                     ObjectHelpers="ObjectHelpers" />
+    </DialogContent>
+    @*<DialogActions>
+    <MudButton OnClick="OnCloseClick">Cancel</MudButton>
+    </DialogActions>*@
+</MudDialog>
+
+@code {
+    [Parameter]
+    public EventCallback OnCloseButtonClick { get; set; }
+    [Parameter] public bool WindowIsVisible { get; set; } = true;
+    [Parameter] public string OrdRef { get; set; } = "";
+    [Parameter] public BLUIElement blElement { get; set; }
+    public IDictionary<string, EventCallback> InteractionLogics { get; set; }
+    public IDictionary<string, IBLUIOperationHelper> ObjectHelpers { get; set; }
+    private DialogOptions dialogOptions = new() { CloseButton = true };
+    private async void OnCloseClick()
+    {
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+
+    }
+    protected override async Task OnParametersSetAsync()
+    {
+        if (blElement != null)
+        {
+            InteractionHelper helper = new InteractionHelper(this, blElement);//formdefinition has all form objects
+            InteractionLogics = helper.GenerateEventCallbacks();//
+            StateHasChanged();
+        }
+        await base.OnParametersSetAsync();
+    }
+    private void RefOnChange(UIInterectionArgs<string> args)
+    {
+        OrdRef = args.DataObject;
+        StateHasChanged();
+    }
+
+    private async void GetUberOrder(UIInterectionArgs<object> args)
+    {
+        appStateService.IsLoaded = true;
+        RequestParameters parameter = new RequestParameters()
+            {
+                OrderID = OrdRef
+            };
+        string RequestBody = await _orderManager.GetMissingUberOber(parameter);
+        bool ok = await SaveToBL(RequestBody);
+        appStateService.IsLoaded = false;
+        if (ok)
+        {
+            OnCloseClick();
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("Missing uber order has been added", Severity.Success);
+        }
+        else
+        {
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("Something went wrong", Severity.Error);
+        }
+    }
+
+    private async Task<bool> SaveToBL(string RequestBody)
+    {
+        bool success = false;
+        UberWebhookResponseModel model = JsonConvert.DeserializeObject<UberWebhookResponseModel>(RequestBody);
+        var client = new RestClient("https://bluelotus360.co/CoreAPI/api/");
+        var request = new RestRequest("/Order/UberWebhook", Method.Post);
+        request.AddHeader("Content-Type", "application/json");
+        request.AddParameter("application/json", JsonConvert.SerializeObject(model), ParameterType.RequestBody);
+        var response = client.Execute(request);
+
+        if (response.IsSuccessful)
+        {
+            success = true;
+        }
+
+        return success;
+    }
+}

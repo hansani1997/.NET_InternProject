@@ -1,0 +1,60 @@
+﻿@import "_Variables.scss";
+//@import "_variablesDark.scss";
+
+@keyframes slidein {
+    from {
+        transform: translateX(100%);
+    }
+
+    to {
+        transform: translateX(0%);
+    }
+}
+
+.report-pop-up {
+    position: absolute;
+    background: $palette-dark-gray;
+    z-index: 1400;
+    left: 50px;
+    right: 0;
+    bottom: 0px;
+    top: 64px;
+    display: flex;
+    align-items: center;
+    animation: slidein 0.2s ease-out;
+}
+
+.report-brew {
+    margin-top: 0;
+    margin-left: 3px;
+    width: 100%;
+}
+
+.report-hr {
+    height: 4px;
+    background-color: $color-primary;
+    width: 95%;
+}
+
+.k-menu:not(.k-context-menu) {
+    > .k-item {
+        color: $color-primary !important;
+    }
+}
+
+@media (max-width: 960px) {
+    .report-pop-up {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0px;
+        top: 64px;
+
+        .trv-pages-area.interactive .trv-page-container .trv-page-wrapper .trv-report-page {
+            overflow: scroll !important;
+            padding: 0.5em !important;
+        }
+    }
+}
+body {
+}

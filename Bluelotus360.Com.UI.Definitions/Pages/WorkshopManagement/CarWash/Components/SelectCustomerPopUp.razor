@@ -1,0 +1,19 @@
+﻿<TelerikWindow Modal="true" @bind-Visible="@IsPopShown" Centered="true" CloseOnOverlayClick="false" Class="pop-up-z-index" Height="200px" Width="400px" Resizable=false>
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+                <WindowAction Name="Minimize" />
+                <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+        Select Customer
+    </WindowTitle>
+    <WindowContent>
+        @if (ModalUIElement != null)
+        {
+            <UIRenderere FromSection="ModalUIElement" DataObject="CusList" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+        }
+    </WindowContent>
+</TelerikWindow>

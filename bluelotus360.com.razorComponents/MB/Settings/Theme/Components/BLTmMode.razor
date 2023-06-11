@@ -1,0 +1,28 @@
+@using bluelotus360.com.razorComponents.MB.Settings.Theme.Enums;
+
+<div>
+    <MudGrid  Class="mt-2">
+        <MudItem xs="6">
+            <MudButton Class="mode-button"
+                       FullWidth="true"
+                       OnClick="@(() => UpdateMode(Modes.Light))"
+                       Style="background: white;border:1px solid #333333">
+                <ChildContent>
+                    <MudIcon Color="Color.Primary"
+                             Icon="@Icons.Material.Filled.WbSunny" />
+                </ChildContent>
+            </MudButton>
+        </MudItem>
+        <MudItem xs="6">
+            <MudButton Class="mode-button"
+                       FullWidth="true"
+                       OnClick="@(() => UpdateMode(Modes.Dark))"
+                       Style="background: #333333;">
+                <ChildContent>
+                    <MudIcon Icon="@Icons.Material.Filled.DarkMode"
+                             Color="Color.Primary" />
+                </ChildContent>
+            </MudButton>
+        </MudItem>
+    </MudGrid>
+</div>

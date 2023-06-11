@@ -1,0 +1,53 @@
+﻿<MudItem xs="12" Class=@css_class md="@UIElement.Width">
+    @if (CodeBaseResponses == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+
+
+
+
+        @if (selectedCodeBase != null)
+        {
+            <div class="w-100">
+                <div class="col-12">
+                    <TelerikTooltip TargetSelector=".tooltip-target" />
+                    <div class="bk-k-lable tooltip-target" title="@UIElement.ElementCaption">@UIElement.ElementCaption</div>
+                </div>
+                <div class="col-12">
+
+
+                
+                <span class="@(!string.IsNullOrEmpty(UIElement.IconCss)?"search-combo-wrapper":"")">
+
+                        @if (!string.IsNullOrEmpty(UIElement.IconCss))
+                        {
+                            <TelerikIcon Icon="zoom" Class="px-3" />
+                        }
+                    
+                    <TelerikComboBox Data="@CodeBaseResponses" TextField="CodeName" ValueField="CodeKey"
+                             TValue="int" TItem="CodeBaseResponse"
+                             ValueChanged="(int  s)=>OnComboValueChangedTel(s)"
+                             Value="selectedCodeBase.CodeKey"
+                             FilterOperator="Telerik.Blazor.StringFilterOperator.Contains"
+                             Filterable="true"
+                             Enabled="@isEditable"
+                             Class="@combo_css">
+                    </TelerikComboBox>
+                </span>
+
+
+
+
+
+                </div>
+            </div>
+        }
+
+
+
+
+    }
+</MudItem>

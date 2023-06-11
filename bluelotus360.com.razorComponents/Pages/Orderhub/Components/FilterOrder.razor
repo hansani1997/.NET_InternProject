@@ -1,0 +1,14 @@
+﻿<MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions">
+    <TitleContent>
+        Filter Order
+    </TitleContent>
+    <DialogContent>
+        <UIRenderere FromSection="blElement"
+                     DataObject="new object()"
+                     InteractionLogics="InteractionLogics"
+                     ObjectHelpers="ObjectHelpers" />
+    </DialogContent>
+    @*<DialogActions>
+        <MudButton OnClick="OnCloseClick">Cancel</MudButton>
+    </DialogActions>*@
+</MudDialog>

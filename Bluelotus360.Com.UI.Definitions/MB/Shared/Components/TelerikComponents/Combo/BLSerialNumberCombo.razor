@@ -1,0 +1,34 @@
+﻿@using BlueLotus360.CleanArchitecture.Domain.Entities.Transaction
+
+<MudItem xs="12" Class=@css_class md="@UIElement.Width">
+    @if (ItemSerialNumbers == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        @if (selectedSerialnumber != null)
+        {
+            <div class="w-100">
+                <div class="col-12">
+                    <TelerikTooltip TargetSelector=".tooltip-target" />
+                    <div class="bk-k-lable tooltip-target" title="@UIElement.ElementCaption">@UIElement.ElementCaption</div>
+                </div>
+                <div class="col-12">
+                    <span class="@(!string.IsNullOrEmpty(UIElement.IconCss)?"search-combo-wrapper":"")">
+
+                        @if (!string.IsNullOrEmpty(UIElement.IconCss))
+                        {
+                            <TelerikIcon Icon="zoom" Class="px-3" />
+                        }
+                        <TelerikComboBox Data="@ItemSerialNumbers" TextField="SerialNumber" ValueField="SerialNumberKey" TValue="long" TItem="ItemSerialNumber"
+                                 Value="selectedSerialnumber.SerialNumberKey" ValueChanged="(long s)=>OnComboValueChangedTel(s)"
+                                 FilterOperator="Telerik.Blazor.StringFilterOperator.Contains" Class="@combo_css" Filterable="true" ClearButton="true">
+                        </TelerikComboBox>
+                    </span>
+                </div>
+            </div>
+        }
+
+    }
+</MudItem>

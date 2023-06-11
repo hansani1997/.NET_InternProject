@@ -1,0 +1,131 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Order
+@using Telerik.DataSource.Extensions
+
+<div class="d-flex justify-content-end">
+    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="AddComplains" Disabled="IsButtonDisabled">Add New Request</MudButton>
+    
+</div>
+<ul>
+    @foreach (var complain in CustomerRequests.CustomerComplains.Where(x=>x.IsActive==1))
+    {
+        <li class="requests-lines">
+            <div class="leading-bar"></div>
+            <div class="text-truncate">
+                <span>@(complain.TransactionItem.ItemName??"")</span>
+            </div>
+            <div>
+                <span>On @complain.InsertDate.ToString("dd/MM/yyyy") by @CustomerRequests.OrderCustomer</span>
+            </div>
+            <div class="text-truncate">
+                <span>@(complain.Description??"")</span>
+            </div>
+            <div class="">
+                <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.TwoTone.Edit" OnClick="@(()=>{ComplainEdit((int)complain.LineNumber);})" Disabled="IsButtonDisabled" />
+                <MudIconButton Variant="Variant.Outlined" Color="Color.Primary" Icon="@Icons.TwoTone.Delete" OnClick="@(()=>{ComplainDelete((int)complain.LineNumber);})" Disabled="IsButtonDisabled" />
+            </div>
+        </li>
+    }
+    
+</ul>
+
+
+
+<AddCustomerComplaintPopup OnCloseButtonClick="HideAllPopups"
+                           WindowIsVisible="isComplainsAddEditPopupShown"
+                           WorkOrder="@CustomerRequests"
+                           RefreshComplains="RefreshComplainsList"
+                           PopUI=@PopUpUI ObjectKey="ObjectKey" />
+
+@code {
+    [Parameter] public BLUIElement PopUpUI{ get; set; }
+    [Parameter] public WorkOrder CustomerRequests { get; set; }
+    [Parameter] public long ObjectKey{ get; set; }
+    public IEnumerable<OrderItem> SelectedItems { get; set; } = Enumerable.Empty<OrderItem>();
+    private bool isComplainsAddEditPopupShown;
+
+    private bool IsButtonDisabled;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        IsButtonDisabled = CustomerRequests.OrderStatus.Code.Equals("Closed");
+
+    }
+
+    private void AddComplains()
+    {
+        SelectedItems = Enumerable.Empty<OrderItem>();
+        isComplainsAddEditPopupShown = true;
+    }
+
+    private void ComplainEdit(int complainID)
+    {
+        SelectedItems = CustomerRequests.CustomerComplains.Where(item => item.LineNumber == complainID).ToList();
+        isComplainsAddEditPopupShown = true;
+        StateHasChanged();
+    }
+    private void ComplainDelete(int complainID)
+    {
+        var index = CustomerRequests.CustomerComplains.ToList().FindIndex(x => x.LineNumber == complainID);
+        CustomerRequests.CustomerComplains[index].IsActive = 0;
+        StateHasChanged();
+    }
+
+    private void HideAllPopups()
+    {
+        isComplainsAddEditPopupShown = false;
+        StateHasChanged();
+    }
+    private void RefreshComplainsList(IList<OrderItem> list)
+    {
+        CustomerRequests.CustomerComplains = list;
+        StateHasChanged();
+    }
+
+    
+}
+
+<style>
+    .leading-bar{
+        background: #053B71;
+        border-radius: 10px;
+        height:100%;
+    }
+    .requests-lines{
+        display:flex;
+        background: #FFFFFF;
+        border: 0.5px solid #053B71;
+        border-radius: 10px;
+        margin:25px 0;
+        height:110px;
+        
+    }
+
+    .requests-lines > div {
+        text-align:center;
+    }
+
+    .requests-lines > div:nth-child(1){
+        width:1%;
+    }
+
+     .requests-lines > div:nth-child(2) {
+         width: 29%;
+         padding: 35px 0;
+     }
+
+     .requests-lines > div:nth-child(3) {
+        width: 20%;
+        padding: 35px 0;
+    }
+
+    .requests-lines > div:nth-child(4) {
+        width: 30%;
+        padding: 35px 0;
+    }
+
+    .requests-lines > div:nth-child(5) {
+        width:20%;
+        padding: 35px 0;
+    }
+</style>

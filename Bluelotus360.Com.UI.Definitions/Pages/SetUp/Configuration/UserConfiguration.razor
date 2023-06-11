@@ -1,0 +1,54 @@
+﻿@page "/Configuration/UserConfiguration"
+@using BlueLotus360.Com.UI.Definitions.MB.Shared.Components.TelerikComponents
+@using Telerik.Blazor
+@using BlueLotus360.CleanArchitecture.Domain.Entities
+
+@if (formDefinition!=null)
+{
+    <UIBuilder FormObject="formDefinition"
+                       DataObject="new object()"
+                       InteractionLogics="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"/>
+     <hr/>
+    @if (ChildMenu!=null)
+    {
+        <div class="row">
+            <div style="margin-top:50px;" class="col-12 col-md-4">
+
+                <BLTelMenuSearchCombo ComboDataObject="@ChildMenu" OnComboChanged="MenuSearchComboChanged"/>
+           
+            </div>
+        </div>
+            
+    }
+
+    @if (userConfigObject==null)
+    {
+        userConfigObject = new UserConfigObjectsBlLite();
+    }
+
+    @if(userConfigObject!=null && userConfigTable!=null){
+
+                                         <BLTelGrid FormObject="userConfigTable" 
+                                                    DataObject="userConfigObject.Children" 
+                                                    InteractionLogics="_interactionLogic" 
+                                                    ObjectHelpers="_objectHelpers" 
+						                            Height="400px"
+                                                    @ref="_blTb" />
+    }
+    
+
+
+}
+
+else{
+    <div class="rip-wrap">
+        <div class="lds-ripple">
+            <div>
+            </div><div>
+            </div>
+        </div>
+    </div>
+}
+
+   

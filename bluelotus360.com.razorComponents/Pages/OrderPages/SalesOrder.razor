@@ -1,0 +1,15 @@
+﻿@page "/order/sov2"
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <OrderComponent FormDefinition="@formDefinition"
+                ElementKey="elementKey"
+                AppbarName="Sales Order Demo"
+                Validator="validator"
+                IsQuotation="true"
+                @ref="orderComponent" />
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

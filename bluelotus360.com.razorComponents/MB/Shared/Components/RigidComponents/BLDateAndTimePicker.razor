@@ -1,0 +1,69 @@
+﻿@if (UIElement != null)
+{
+    <MudItem xs="12" Class=@css_class md="@UIElement.Width">
+        <MudTextField ReadOnly="true"
+                  T="string"
+                  Value=@(_dateTime!=null?((DateTime)_dateTime).ToString("dd/MM/yyyy HH:mm:ss"):"")
+                  Label="@UIElement.ElementCaption"
+                  @onclick="@OnDatePickerClick"
+                  Variant="@UIDefaults.DefaultControlVariants"
+                  Class="@combo_css"
+                  Adornment="Adornment.End"
+                  AdornmentIcon="@Icons.Material.TwoTone.CalendarToday" />
+    </MudItem>
+    <MudDialog DisableSidePadding="true" @ref="_mdComboDataPick" @bind-IsVisible="IsDialogVisible" Options="_dialogOption">
+        <TitleContent>
+            <strong> @(_dateTime != null ? ((DateTime)_dateTime).ToString("dd/MM/yyyy HH:mm:ss"):"")</strong>
+        </TitleContent>
+        <DialogContent>
+
+            <MudContainer Class="d-flex" Style="height:auto">
+                <MudDatePicker AutoClose="true"
+                           @bind-Date=@dateValue
+                           DateFormat="dd/MMM/yyyy"
+                           Variant=Variant.Text
+                           PickerVariant="PickerVariant.Dialog"
+                           Disabled="!UIElement.IsEnable"
+                           Editable="@editable"/>
+
+                <MudTimePicker AutoClose=true
+                           @bind-Time="time"
+                           Variant=Variant.Text
+                           Disabled="!UIElement.IsEnable"
+                           Editable="@editable"
+                           PickerVariant="PickerVariant.Dialog" 
+                           TimeFormat="HH:mm tt" />
+            </MudContainer>
+            <MudContainer Style="height:500px;">
+                <MudTabs Elevation="2">
+
+                    <MudTabPanel Icon="@Icons.Material.TwoTone.CalendarMonth">
+
+                        <MudDatePicker PickerVariant="PickerVariant.Static"
+                                   @bind-Date=@dateValue
+                                   DateFormat="dd/MMM/yyyy"
+                                   Disabled="!UIElement.IsEnable"
+                                   Editable="@editable" />
+
+                    </MudTabPanel>
+                    <MudTabPanel Icon="@Icons.Material.TwoTone.AccessTimeFilled">
+
+                        <MudTimePicker PickerVariant="PickerVariant.Static"
+                                   @bind-Time="time"
+                                   Editable="@editable"
+                                   TimeFormat="HH:mm tt"
+                                   Disabled="!UIElement.IsEnable"
+                                   AmPm="true" />
+
+                    </MudTabPanel>
+
+                </MudTabs>
+            </MudContainer>
+
+        </DialogContent>
+        <DialogActions>
+            <MudButton Color="Color.Primary" OnClick="OnDateAndTimeChange">Done</MudButton>
+        </DialogActions>
+        
+    </MudDialog>
+}

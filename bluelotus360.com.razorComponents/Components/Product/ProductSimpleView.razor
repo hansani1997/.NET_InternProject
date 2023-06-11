@@ -1,0 +1,47 @@
+﻿<MudItem xl="2" md="3" sm="6" xs="12">
+    <MudGrid Class="box-shadow pa-1">
+        <div class="sm-t-b-1">
+            <MudItem xs="12">
+                <MudButton FullWidth="true" Variant="Variant.Filled" Class="pa-0 border-1px" DisableElevation="true">
+                    <MudCard Style="width:100%" Elevation="0">
+                        <MudCardContent>
+                            <MudGrid>
+                                <MudItem xs="12">
+                                    <MudImage Fluid="true" Height="250"
+                                              Src="@("https://bluelotus360.co/3pl/SGF/PRD/"+ItemRateResponse.RateItem.ItemCode+".png")"
+                                              Alt="@ItemRateResponse.RateItem.ItemName" Elevation="0"
+                                              Class="min-h-200" />
+                                </MudItem>
+                                <MudItem xs="9">
+                                    <MudText Class="@(ItemRateResponse.RateItem.ItemName.Length>27? "sm-t":"")">@ItemRateResponse.RateItem.ItemName</MudText>
+                                </MudItem>
+                                <MudItem xs="3">
+                                    <MudText>&#163; @ItemRateResponse.TransactionRate.ToString("N2")</MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudCardContent>
+                    </MudCard>
+                </MudButton>
+            </MudItem>
+            @if (_orderState.IsCustomerSelected && _orderState.SelectedCustomer != null)
+            {
+                <MudItem xs="12">
+                    <MudGrid Class="pa-3">
+                        <MudItem xs="4">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="()=>TryReduceItemFromCart(ItemRateResponse)">-</MudButton>
+                        </MudItem>
+                        <MudItem xs="4">
+                            <MudText Align="Align.Center">
+                                <MudNumericField  T="decimal" Class="no-spinner fix-f" Min=0 Value="@thisProductQuantity" ValueChanged="OnProductQuantityChange" HideSpinButtons=true Margin="Margin.Dense" />
+                            </MudText>
+                        </MudItem>
+                        <MudItem xs="4" Class="right">
+                            <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="()=>TryAddProductToCart(ItemRateResponse)">+</MudButton>
+                        </MudItem>
+                    </MudGrid>
+                </MudItem>
+            }
+        </div>
+    </MudGrid>
+
+</MudItem>

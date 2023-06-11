@@ -1,0 +1,106 @@
+﻿
+<div class="timeline-container">
+    <div class="mud-timeline mud-timeline-vertical mud-timeline-position-alternate mud-timeline-align-default mud-timeline-modifiers">
+        @foreach (int itm in arr)
+        {
+            <div class="mud-timeline-item mud-timeline-item-default">
+
+                <div class="mud-timeline-item-divider">
+                    <hr />
+                </div>
+                <div class="mud-timeline-item-content">
+                    <div class="time-line-box">
+                        <div class="leading-bar"></div>
+                        <div class="time-line-content">
+                            <MudCard Elevation="0">
+                                <MudCardHeader>
+                                    <CardHeaderAvatar>
+                                        <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Height="65px" Width="65px" />
+                                    </CardHeaderAvatar>
+                                    <CardHeaderContent>
+                                        <MudSkeleton Animation="Animation.Wave" Width="40%" />
+                                        <MudSkeleton Animation="Animation.Wave" Width="60%" />
+                                    </CardHeaderContent>
+                                </MudCardHeader>
+
+                                <MudCardContent>
+                                    <MudSkeleton Animation="Animation.Wave" Width="40%" Class="ml-2" />
+                                </MudCardContent>
+                                <MudCardActions>
+                                    <MudSkeleton SkeletonType="SkeletonType.Circle" Animation="Animation.Wave" Height="30px" Width="30px" Class="ml-2 mb-2" />
+                                    <MudSkeleton Animation="Animation.Wave" Width="70%" Class="mx-3" />
+                                    <MudSkeleton Animation="Animation.Wave" Width="30%" />
+                                </MudCardActions>
+                            </MudCard>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        }
+    </div>
+</div>
+@code{
+    int[] arr = new int[] { 1,2,3,4};
+}
+
+<style>
+    .timeline-container{
+        margin:10px 120px;
+    }
+
+    .mud-timeline .mud-timeline-item:nth-child(2n),.mud-timeline .mud-timeline-item:nth-child(2n) .mud-timeline-item-divider {
+        justify-content:end!important;
+    }
+
+    .mud-timeline .mud-timeline-item:nth-child(2n+1),.mud-timeline .mud-timeline-item:nth-child(2n+1) .mud-timeline-item-divider {
+        justify-content:start!important;
+    }
+    .mud-timeline-vertical {
+        padding-top: 24px;
+        flex-direction: column;
+        height: 100%;
+    }
+    .mud-timeline-vertical::before {
+        top: 0;
+        bottom: 0;
+        content: "";
+        height: 100%;
+        position: absolute;
+        width: 10px;
+        background: #BDC0EE;
+        border: 1px solid #FFFFFF;
+        border-radius: 4px;
+    }
+
+    .time-line-box{
+        display:flex;
+        height:200px;
+        background: #FFFFFF;
+        border: 0.5px solid #053B71;
+        border-radius: 10px;
+    }
+
+        .time-line-box .leading-bar{
+            height:100%;
+            width:2%;
+            background: #053B71;
+            border-radius: 10px;
+        }
+
+        .time-line-box .time-line-content{
+            height:100%;
+            width:98%;
+            padding:12px;
+        }
+
+    
+
+    .mud-timeline-item-divider hr{
+        width:50%;
+        height:10px;
+        background: #BDC0EE;
+        border-radius: 4px;
+    }
+</style>

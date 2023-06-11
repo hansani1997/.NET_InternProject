@@ -1,0 +1,27 @@
+﻿@page "/Common/TestSudath/"
+@using BlueLotus360.Com.UI.Definitions.MB.Shared.Components.TelerikComponents
+
+@if (formDefinition != null && formDefinition.Children.Count() > 0)
+{
+    <UIBuilder FormObject="formDefinition"
+                DataObject="transaction"
+                InteractionLogics="_interactionLogic"
+                ObjectHelpers="_objectHelpers"
+                @ref="_refBuilder" />
+
+               @* <BLTabPage FormObject="formDefinition"
+                    DataObject="transaction"
+                    InteractionLogics="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    @ref="_bLTab"/>*@
+
+
+
+            <BLTelPopup DataObject="new object()"
+                ModalUIElement="@findOrderUI"
+                InteractionLogics="@_interactionLogic"
+                ObjectHelpers="@_objectHelpers"
+                PopupTitle="Pop Up"
+                WindowIsVisible="@FindOrderShown"/>
+
+}

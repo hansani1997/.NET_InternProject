@@ -1,0 +1,375 @@
+﻿@page "/transaction/createqrsalesorder/"
+
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    @if (isSaving)
+    {
+        <MudProgressLinear Color="Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+    @if (showAlert)
+    {
+        <BLAlert CloseAlert="(()=>showAlert=false)" AlertContent="Can't add this item to grid ,please check error in below" AlertStatus="Error" />
+    }
+
+    <div class="detail-wrapper">
+
+        <div class="header-section">
+            @if (validator.UserMessages.UserMessages.Count() != 0)
+            {
+
+
+                <div class=" @(validator.UserMessages.UserMessages.Count()!=0?"bl-expansion-panel mb-4":"d-none")">
+                    <MudExpansionPanels>
+                        <MudExpansionPanel Text="@($"Show Errors ({validator.UserMessages.UserMessages.Count()})")">
+                            @foreach (var error in validator.UserMessages.UserMessages)
+                            {
+                                <MudText Color="@Color.Error">@error.Message</MudText>
+                            }
+                        </MudExpansionPanel>
+                    </MudExpansionPanels>
+                </div>
+            }
+
+            <UIBuilder FormObject="formDefinition"
+                   DataObject="transaction"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_refBuilder" />
+
+            @if (CashInShown)
+            {
+                @*      <div class="bl-pop-up denom @(CashInShown ? "":"d-none")">
+
+                    <MudGrid>
+                    <CashDenominatorEntry CashInOutUIDefeinition="CashInUIComponents"
+                    InteractionLogics="_interactionLogic"
+                    @ref="_refCashInWindow"
+                    ObjectHelpers="_objectHelpers"
+                    CashInOutLocation="transaction.Location"
+                    CloseDenominatorWindow="HideAllPopups"
+                    />
+                    </MudGrid>
+
+                    <hr />
+                    </div>*@
+
+                <div class="bl-pop-up @(CashInShown ? "":"d-none") v">
+
+                    <MudGrid>
+                        <CashIn CashInOutUIDefeinition="CashInUIComponents"
+                        InteractionLogics="_interactionLogic"
+                        @ref="_refCashInWindow"
+                        ObjectHelpers="_objectHelpers"
+                        CashInOutLocation="transaction.Location" />
+                    </MudGrid>
+                </div>
+                <hr />
+            }
+
+            @if (CashDenominationShown)
+            {
+                <div class="bl-pop-up denom @(CashDenominationShown ? "":"d-none")">
+
+                    <MudGrid>
+                        <CashDenominatorEntry CashInOutUIDefeinition="CashInUIComponents"
+                                      InteractionLogics="_interactionLogic"
+                                      @ref="_refCashDenominatorWindow"
+                                      ObjectHelpers="_objectHelpers"
+                                      CashInOutLocation="transaction.Location"
+                                      CloseDenominatorWindow="HideAllPopups" />
+                    </MudGrid>
+
+                    <hr />
+                </div>
+
+
+                <hr />
+            }
+
+            @if (FindTransactionShown)
+            {
+                <div class="bl-pop-up @(FindTransactionShown ? "":"d-none")">
+
+                    <FindTransaction 
+                        
+                             UIElement="findTrandsactionUI"
+                             OnCloseButtonClick="CloseFindTransactionWindow"
+                             OnOpenClick="OnOpenTransactionClick"
+
+                             
+                             />
+
+
+
+                </div>
+
+            }
+            @if (CashOutShown)
+            {
+                <div class="bl-pop-up @(CashOutShown ? "":"d-none")">
+
+                    <MudGrid>
+                        <CashIn CashInOutUIDefeinition="CashOutUIComponents"
+                        InteractionLogics="_interactionLogic"
+                        @ref="_refCashOutWindow"
+                        ObjectHelpers="_objectHelpers"
+                        CashInOutLocation="transaction.Location" />
+                    </MudGrid>
+                </div>
+                <hr />
+
+            }
+
+            <div class="bl-pop-up @(RecieptsWindowShown ? "":"d-none")">
+
+                <MudGrid>
+                    <Reciept RecieptUIDefinitions="RecieptUIComponents"
+                         InteractionLogics="_interactionLogic"
+                         @ref="_refRecieptWindow"
+                         ObjectHelpers="_objectHelpers"
+                         Transaction="transaction"
+                         OnCloseClick="HideAllPopups" />
+                </MudGrid>
+            </div>
+            <hr />
+
+            @if (true)
+            {
+                <div class="bl-pop-up @(PriceListShown ? "":"d-none")">
+                    <MudGrid>
+                        <MudItem xs=12 class="price-list-wrap">
+                            <BLPriceList OnBeforePriceListLoad="OnBeforePriceListRequest"
+                                 @ref="_refPriceList"
+                                 OnAfterPriceListLoad="OnAfterPriceListRequest"
+                                 OnPriceListClose="OnPriceListClose"
+                                 OnPriceListItemSelect="OnPriceListItemSelected"
+                                 SelectedPriceList="@transaction.Code1" />
+                        </MudItem>
+                    </MudGrid>
+                    <hr />
+                </div>
+            }
+
+            @if (DayEndReportShown)
+            {
+                <div class="bl-pop-up @(DayEndReportShown ? "":"d-none")">
+                    <MudGrid>
+                        <MudItem xs=12 class="price-list-wrap">
+                            <BLReportViewer ReportSetting="_dayEndReportOption"
+                                    CloseReportDelegate="HideAllPopups" />
+                        </MudItem>
+                    </MudGrid>
+                    <hr />
+                </div>
+            }
+
+
+            @if (QRScannerShown)
+            {
+                <div class="bl-pop-up @(DayEndReportShown ? "":"d-none")">
+                    <MudGrid>
+                        <MudItem xs=12 class="price-list-wrap">
+                            <BLReportViewer ReportSetting="_dayEndReportOption"
+                                    CloseReportDelegate="HideAllPopups" />
+                        </MudItem>
+                    </MudGrid>
+                    <hr />
+                </div>
+            }
+
+        </div>
+
+
+        <div class="detailsection">
+
+            <div class="tdef">
+
+                <MudGrid Class="hfix">
+                    <MudItem xs=6> <h6>Invoice Details</h6></MudItem>
+
+                </MudGrid>
+                <MudTable Items="@transaction.InvoiceLineItems.Where(x=>x.IsActive==1)" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@tableloading"
+                      LoadingProgressColor="Color.Info" CustomFooter="true" Dense="true" FixedHeader="true" FixedFooter="true" Height="@_tableHeight" @ref="_table">
+                    <HeaderContent>
+                        <MudTh>#</MudTh>
+                        <MudTh>Item Name</MudTh>
+                        <MudTh Style="text-align:right">Unit</MudTh>
+                        <MudTh Style="text-align:right">Rate</MudTh>
+                        <MudTh Style="text-align:right">Qty</MudTh>
+                        <MudTh Style="text-align:right">Dis(%)</MudTh>
+                        @if (!ReplacementMode)
+                    {
+                        <MudTh Style="text-align:right">DisAmt</MudTh>
+                    }
+
+                    <MudTh Style="text-align:right">L.Tot</MudTh>
+                    <MudTh Style="text-align:right"></MudTh>
+                </HeaderContent>
+
+                <RowTemplate>
+                    <MudTd DataLabel="#">@context.LineNumber</MudTd>
+                    <MudTd DataLabel="Item Name">@context.TransactionItem.ItemName</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Transaction Unit">@context.TransactionUnit</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Transaction Rate">@context.TransactionRate.ToString("N2")</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Quantity">@context.TransactionQuantity.ToString("N2")</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Dis(%)">@context.DiscountPercentage.ToString("N2")</MudTd>
+                    @if (!ReplacementMode)
+                        {
+                        <MudTd Style="text-align:right" DataLabel="Dis Amts">@context.GetLineDiscount().ToString("N2")</MudTd>
+                        }
+
+                    <MudTd Style="text-align:right" DataLabel="Line Total">@context.GetLineTotalWithDiscount().ToString("N2")</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Actions">
+                        <div class="" Style="text-align:right">
+                            @if (!ReplacementMode)
+                                {
+                                <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Size="Size.Small" Class="mr-2" Color="Color.Info" OnClick="()=>OnItemEditClick(context)" />
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Size="Size.Small" Class="" Color="Color.Error" OnClick="()=>OnOrderItemDelete(context)" />
+
+                                }
+                                else
+                                {
+                                <MudIconButton Icon="@Icons.Filled.ArrowForward" Variant="Variant.Outlined" Size="Size.Small" Class="mr-2" Color="Color.Info" OnClick="()=>AddToReplacement(context)" />
+                                }
+                        </div>
+
+
+                    </MudTd>
+
+                </RowTemplate>
+
+                <FooterContent>
+
+                    <MudTFootRow Class="bold-text bg-tr-g1">
+                        <MudTd colspan="3">Total</MudTd>
+
+                        <MudTd Style="text-align:right">@transaction.GetTransactionRateTotal().ToString("N2")</MudTd>
+                        <MudTd Style="text-align:right">@transaction.GetQuantityTotal().ToString("N2")</MudTd>
+                        <MudTd></MudTd>
+                        <MudTd Style="text-align:right">@transaction.GetOrderDiscountTotal().ToString("N2")</MudTd>
+                        <MudTd Style="text-align:right">@transaction.GetOrderTotalWithDiscounts().ToString("N2")</MudTd>
+                        <MudTd></MudTd>
+                    </MudTFootRow>
+                </FooterContent>
+            </MudTable>
+            <hr />
+            <MudGrid>
+                @if (transaction.IsOntheSpotPayementTransaction())
+                    {
+
+
+                        <MudItem xs=2></MudItem>
+
+                        <MudItem xs=2 Style="text-align:right">
+                            <MudNumericField T="decimal" ValueChanged="OnCashAmountChange" Label="Total"
+                                     Value="transaction.GetOrderTotalWithDiscounts()" ReadOnly="true"
+                                     Format="N2" />
+                        </MudItem>
+                        <MudItem xs=2 Style="text-align:right">
+                            <MudNumericField T="decimal" ValueChanged="OnCashAmountChange" Label="Cash"
+                                     Value="transaction.Amount1" ReadOnly="false"
+                                     @ref="_refCashAmount"
+                                     Format="N2" />
+                        </MudItem>
+                        <MudItem xs=2 Style="text-align:right">
+                            <MudNumericField T="decimal" ValueChanged="OnCashPaymentChange" Label="Cash Paying"
+                                     Value="transaction.Amount2" ReadOnly="false"
+                                     @ref="_refCashPayementAmount"
+                                     Format="N2" />
+                        </MudItem>
+                        <MudItem xs=2 Style="text-align:right">
+                            <MudNumericField T="decimal" ValueChanged="OnCardPaymentChange"
+                                     Label="Card Paying"
+                                     Value="transaction.Amount3" ReadOnly="false"
+                                     @ref="_refCardPayementAmount"
+                                     Format="N2" />
+                        </MudItem>
+                        <MudItem xs=2 Style="text-align:right">
+                            <MudNumericField T="decimal" Label="Balance"
+                                     Value="transaction.Amount6" ReadOnly="true"
+                                     Format="N2" />
+                        </MudItem>
+                    }
+                </MudGrid>
+            </div>
+
+            @if (ReplacementMode)
+            {
+                <div class="tdef">
+                    <MudGrid Class="hfix">
+                        <MudItem xs=6> <h6>Replacement Details - <b>@ReplacementTransaction.TransactionNumber</b></h6></MudItem>
+
+                    </MudGrid>
+                    <MudTable Items="@ReplacementTransaction.InvoiceLineItems.Where(x=>x.IsActive==1)" Hover="true" Breakpoint="Breakpoint.Sm" Loading="@tableloading"
+                      LoadingProgressColor="Color.Info" CustomFooter="true" Dense="true" FixedHeader="true" FixedFooter="true" Height="400px" @ref="_table">
+                        <HeaderContent>
+                            <MudTh>#</MudTh>
+                            <MudTh>Item Name</MudTh>
+                            <MudTh Style="text-align:right">Unit</MudTh>
+                            <MudTh Style="text-align:right">Rate</MudTh>
+                            <MudTh Style="text-align:right">Qty</MudTh>
+                            <MudTh Style="text-align:right">Dis(%)</MudTh>
+
+                            <MudTh Style="text-align:right">L.Tot</MudTh>
+                            <MudTh Style="text-align:right"></MudTh>
+                        </HeaderContent>
+
+                        <RowTemplate>
+                            <MudTd DataLabel="#">@context.LineNumber</MudTd>
+                            <MudTd DataLabel="Item Name">@context.TransactionItem.ItemName</MudTd>
+                            <MudTd Style="text-align:right" DataLabel="Transaction Unit">@context.TransactionUnit</MudTd>
+                            <MudTd Style="text-align:right" DataLabel="Transaction Rate">@context.TransactionRate.ToString("N2")</MudTd>
+                            <MudTd Style="text-align:right" DataLabel="Quantity">@context.TransactionQuantity.ToString("N2")</MudTd>
+                            <MudTd Style="text-align:right" DataLabel="Dis(%)">@context.DiscountPercentage.ToString("N2")</MudTd>
+                            <MudTd Style="text-align:right" DataLabel="Line Total">@context.GetLineTotalWithDiscount().ToString("N2")</MudTd>
+                            <MudTd Style="text-align:right" DataLabel="Actions">
+                                <div class="" Style="text-align:right">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>OnReplacementEditClick(context)" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2" Color="Color.Error" OnClick="()=>OnReplacemetItemDelete(context)" />
+
+
+
+                                </div>
+
+
+                            </MudTd>
+
+                        </RowTemplate>
+
+                        <FooterContent>
+
+                            <MudTFootRow Class="bold-text bg-tr-g1">
+                                <MudTd colspan="2">Total</MudTd>
+
+                                <MudTd Style="text-align:right">@ReplacementTransaction.GetTransactionRateTotal().ToString("N2")</MudTd>
+                                <MudTd Style="text-align:right">@ReplacementTransaction.GetQuantityTotal().ToString("N2")</MudTd>
+                                <MudTd></MudTd>
+                                <MudTd Style="text-align:right">@ReplacementTransaction.GetOrderDiscountTotal().ToString("N2")</MudTd>
+                                <MudTd Style="text-align:right">@ReplacementTransaction.GetOrderTotalWithDiscounts().ToString("N2")</MudTd>
+                                <MudTd></MudTd>
+                            </MudTFootRow>
+                            @if (ReplacementTransaction.PaymentTerm != null && ReplacementTransaction.PaymentTerm.CodeName.Contains("Cash") && ReplacementMode)
+                            {
+
+                            }
+
+                </FooterContent>
+            </MudTable>
+        </div>
+            }
+
+        </div>
+
+
+    </div>
+
+
+
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}
+
+

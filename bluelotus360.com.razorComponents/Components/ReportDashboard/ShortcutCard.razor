@@ -1,0 +1,27 @@
+﻿@*<MudCard Outlined="true">
+    <MudCardContent>
+        <MudText>@CardName</MudText>
+         
+        
+    </MudCardContent>
+</MudCard>*@
+
+<MudCard Class="pin-card" Style="background:#15A085" title="@CardName">
+    <MudCardHeader>
+        <CardHeaderContent>
+
+        </CardHeaderContent>
+        <CardHeaderActions>
+            <MudMenu Icon="@Icons.Material.Filled.MoreVert" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.CenterLeft">
+                <MudMenuItem ><MudIcon Icon="@Icons.TwoTone.BookmarkRemove"></MudIcon> Unpin</MudMenuItem>
+            </MudMenu>
+        </CardHeaderActions>
+    </MudCardHeader>
+    <MudCardContent>
+        @if (!string.IsNullOrEmpty(CardName) && CardName.Length > 0)
+        {
+            <MudText>@CardName</MudText>
+        }
+
+    </MudCardContent>
+</MudCard>

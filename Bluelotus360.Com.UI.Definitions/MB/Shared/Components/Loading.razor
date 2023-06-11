@@ -1,0 +1,17 @@
+﻿@implements IDisposable
+
+@if (this.appStateService.IsLoaded)
+{
+    <TelerikLoaderContainer Visible="true" >
+    <Template>
+        <TelerikLoader Type="@LoaderType.ConvergingSpinner"></TelerikLoader>
+        <div>
+            <span><TelerikIcon Icon="information"></TelerikIcon></span>
+            <span>Please wait...</span>
+        </div>
+    </Template>
+    </TelerikLoaderContainer>
+    
+    
+}
+

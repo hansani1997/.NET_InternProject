@@ -1,0 +1,102 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+@using BlueLotus360.CleanArchitecture.Domain.Entities.Order
+@using Telerik.Blazor
+@using Telerik.DataSource;
+
+<TelerikWindow Modal="true" @bind-Visible="@WindowIsVisible"
+               Centered="true"
+               CloseOnOverlayClick="false" Class="pop-up-z-index" MaxHeight="500px">
+
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+            <WindowAction Name="Minimize" />
+            <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+        Find Work Order
+    </WindowTitle>
+    <WindowContent>
+        
+        @if (WorkOrderHistory != null)
+        {
+            <TelerikGrid Data=@WorkOrderHistory 
+                Pageable="true" 
+                PageSize=5 
+                Sortable="true"
+                FilterMode="GridFilterMode.FilterMenu">
+
+                <GridColumns>
+                    <GridColumn Field="OrderType.CodeName" Title="Job type" />
+                    <GridColumn Field="OrderNumber" Title="Work Order No" />
+                    <GridColumn Field="OrderDate" Title="Start Date" />
+                    <GridColumn Field="OrderStatus.CodeName" Title="Status" />
+                    <GridColumn Field="OrderFinishDate" Title="End Date" />
+                    <GridColumn>
+                        <Template>
+                            @{
+                                var ctx = context as WorkOrder;
+                                if (ctx!=null)
+                                {
+                                    <MudIconButton Icon="@Icons.TwoTone.RemoveRedEye" OnClick="@(()=>{OpenWorkOrder(ctx.OrderKey);})" />
+                                }
+                                
+                            }
+                        </Template>
+                        
+                    </GridColumn>
+                </GridColumns>
+            </TelerikGrid>
+        }
+    </WindowContent>
+</TelerikWindow>
+
+@code {
+    [Parameter] public IList<WorkOrder> WorkOrderHistory { get; set; }
+    [Parameter] public long ObjectKey { get; set; }
+    [Parameter] public EventCallback OnCloseButtonClick { get; set; }
+    [Parameter] public bool WindowIsVisible { get; set; }
+    [Parameter] public EventCallback<OrderOpenRequest> OpenOrderCallBack{ get; set; }
+    public TelerikGrid<WorkOrder> Grid { get; set; }
+    bool HideMinMax { get; set; } = false;
+
+    protected async Task OnParametersSetAsync()
+    {
+        Telerik.Blazor.Components.GridState<WorkOrder> desiredState = new Telerik.Blazor.Components.GridState<WorkOrder>()
+            {
+                SortDescriptors = new List<SortDescriptor>()
+            {
+                new SortDescriptor { Member = "OrderDate", SortDirection = ListSortDirection.Descending }
+            }
+            };
+
+        await Grid?.SetState(desiredState);
+    }
+
+    private async void OnCloseClick()
+    {
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+    }
+
+
+    private async void OpenWorkOrder(long ordKy)
+    {
+        OrderOpenRequest req = new OrderOpenRequest() { OrderKey = ordKy, ObjKy = ObjectKey };
+
+        if (OpenOrderCallBack.HasDelegate)
+        {
+            await OpenOrderCallBack.InvokeAsync(req);
+        }
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+        StateHasChanged();
+
+    }
+}

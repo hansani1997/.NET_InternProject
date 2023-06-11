@@ -1,0 +1,71 @@
+﻿
+
+<MudGrid class="cash-in-wrap">
+
+    <div class="cash-ui">
+        <h6>
+            @UIDefinition.ElementCaption - @serverResponse.DataObject.Count.ToString() <span> Transactions Found</span>
+        </h6>
+
+        <div class=" @(!messages.IsValidForm()?"bl-expansion-panel":"d-none")">
+            <MudExpansionPanels>
+                <MudExpansionPanel Text="@($"Cannot Process,Please Correct Errors")">
+                    @foreach (var error in messages.UserMessages)
+                    {
+                        <MudText Color="@Color.Error">@error.Message</MudText>
+                    }
+                </MudExpansionPanel>
+            </MudExpansionPanels>
+
+        </div>
+        <hr />
+
+        <UIRenderere DataObject="getFromTransaction"
+                     FromSection="UIDefinition"
+                     InteractionLogics="InteractionLogics"
+                     ObjectHelpers="ObjectHelpers" />
+
+        <hr />
+        <div class="tdef">
+            <MudTable Items="@serverResponse.DataObject" Hover="true" Breakpoint="Breakpoint.Sm" Loading="false"
+                      LoadingProgressColor="Color.Info" CustomFooter="true" Dense="true" FixedHeader="true" FixedFooter="true" Height="400px">
+                <HeaderContent>
+
+                    <MudTh>#</MudTh>
+                    <MudTh>Trn No</MudTh>
+                    <MudTh Style="text-align:right">Doc No</MudTh>
+                    <MudTh Style="text-align:right">Customer</MudTh>
+                    <MudTh Style="text-align:right">Trn Date</MudTh>
+                    <MudTh Style="text-align:right">PreFix</MudTh>
+                    <MudTh Style="text-align:right">Actions</MudTh>
+
+                </HeaderContent>
+
+                <RowTemplate>
+                    <MudTd DataLabel="#">@context.LineNumber.ToString()</MudTd>
+                    <MudTd DataLabel="#">@context.TransactionNumber</MudTd>
+                    <MudTd DataLabel="Doc No">@context.DocumentNumber</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Customer">@context.Address.AddressName</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Transaction Rate">@context.TransactionDate.ToString("dd/MMM/yyyy")</MudTd>
+                    <MudTd Style="text-align:right" DataLabel="Quantity">@context.Prefix</MudTd>
+
+                    <MudTd Style="text-align:right" DataLabel="Actions">
+                        <div class="" Style="text-align:right">
+                            <MudIconButton Icon="@Icons.Material.Filled.OpenInFull" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2" Color="Color.Error" OnClick="()=>OpenFromTransaction(context)" />
+                        </div>
+
+
+                    </MudTd>
+
+
+                </RowTemplate>
+
+
+
+            </MudTable>
+        </div>
+    </div>
+
+</MudGrid>
+
+

@@ -1,0 +1,188 @@
+﻿@implements IDisposable
+@using BlueLotus360.CleanArchitecture.Domain.Entities;
+@using Microsoft.AspNetCore.Components.Routing;
+@using bluelotus360.com.razorComponents.MB.Shared.Components
+
+<MudAppBar Elevation="1">
+    <MudToolBar DisableGutters="true" Class="bl-mud-toolbar-mob">
+
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+            <MudIconButton Icon="@Icons.Material.TwoTone.Menu" Size=Size.Large Color="Color.Primary" OnClick="@((e) => DrawerToggle())" />
+        </MudHidden>
+
+    </MudToolBar>
+    <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+        <MudSpacer />
+    </MudHidden>
+    <MudText id=""  Typo="Typo.h6" Color="Color.Dark" Class="form-name">
+        @appStateService._AppBarName
+    </MudText>
+
+    <MudSpacer />
+    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true" Class="">
+        
+        @if (NavMenus != null)
+        {
+            <div style="flex:0.45;">
+                <BLMenuSearchCombo ComboDataObject="@NavMenus" OnComboChanged="MenuSearchComboChanged" />
+            </div>
+        }
+
+    </MudHidden>
+    <MudIconButton Icon="@Icons.Material.TwoTone.Tune" Size="Size.Medium" OnClick="@((e)=>OpenThemeManager.InvokeAsync(true))"/>
+    <MudItem Class="d-flex align-items-center">
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true" Class="">
+            
+            <MudIconButton Icon="@Icons.Material.Rounded.HelpOutline" Size="Size.Medium"/>
+            <MudBadge Dot="true" Color="Color.Error" Overlap="true" Class="my-4 top-notification-badge">
+                <MudIcon Icon="@Icons.Material.Rounded.Notifications" />
+            </MudBadge>
+        </MudHidden>
+    </MudItem>
+    <MudMenu Direction="_rightToLeft ? Direction.Right : Direction.Left" an="true" Dense="true" Class="mt-1">
+        <ActivatorContent>
+            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                @if (string.IsNullOrEmpty(ImageDataUrl))
+                {
+                    <MudAvatar Color="Color.Primary" Style="margin-right:12px;">@FirstLetterOfName</MudAvatar>
+                }
+                else
+                {
+                    <MudAvatar Image="@ImageDataUrl" Style="height:50px; width:50px;"> </MudAvatar>
+                }
+
+            </MudHidden>
+
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <UserCard Class="mt-n2 pa-2" />
+
+            </MudHidden>
+
+        </ActivatorContent>
+       <ChildContent>
+            <MudPaper Class="d-flex align-center justify-center rounded-lg" Elevation="0" Square="true" Width="200px">
+                <MudPaper Class="d-flex align-center justify-center rounded-lg" Elevation="0" Square="true" Outlined="true" Width="175px">
+                    <div>
+                       <MudListItem Class="ma-1">
+                        <div class="ma-3">
+                            <MudStack>
+                                @if (string.IsNullOrEmpty(ImageDataUrl))
+                                {
+                                    <MudAvatar Color="Color.Primary" Style="height:50px; width:50px;" >@FirstLetterOfName</MudAvatar>
+                                }
+                                else
+                                {
+                                    <MudAvatar Image="@ImageDataUrl" Style="height:100px; width:50px;"> </MudAvatar>
+                                }
+                                
+                                @*<MudPaper Class="d-flex align-center justify-center my-2">*@
+                                    <MudText Class="" Style="text-align:center" Typo="Typo.body1">@FirstName</MudText>
+                                    <MudText Class="" Style="text-align:center" Typo="Typo.body2">@CompanyName</MudText>
+                            </MudStack>
+                        </div>
+                        </MudListItem>
+                        <MudDivider/>
+                        <div class="ma-1">
+                            @*<MudListItem Class="switch-item"><MudIconButton Icon="@Icons.Material.TwoTone.Brightness6" Title="Light" /> Themes </MudListItem>*@
+                            <MudListItem Class="logout-item" OnClick="Logout"><MudIconButton Icon="@Icons.Material.TwoTone.PowerSettingsNew"/> Log Out</MudListItem>
+                        </div>
+                    </div>
+                </MudPaper>
+            </MudPaper>
+        </ChildContent>
+    </MudMenu>
+</MudAppBar>
+
+<div id="unique_id_scroll_section">
+    <MudDrawerContainer Class="mud-height-full">
+
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true" Class="">
+
+            <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Fixed="false" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
+                <MudDrawerHeader>
+                   
+                </MudDrawerHeader>
+                @if (NavMenus != null)
+                {
+                    <MiniNavMenu DrawerToggle="DrawerToggle" Menus="@NavMenus"/>
+                }
+
+                @if (_drawerOpen)
+                {
+                    <MudSpacer />
+                    <MudText Class="version" Style="margin-bottom:20px;text-align:center">App version: @(_appInfo.ReadAppInfo().Version ?? "")</MudText>
+                }
+            </MudDrawer>
+        </MudHidden>
+
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true" Class="mobile-layout">
+            <MudDrawer @bind-Open="_drawerOpen" Variant="@DrawerVariant.Temporary" Elevation="1" Style="top:0px;"> 
+                <div class="custom-drawer-header"></div>
+                @if (NavMenus!=null)
+                {
+                    <NavMenus Menus="@NavMenus" />
+                }
+                <MudSpacer />
+                <MudText Style="margin-bottom:20px;text-align:center">App version: @(_appInfo.ReadAppInfo().Version ?? "")</MudText>
+            </MudDrawer>
+        </MudHidden>
+
+        <MudMainContent>
+            <MudContainer MaxWidth="MaxWidth.False" Class="px-3 px-md-9">
+                    <Loader/>
+                    <CascadingValue Value="@NavMenus" Name="NavMenus">
+						@*<CascadingValue Value="@PinnedMenus" Name="PinnedMenus">*@
+
+                            @ChildContent
+
+                            <MudPaper Elevation="1" Class="app-footer" Style="z-index:100">
+                                <MudToolBar>
+                                    <MudIconButton Icon="@Icons.Material.Filled.Home" OnClick="@(()=>{_navigationManager.NavigateTo("/");})"/>
+                                    <MudSpacer />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Search" OnClick="@(async()=>{await OpenMenuSearchInMobile();})"/>
+                                    <MudSpacer />
+                                    <MudBadge Dot="true" Color="Color.Error" Overlap="true" Class="my-4 top-notification-badge botttom-notification-badge">
+                                        <MudIconButton Icon="@Icons.Material.Filled.Notifications" />
+                                    </MudBadge>
+                                    
+                                </MudToolBar>
+                            </MudPaper>
+                           
+                        @*</CascadingValue>*@
+                        
+					</CascadingValue>
+                    <MudScrollToTop TopOffset="100" 
+                                    Selector="#unique_id_scroll_section" 
+                                    VisibleCssClass="visible absolute"
+                                    HiddenCssClass="invisible">
+                        <MudFab Color="Color.Primary" Icon="@Icons.TwoTone.KeyboardArrowUp" />
+                    </MudScrollToTop>
+            </MudContainer>
+        </MudMainContent>
+    </MudDrawerContainer>
+</div>
+
+<MudDialog @bind-IsVisible="isSearchPopUpShown" Options="dialogOptions" Class="menu-search-popup">
+        <TitleContent>
+            <MudToolBar Class="mx-0">
+                <MudIconButton Icon="@Icons.Material.TwoTone.ArrowBackIos" Color="Color.Inherit" OnClick="OnBack" />
+                <MudTextField T=string ValueChanged="FilterMenus" Placeholder="Search" Immediate=true Variant="Variant.Outlined" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" />
+            </MudToolBar>
+            <MudDivider />
+        </TitleContent>
+       <DialogContent>
+            <MudContainer>
+                <MudSimpleTable Hover="true" Dense="true" FixedHeader=true Style="height:300px;">
+                    <tbody>
+                        @foreach (var row in blMenus)
+                    {
+                        <tr @onclick="@(()=>{OnRowClick(row);})" style="cursor:pointer;">
+                            <td><i class="fa-solid fa-magnifying-glass"></i></td>
+                            <td>@row.Menuname</td>
+                        </tr>
+                    }
+                </tbody>
+                </MudSimpleTable>
+             </MudContainer>
+       </DialogContent>
+</MudDialog>

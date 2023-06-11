@@ -1,0 +1,8 @@
+﻿<maui:MauiWinUIApplication
+    x:Class="bluelotus360.com.mauiBlazor.WinUI.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:maui="using:Microsoft.Maui"
+    xmlns:local="using:bluelotus360.com.mauiBlazor.WinUI">
+
+</maui:MauiWinUIApplication>

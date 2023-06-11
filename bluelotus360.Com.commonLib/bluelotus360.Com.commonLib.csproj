@@ -1,0 +1,26 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
+    <PackageReference Include="MudBlazor" Version="6.1.8" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="6.27.0" />
+    <PackageReference Include="System.Net.Http" Version="4.3.4" />
+    <PackageReference Include="Toolbelt.Blazor.HttpClientInterceptor" Version="10.0.0" />
+    
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\bluelotus360.Com.MauiSupports\bluelotus360.Com.MauiSupports.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Managers\Item Profile Manager\" />
+  </ItemGroup>
+
+</Project>

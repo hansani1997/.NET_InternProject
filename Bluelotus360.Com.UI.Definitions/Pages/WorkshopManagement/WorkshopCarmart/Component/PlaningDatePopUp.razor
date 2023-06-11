@@ -1,0 +1,38 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+@using Telerik.Blazor
+
+<TelerikWindow Modal="true" @bind-Visible="@WindowIsVisible"
+               Centered="true"
+               Draggable=false
+               CloseOnOverlayClick="false" Class="pop-up-z-index" Height="130px" Width="1000px" Resizable=false>
+
+    <WindowActions>
+
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+        Edit Planing Date
+    </WindowTitle>
+    <WindowContent>
+        <PlaningSection UI="@PopUI"
+                        DataObject="DataObject"
+                        ObjectKey="ObjectKey"
+                        OnClosePopUp="OnCloseClick" />
+    </WindowContent>
+</TelerikWindow>
+@code {
+
+    [Parameter] public BLUIElement PopUI { get; set; }
+    [Parameter] public WorkOrder DataObject { get; set; }
+    [Parameter] public long ObjectKey { get; set; }
+    [Parameter] public EventCallback OnCloseButtonClick { get; set; }
+    [Parameter] public bool WindowIsVisible { get; set; }
+    
+    private async void OnCloseClick()
+    {
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+    }
+}

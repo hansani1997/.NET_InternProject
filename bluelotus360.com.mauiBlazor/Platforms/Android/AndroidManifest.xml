@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.bl360x.hybridapp" android:versionCode="47" android:versionName="2023.MAY.8" android:installLocation="preferExternal">
+  <application android:allowBackup="false" android:icon="@mipmap/appicon" android:supportsRtl="true" android:label="BL 360 ERP Go">
+  </application>
+  <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+  <uses-permission android:name="android.permission.INTERNET" />
+  <uses-permission android:name="android.permission.CAMERA" />
+  <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+  <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+  <uses-feature android:name="android.hardware.location" android:required="false" />
+  <uses-feature android:name="android.hardware.location.gps" android:required="false" />
+  <uses-feature android:name="android.hardware.location.network" android:required="false" />
+  <uses-sdk android:targetSdkVersion="33" android:minSdkVersion="26" />
+</manifest>

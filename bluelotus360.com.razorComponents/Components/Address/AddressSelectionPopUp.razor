@@ -1,0 +1,33 @@
+﻿<MudGrid>
+    <MudItem xs="12">
+        <MudTextField T="string" Placeholder="Search" @bind-Value="SearchQuery" DebounceInterval="800" Immediate=true />
+    </MudItem>
+    <MudItem xs="12">
+        <MudTable T="AddressResponse"
+                  Items="_orderState.Customers"
+                  FixedHeader="true"
+                  Class="fix-table-h"
+                  @ref="mudTable"
+                  OnRowClick="@RowClickEvent"
+                  RowClassFunc="@SelectedRowClassFunc"
+                  Filter="SearchFunction">
+            <HeaderContent>
+                <MudTh>Name</MudTh>
+
+
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Name">@context.AddressName</MudTd>
+
+
+            </RowTemplate>
+
+            <PagerContent>
+                <MudTablePager PageSizeOptions="new int[]{10,50, 100}" />
+            </PagerContent>
+        </MudTable>
+
+    </MudItem>
+
+</MudGrid>
+

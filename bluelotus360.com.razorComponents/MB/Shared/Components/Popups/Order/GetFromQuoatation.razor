@@ -1,0 +1,66 @@
+﻿@using BlueLotus360.CleanArchitecture.Domain.Entities.Order;
+<MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions" DisableSidePadding="true">
+    <TitleContent>
+        <MudToolBar Class="mx-0">
+            <MudIconButton Icon="@Icons.Material.TwoTone.Search" Color="Color.Inherit" OnClick="OnToolbarSearchButtonClick" />
+            <MudIconButton Icon="@Icons.Material.TwoTone.Refresh" Color="Color.Inherit" />
+            <MudSpacer />
+
+            <MudIconButton Icon="@Icons.Material.TwoTone.Close" Color="Color.Inherit" OnClick="OnCloseButtonClick" />
+        </MudToolBar>
+        <MudDivider />
+    </TitleContent>
+    <DialogContent>
+        <MudContainer>
+        @if (formDefinition != null)
+        {
+            <MudPaper Class="popup-container">
+                <div class="@(IsGriddShown?"popup-filter-section":"popup-filter-section-if-grid-shown") mt-2">
+                    <UIRenderere FromSection="formDefinition" DataObject="order" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                </div>
+                <div class="@(IsGriddShown?"popup-grid-section":"popup-grid-section-if-grid-shown")">
+                    @if (FoundOrders != null)
+                    {
+                        <MudTable Items="@FoundOrders" Hover="true" Breakpoint="Breakpoint.Sm" Loading="false"
+                          LoadingProgressColor="Color.Info"
+                          CustomFooter="true" Dense="true"
+                          FixedHeader="true"
+                          FixedFooter="true" 
+                          Height="400px" Filter="new Func<GetFromQuotResults,bool>(FilterFunc)">
+                            <ToolBarContent>
+                                <MudSpacer />
+                                <MudTextField @bind-Value="searchString" Placeholder="Search" Immediate=true Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                            </ToolBarContent>
+                            <HeaderContent>
+                                <MudTh><MudTableSortLabel InitialDirection="SortDirection.Ascending" SortBy="new Func<GetFromQuotResults, object>(x=>x.OrdNo)">Trn No</MudTableSortLabel></MudTh>
+                                <MudTh>Doc No</MudTh>
+                                <MudTh>Location</MudTh>
+                                <MudTh>Prefix</MudTh>
+                                <MudTh>Action</MudTh>
+
+                            </HeaderContent>
+
+                            <RowTemplate>
+                                <MudTd DataLabel="Ord No">@context.OrdNo</MudTd>
+                                <MudTd DataLabel="Doc No">@context.DocNo</MudTd>
+                                <MudTd DataLabel="Location">@context.LocCd</MudTd>
+                                <MudTd DataLabel="Prefix">@context.Prefix</MudTd>
+                                <MudTd DataLabel="Actions">
+                                    <div class="" Style="text-align:right">
+                                        <MudIconButton Icon="@Icons.Material.Filled.OpenInFull" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2" Color="Color.Error" OnClick="()=>OpenQuotation(context)" />
+                                    </div>
+                                </MudTd>
+                            </RowTemplate>
+
+
+
+                        </MudTable>
+                    }
+                </div>
+            </MudPaper>
+        }
+        </MudContainer>
+    </DialogContent>
+</MudDialog>
+       
+

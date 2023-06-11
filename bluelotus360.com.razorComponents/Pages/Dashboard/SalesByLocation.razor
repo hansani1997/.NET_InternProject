@@ -1,0 +1,101 @@
+﻿@page "/dashboard/salesByLocation"
+@using ApexCharts;
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    @if (isChartLoading)
+    {
+        <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+
+    <UIBuilder FormObject="formDefinition"
+           DataObject="sales_request"
+           InteractionLogics="_interactionLogic"
+           ObjectHelpers="_objectHelpers"
+           @ref="_refBuilder" />
+
+    <MudGrid Class="d-flex my-4 px-3">
+        <MudItem xs="12" sm="6">
+             @if (salesBylocation.Count() > 0)
+            {
+                <ApexChart @ref=_detailsChart TItem="SalesByLocationResponse"
+                   Title="Location Wise Total Sales"
+                   Options="@opt"
+                   Debug>
+
+                    <ApexPointSeries TItem="SalesByLocationResponse"
+                             Items="salesBylocation"
+                             Name="Stocks"
+                             SeriesType="SeriesType.Donut"
+                             XValue="@(e => e.Location.CodeName)"
+                             YValue="@(e => e.TotalSalesAmt)"
+                             OrderByDescending="e=>e.X" />
+                </ApexChart>
+            }
+            else
+            {
+                <MudPaper>
+                    <EmptyChart @ref="empty_chart" IsChartEmpty="true" />
+                </MudPaper>
+             }
+        </MudItem>
+
+        <MudItem xs="12" sm="6">
+            <MudTable T="SalesByLocationResponse" 
+                Items="@salesBylocation" 
+                FixedHeader="true"
+                Filter="new Func<SalesByLocationResponse, bool>(FilterFunc1)"
+                @bind-SelectedItem="selectedItem1"
+                 >
+
+                <ToolBarContent>
+                    @*<MudText Typo="Typo.h6">@FormObject.ElementCaption</MudText>*@
+                    <MudSpacer />
+                    <MudTextField Immediate="true" @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                </ToolBarContent>
+
+                <HeaderContent>
+                    <MudTh>Location</MudTh>
+                    <MudTh>Total Sales Amt</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Location">@context.Location.CodeName</MudTd>
+                    <MudTd DataLabel="Total Sales Am">@context.TotalSalesAmt</MudTd>
+                 </RowTemplate>
+            </MudTable>
+        </MudItem>
+
+        <MudItem xs="12">
+            <MudTable T="SalesRepDetailsForSalesByLocationResponse"
+                  Items="@repDetails"
+                  FixedHeader="true"
+                  Filter="new Func<SalesRepDetailsForSalesByLocationResponse, bool>(FilterFunc2)"
+                  @bind-SelectedItem="selectedItem2">
+
+                    <ToolBarContent>
+                        <MudSpacer />
+                        <MudTextField Immediate="true" @bind-Value="searchString2" Placeholder="Search" Adornment="Adornment.Start"
+                              AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                    </ToolBarContent>
+
+                    <HeaderContent>
+                        <MudTh>Sales Rep</MudTh>
+                        <MudTh>Grs - Dis</MudTh>
+                        <MudTh>Total</MudTh>
+                    </HeaderContent>
+
+                    <RowTemplate>
+                        <MudTd DataLabel="Sales Rep">@context.RepAdrName</MudTd>
+                        <MudTd DataLabel="Grs - Dis">@context.NetAmount</MudTd>
+                        <MudTd DataLabel="Total">@context.Total</MudTd>
+                    </RowTemplate>
+
+            </MudTable>
+        </MudItem>
+    </MudGrid>
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

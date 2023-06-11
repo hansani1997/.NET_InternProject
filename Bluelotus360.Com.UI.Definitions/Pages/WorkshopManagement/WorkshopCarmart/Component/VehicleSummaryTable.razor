@@ -1,0 +1,114 @@
+﻿
+<style>
+    .column {
+        flex: 50%;
+        padding: 5px;
+    }
+
+    .rowTable {
+        display: flex;
+    }
+
+    .rowTable table tr td{
+        width:50%;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    .heading {
+        background-color: #E1E7EE;
+    }
+
+    .font {
+        color: #053B71;
+        font-family: 'Inter';
+        ont-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 20px;
+    }
+
+    td {
+        width: min-content
+    }
+</style>
+
+<MudGrid>
+    <div class="col-12">
+        <div class="bk-k-lable p-2 my-2 heading font"><span>VEHICLE</span></div>
+    </div>
+
+    <div class="row rowTable col-sm-12">
+
+        <div class="column px-15">
+            <table>
+                <tr>
+                    <td>Registration No</td>
+                    <td>: @SelectedVehicle.VehicleRegistration.ItemCode</td>
+                </tr>
+                <tr>
+                    <td>Registration Date</td>
+                    <td>: @SelectedVehicle.VehicleRegisterDate.ToString("dd/MM/yyyy")</td>
+                </tr>
+                <tr>
+                    <td>Category</td>
+                    <td>: @SelectedVehicle.Category.CodeName</td>
+                </tr>
+                <tr>
+                    <td>Sub-category</td>
+                    <td>: @SelectedVehicle.Category.CodeName</td>
+                </tr>
+                <tr>
+                    <td>Make</td>
+                    <td>: @SelectedVehicle.Brand</td>
+                </tr>
+                <tr>
+                    <td>Model Name</td>
+                    <td>: @SelectedVehicle.Model</td>
+                </tr>
+                <tr>
+                    <td>Fuel type</td>
+                    <td>: @SelectedVehicle.Fuel</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="column px-15">
+            <table>
+                <tr>
+                    <td>Engine No</td>
+                    <td>:@SelectedVehicle.SerialNumber.EngineNumber</td>
+                </tr>
+                <tr>
+                    <td>Chassis No</td>
+                    <td>: @SelectedVehicle.SerialNumber.SerialNumber</td>
+                </tr>
+                <tr>
+                    <td>Warranty Status</td>
+                    <td>: @SelectedVehicle.VehicleWarrannty.WarranrtyStatus</td>
+                </tr>
+                <tr>
+                    <td>Warranty Start/End Date</td>
+                    <td>:@($"{SelectedVehicle.VehicleWarrannty.WarrantyStartDate.ToString("dd/MM/yyyyy")} - {SelectedVehicle.VehicleWarrannty.WarrantyEndDate.ToString("dd/MM/yyyyy")}")</td>
+                </tr>
+                <tr>
+                    <td>Maintenance Package</td>
+                    <td>: @SelectedVehicle.MaintenancePackage</td>
+                </tr>
+                <tr>
+                    <td>Previous Mileage</td>
+                    <td>: @SelectedVehicle.PreviousMilage Km</td>
+                </tr>
+                <tr>
+                    <td>Service Advisor</td>
+                    <td>:@(auth.AuthenticatedUser.UserID ?? "")</td>
+                </tr>
+            </table>
+        </div>
+
+    </div>
+
+    
+</MudGrid>

@@ -1,0 +1,201 @@
+﻿@import "_Variables.scss";
+//@import "_variablesDark.scss";
+
+//Header Summary Section
+
+.header-summary-section {
+    background: $color-primary;
+    height: fit-content;
+    border-radius: $border-radius-default;
+    color: $color-light-text;
+    margin-bottom: -32px;
+
+    h4, h5, h6 {
+        margin: -1px;
+    }
+
+    .mud-input-control {
+        & > .mud-input-control-input-container > .mud-input-label-inputcontrol {
+            color: $color-light-text;
+        }
+
+        & > .mud-input-control-input-container > div.mud-input.mud-input-text {
+            margin-top: 8px;
+        }
+    }
+}
+
+.headersection1 {
+    @include border;
+    padding-top: 24px;
+    padding-bottom: 4px;
+    border-color: $border-color-default;
+    padding-left: 4px !important;
+    padding-right: 4px !important;
+    //margin-top: -10px !important;
+}
+
+//this class is only for item profile v3
+.itemprofheader
+{
+    margin-top: 37px;
+}
+
+.headersection2 {
+    /*padding-top: 12px;*/
+    padding-bottom: 4px;
+}
+
+.top-search-combo-wrapper {
+    .mud-input {
+        @include border;
+        border-width: $border-width-default;
+        border-style: $border-style-default;
+        border-radius: $border-radius-default;
+    }
+
+    input {
+        border: 0px !important;
+    }
+
+    .mud-input-slot {
+        padding: 0px !important;
+    }
+
+    .mud-input-adornment-start {
+        margin-right: 0px;
+        margin-inline-end: 0px;
+        margin-inline-start: unset;
+    }
+}
+
+.top-notification-badge .mud-icon-size-medium {
+    font-size: $notification-icon-size !important;
+}
+
+.btn-grp-align {
+    margin: 0 !important;
+}
+
+::-webkit-scrollbar-thumb {
+    background: $color-primary !important;
+    border-radius: $scrollbar-thumb-border-radius;
+}
+
+.summary-h5-amt, .summary-h4-amt {
+    color: $color-light-text;
+    text-align: right;
+}
+
+.popup-container {
+    height: 80%;
+}
+
+.pop-up-toolbar {
+    height: 20%;
+}
+
+
+.popup-filter-section {
+    height: 50%;
+}
+
+.popup-grid-section {
+    height: 50%;
+}
+
+.popup-filter-section-if-grid-shown {
+    height: auto; /*50%*/
+}
+
+.popup-grid-section-if-grid-shown {
+    height: 50%;
+}
+
+.summary-h5, .summary-h4 {
+    color: $color-light-text;
+    text-align: left;
+}
+
+.summary-h4 {
+    &,
+    &-amt {
+        vertical-align: text-top;
+    }
+}
+
+.mud-thememanager-button .mud-icon-root.mud-svg-icon {
+    fill: $palette-white;
+}
+
+#grid-text-area {
+    resize: vertical;
+    height: $input-field-height;
+    overflow-y: hidden;
+    min-height: $input-field-height; /* Height of one line of text */
+}
+
+.bl-card-value {
+    text-align: center;
+    font-size: $typography-default-size !important;
+    font-weight: $regular !important;
+}
+
+.bl-card-content {
+    font-size: $typography-default-size !important;
+    text-align: center;
+    margin-top: 25px;
+    font-weight: $regular !important;
+}
+
+@media (max-width: 960px) {
+    .popup-filter-section {
+        height: 0;
+        display: none;
+        // background: black;
+    }
+
+    .popup-grid-section {
+        height: 100%;
+        overflow-y: scroll;
+        // background: orange;
+    }
+
+    .popup-filter-section-if-grid-shown {
+        height: 100%;
+        // background: blue;
+    }
+
+    .popup-grid-section-if-grid-shown {
+        height: 0;
+        display: none;
+        // background: brown;
+    }
+}
+
+@media (max-width:960px) {
+    .bl-card-value {
+        font-size: $typography-default-size !important;
+        font-weight: $regular !important;
+    }
+
+    .bl-card-content {
+        font-size: $typography-default-size !important;
+    }
+}
+
+/*@media (min-width: 600px) and (max-width: 960px) {
+    .bl-card-value {
+        font-size: 25px !important;
+        font-weight: 700 !important;
+    }
+    .bl-card-content {
+        font-size: 12px !important;
+    }
+}*/
+
+/*override styles in account profile*/
+/*.mx-4 
+{
+    margin-left:5px !important;
+}*/

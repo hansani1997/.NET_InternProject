@@ -1,0 +1,26 @@
+﻿
+<MudItem Class=@css_class xs="@UIElement.GetXsWidth()" sm="@UIElement.GetSmWidth()" md="@UIElement.GetMdWidth()" lg=@UIElement.GetLgWidth() xl=@UIElement.GetXlgWidth()>
+    @if (CodebaseResponse == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        <MudSelect T="CodeBaseResponse"
+               Label="@UIElement.ElementCaption"
+               Class="@combo_css"
+               MultiSelection="true"
+               SelectedValues="@selectedCodeBase"
+               SelectedValuesChanged="OnComboValueChanged"
+               Disabled="@(!isEditable)"
+               Variant="UIDefaults.DefaultControlVariants"
+               AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.BottomCenter" Clearable>
+
+        @foreach (var state in CodebaseResponse)
+            {
+                <MudSelectItem T="CodeBaseResponse" Value="@state">@state</MudSelectItem>
+            }
+        </MudSelect>
+    }
+</MudItem>
+

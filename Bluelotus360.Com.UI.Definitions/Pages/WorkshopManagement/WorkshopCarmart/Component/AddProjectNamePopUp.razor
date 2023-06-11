@@ -1,0 +1,92 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.MaterData
+@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+@using Telerik.Blazor
+
+<TelerikWindow Modal="true" @bind-Visible="@WindowIsVisible"
+               Centered="true"
+               CloseOnOverlayClick="false" Class="pop-up-z-index" Width="1000px" Height="200px">
+
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+            <WindowAction Name="Minimize" />
+            <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+        Project Name
+    </WindowTitle>
+    <WindowContent>
+        @if (IsError)
+        {
+            <MudAlert Severity="Severity.Error" ContentAlignment="HorizontalAlignment.Center">Please Add Project Name</MudAlert>
+        }
+        
+        <div class="d-flex gap-3">
+            <MudInput T="string" @bind-Value="@ProjectName" Error="IsError" Style="width:85%;"/>
+            <MudButton Color="Color.Primary" Variant="Variant.Filled" OnClick="CreateProject" Style="width:15%;">+ Add</MudButton>
+        </div>
+    </WindowContent>
+</TelerikWindow>
+
+@code{
+    [Parameter]
+    public EventCallback OnCloseButtonClick { get; set; }
+    [Parameter] public bool WindowIsVisible { get; set; }
+    [Parameter] public WorkOrder WorkOrder { get; set; }
+    [Parameter] public EventCallback AddCustomerComplainPopUpShow { get; set; }
+    [Parameter] public long ObjectKey{ get; set; }
+
+    string ProjectName = "";
+    bool HideMinMax { get; set; } = false;
+    bool IsError;
+    Project project = new Project();
+
+    protected override async Task OnParametersSetAsync()
+    {
+        await base.OnParametersSetAsync();
+    }
+
+    private async void OnCloseClick()
+    {
+        if (OnCloseButtonClick.HasDelegate)
+        {
+            await OnCloseButtonClick.InvokeAsync();
+        }
+
+    }
+
+    private async void CreateProject()
+    {
+        if (!string.IsNullOrEmpty(ProjectName))
+        {
+            IsError = false;
+            project = new Project();
+            project.ProjectName = ProjectName;
+            project.Address = new AddressResponse();
+            project.Address.AddressKey = WorkOrder.SelectedVehicle.VehicleAddress.AddressKey;
+            project.IsActive = 1;
+            project.ObjectKey = ObjectKey;
+            project.ProjectStartDate = DateTime.Now;
+
+            WorkOrder.OrderProject = await _workshopManager.CreateJob(project);
+
+
+            if (OnCloseButtonClick.HasDelegate)
+            {
+                await OnCloseButtonClick.InvokeAsync();
+            }
+            if (AddCustomerComplainPopUpShow.HasDelegate)
+            {
+                await AddCustomerComplainPopUpShow.InvokeAsync();
+            }
+        }
+        else
+        {
+            IsError = true;
+        }
+
+        StateHasChanged();
+    }
+}

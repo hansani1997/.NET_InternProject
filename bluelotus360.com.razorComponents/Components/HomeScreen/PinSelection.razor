@@ -1,0 +1,156 @@
+﻿@using BlueLotus360.CleanArchitecture.Domain.Entities
+@using MudBlazor
+@using BlueLotus360.CleanArchitecture.Domain
+
+ @if (pincards!=null && pincards.Count()>0)
+            {
+                @foreach (var pincard in pincards)
+                {
+                    @if (!pincard.MenuCaption.Equals("Add Shortcuts"))
+                    {
+                        <MudItem xs="6" md="2"  @onclick="@(async()=> await NavigateToNewTab(pincard))">
+                            <MudCard Class="pin-card" Style="@($"background:{@color_arr[pincards.IndexOf(pincard)]};")" title="@pincard.MenuCaption">  
+                                  <MudCardHeader>
+                                      <CardHeaderContent>
+                                          
+                                      </CardHeaderContent>
+                                      <CardHeaderActions>
+                                          <MudMenu Icon="@Icons.Material.Filled.MoreVert" AnchorOrigin="Origin.TopRight" TransformOrigin="Origin.CenterLeft">
+                                              <MudMenuItem   OnClick="@(async()=>await Unpin(pincard.MenuCaption))"><MudIcon Icon="@Icons.TwoTone.BookmarkRemove"></MudIcon> Unpin</MudMenuItem>
+                                          </MudMenu>
+                                      </CardHeaderActions>
+                                  </MudCardHeader>
+                                  <MudCardContent>
+                                      @if (!string.IsNullOrEmpty(pincard.MenuCaption) && pincard.MenuCaption.Length > 0)
+                                       {
+                                              <MudText>@pincard.MenuCaption</MudText>
+                                       }
+                                                           
+                                  </MudCardContent>
+                            </MudCard>
+                        </MudItem>
+                    }
+                    else
+                    {
+                         <MudItem xs="6" md="2"  @onclick="@OpenPinpoup">
+                            <MudCard Class="pin-card-empty">
+                                <MudCardHeader>
+                                      <CardHeaderContent>
+                                          
+                                      </CardHeaderContent>
+                                      <CardHeaderActions>
+                                          
+                                      </CardHeaderActions>
+                                  </MudCardHeader>
+                                  <MudCardContent>                                
+                                            <MudIcon Icon="@Icons.TwoTone.Add"></MudIcon> 
+                                            <MudText>Add Shortcut</MudText>
+                                  </MudCardContent>
+
+                            </MudCard>
+                        </MudItem>
+                    }
+                }
+                @if (pincards.Count()==1)
+                {
+                       <MudItem xs="6" md="10">
+                            <MudCard Class="pin-card-empty-space">   
+                                 <MudCardHeader>
+                                      <CardHeaderContent>
+                                          
+                                      </CardHeaderContent>
+                                      <CardHeaderActions>
+                                          
+                                      </CardHeaderActions>
+                                  </MudCardHeader>
+                                  <MudCardContent>
+                                             <span>Nothing Pinned yet!</span>                      
+                                  </MudCardContent>
+                                  <MudCardActions>
+                                      
+                                  </MudCardActions>
+                            </MudCard>
+                        </MudItem> 
+                }
+                
+            }
+ else
+ {
+      <MudPaper Class="mx-auto pa-6">
+            <MudItem xs="12" Class="d-flex justify-content-center align-items-center">
+                   <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+            </MudItem>
+      </MudPaper>
+ }
+
+
+
+    <PopUpLayout  @ref="overlay" OverlayStyle="PopUpLayout.Style.FullScreen" CssClass="jusify-content-center" OnCloseRequested="Dismiss">
+             
+            <MudContainer>
+
+                 @if (submenu != null && submenu.SubMenus != null && submenu.SubMenus.Count() > 0)
+                 {
+
+                     <div style="display: flex; align-items: center;">
+                            <MudIconButton OnClick="@CloseDialogAsync"
+                                       Class="rpt-icon-button"
+                                       Icon="@Icons.Material.TwoTone.ArrowBackIos"
+                                       Variant="Variant.Outlined"
+                                       Color="Color.Primary"
+                                       Size="Size.Medium" />
+                        <MudText Typo="Typo.h3" style="margin-left: 20px;">
+                            <h3>Pin Favourites</h3>
+                        </MudText>
+                    </div>
+
+           
+                <ToolBarContent>
+
+                <MudTextField  T="string"
+                        Value="searchString1" ValueChanged="FilterMenus"
+                        Placeholder="Search" 
+                        Adornment="Adornment.Start" 
+                        AdornmentIcon="@Icons.Material.Filled.Search" 
+                        IconSize="Size.Medium"
+                        Immediate="true"
+                        Class="mt-2 my-2" Style="width:100%"></MudTextField>
+
+                </ToolBarContent>
+
+
+
+            @foreach (var item in submenu.SubMenus)
+                {
+                    <MudCard Class="report-pin-card">
+                        <MudCardContent>
+                            <div class="mt-0">
+                                <div class="d-flex align-items-center">
+                                    <div style="flex: 6;">
+                                        <MudIcon Icon="fa-sharp fa-regular fa-file-lines" Color="Color.Primary" />
+                                        @item.MenuCaption.Truncate(20)
+                                    </div>
+                                    <div style="flex:1 ; align-items:center;">
+                                        <MudSwitch T="bool" Checked="@item.Ispinned" Color="Color.Secondary" UnCheckedColor="Color.Dark" CheckedChanged="(bool value) => {ChangeHandlerAsync(value, item.MenuCaption);}" />
+                                    </div>
+                                </div>
+                            </div>
+                        </MudCardContent>
+                    </MudCard>
+                
+                 }
+             
+        }
+            
+            </MudContainer>
+    </PopUpLayout>
+    
+    @*<style>
+        @media screen and (max-width: 992px){
+         .jusify-content-center{
+                color:red;
+         
+         }
+        }
+    </style>*@
+                        

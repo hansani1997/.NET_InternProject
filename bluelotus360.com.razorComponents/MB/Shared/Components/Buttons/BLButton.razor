@@ -1,0 +1,11 @@
+﻿<MudItem xs="@FromSection.GetXsWidth()" sm="@FromSection.GetSmWidth()" md="@FromSection.GetMdWidth()" lg=@FromSection.GetLgWidth() xl=@FromSection.GetXlgWidth() Class="@css_class">
+    <MudButton Variant="Variant.Filled"
+               OnClick="OnButtonClick"
+               Class="@btn_css"
+               Disabled="IsComponentDisabled"
+               Color="@ControlColor"
+               StartIcon="@IconSvgCode"
+               title="@FromSection.ElementCaption">@FromSection.ElementCaption
+    </MudButton>
+</MudItem>
+

@@ -1,0 +1,37 @@
+﻿@using Telerik.ReportViewer.Blazor;
+
+<link rel="stylesheet" href="https://unpkg.com/@@progress/kendo-theme-default@5.0.1/dist/all.css" />
+
+<div class="report-brew">
+    <MudGrid Spacing="1" >
+       
+   
+        <MudItem Class="bl-report-container">
+
+            <MudPaper Style="
+                 background:white;
+                 border-top-left-radius:10px;
+                 border-top-right-radius:10px;
+                 text-align:right;
+">
+                <MudIconButton Size="Size.Large" Icon="@Icons.Material.Filled.Close" Color="Color.Secondary" aria-label="Close" @onclick="CloseWindow"></MudIconButton>
+            </MudPaper>
+
+            <hr class="report-hr">
+
+            @if (SourceOptions != null)
+            {
+                <ReportViewer ViewerId="ReportView"
+                          ServiceUrl="@ReportSetting.ReportRestServicePath"
+                          ReportSource="@SourceOptions"
+                          Parameters="@(new ParametersOptions { Editors = new EditorsOptions { MultiSelect = EditorType.ComboBox, SingleSelect = EditorType.ComboBox } })"
+                          ScaleMode="@(ScaleMode.FitPageWidth)"
+                          @ref="__refReportViewer"
+                          ParametersAreaVisible=false
+                          Scale="1.0" />
+            }
+
+        </MudItem>
+    </MudGrid>
+</div>
+

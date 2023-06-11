@@ -1,0 +1,39 @@
+﻿@using bluelotus360.com.razorComponents.Extensions;
+<MudItem xs="12" md="@FromSection.Width" Class="@($"mx-5 {css_class} ")">
+
+	
+		@if (FromSection != null && FromSection.Children != null)
+		{
+			foreach (BLUIElement element in FromSection.Children)
+			{
+				if (element.ElementType != null && (element.ElementType.Equals("Switch") || element.ElementType.Equals("TelSwitch")))
+				{
+					
+					<BLSwitch DataObject="DataObject" FromSection="element" InteractionLogics="InteractionLogics" />
+				}
+				
+			}
+		}
+</MudItem>
+
+@code{
+	[Parameter]
+	public BLUIElement FromSection { get; set; }
+
+	[Parameter]
+	public object DataObject { get; set; }
+
+	[Parameter]
+	public IDictionary<string, EventCallback> InteractionLogics { get; set; }
+
+	[Parameter]
+	public IDictionary<string, IBLUIOperationHelper> ObjectHelpers { get; set; }
+
+	private string css_class = "";
+
+	protected override async Task OnInitializedAsync()
+	{
+		css_class = (FromSection.IsVisible ? "d-flex " : "d-none ") + FromSection.CssClass;
+		await base.OnInitializedAsync();
+	}
+}

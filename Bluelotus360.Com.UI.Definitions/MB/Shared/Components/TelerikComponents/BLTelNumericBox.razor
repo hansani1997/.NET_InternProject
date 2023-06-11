@@ -1,0 +1,27 @@
+﻿
+<MudItem xs="12" Class=@css_class md="@UIElement.Width">
+
+    
+    <div class="w-100">
+        <div class="col-12">
+            <div class="bk-k-lable"><TelerikTooltip TargetSelector=".tooltip-target" /><span title="@UIElement.ElementCaption" class="tooltip-target">@UIElement.ElementCaption</span></div>
+        </div>
+        <div class="col-12">
+            <span @onfocusin="@FocusComponentAsync" @ref="@InputWrapperRef">
+                <TelerikNumericTextBox Format="@UIElement.Format"
+                                   Value="Amount"
+                       ValueChanged="(decimal val)=>OnBlNumercChanged(val)"
+                                   Enabled=@IsComponentEnabled
+                                   Arrows=false
+                                   Class="@num_box_css"></TelerikNumericTextBox>
+            </span>
+
+        </div>
+    </div>
+
+
+
+
+</MudItem>
+
+

@@ -1,0 +1,37 @@
+﻿@page "/CRM/Customer_Outstanding"
+
+<div class="mb-5">
+    <ForwardBackTemplate Params=_backForward />
+</div>
+
+@if (formDefinition != null)
+{
+    <div style="margin-bottom:65px;">
+        @if (section1 != null)
+        {
+            <MudPaper Elevation="1" Outlined="true" Class="@(!section1.IsVisible?"d-none":"")">
+                <UIRenderere FromSection="@section1" DataObject="@_outstandingCheck" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+            </MudPaper>
+        }
+        @if (section2 != null)
+        {
+            <MudPaper Elevation="1" Outlined="true" Class="@(!section2.IsVisible?"d-none":"")">
+                <UIRenderere FromSection="@section2" DataObject="@_outstandingDetails" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+            </MudPaper>
+        }
+        @if (section3 != null)
+        {
+            <MudPaper Elevation="1" Outlined="true" Class="@(!section3.IsVisible?"d-none":"footer-of-customer-outstanding")">
+                <MudList Clickable="true">
+                    <MudListItem Icon="@Icons.Material.TwoTone.Info">Credit Limit:@(_outstandingDetails != null ? _outstandingDetails.CreditLimit.ToString("N2"):0.00 )</MudListItem>
+                    <MudListItem Icon="@Icons.Material.TwoTone.Info">Credit Period:@(_outstandingDetails != null ? _outstandingDetails.CreditDates : 0) Days</MudListItem>
+                </MudList>
+            </MudPaper>
+        }
+    </div>
+
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitions...</MudAlert>
+}

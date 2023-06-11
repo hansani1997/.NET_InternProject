@@ -1,0 +1,18 @@
+﻿<MudDialog Class="qr-dialog">
+	<DialogContent>
+
+
+		<QrScanner OnQRDetected="OnQRCodeDetected"  @ref="_scanner"/>
+
+
+        <div class="footer-btn-scan">
+     
+            <MudIconButton Icon="@Icons.Material.Filled.HighlightOff" Size="Size.Medium" OnClick="Cancel"  id="resetButton"></MudIconButton>
+        
+            <MudIconButton Icon="@Icons.Material.Filled.Cameraswitch" Size="Size.Medium" ></MudIconButton>
+	 
+        </div>
+         <MudFab ButtonType="ButtonType.Submit"  Icon="@Icons.Material.Filled.QrCodeScanner" Class="scan-btn" id="startButton"/>
+    </DialogContent>
+    
+</MudDialog>

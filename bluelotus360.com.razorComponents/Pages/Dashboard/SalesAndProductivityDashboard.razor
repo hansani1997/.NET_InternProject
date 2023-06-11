@@ -1,0 +1,309 @@
+﻿@page "/dashboard/SW_Dashboard"
+@using ApexCharts
+@using BL10.CleanArchitecture.Domain.Entities.Dashboard;
+
+
+<div>
+    <div>
+        <MudItem Class="d-sm-none">
+            <MudButton FullWidth=true Variant="Variant.Outlined" Color="MudBlazor.Color.Primary">Customer Outstanding</MudButton>
+        </MudItem> 
+        <MudItem Class="justify-end d-none d-sm-flex">
+            <MudButton Variant="Variant.Text" Color="MudBlazor.Color.Primary">Customer Outstanding ></MudButton>
+        </MudItem>
+        
+             <MudGrid Class="my-0 mb-5 w-100">
+                    <MudItem xs="12" md="4">
+                    <MudPaper onclick="@ToggleOpen" ontouch="@ToggleOpen"  Class="d-flex flex-column align-left justify-center mud-width-full mud-height-full pa-8" Elevation="3" Style="@($" background:#e6e8f7;")">
+                    @if (info != null)
+                    {
+                        <p style="text-align:left;">
+                            Visits Planned
+                            <span style="float:right;">
+                                @info.VisitsPlanned
+                            </span>
+                        </p>
+                        <p style="text-align:left;">
+                            Visits Done
+                            <span style="float:right;">
+                                @info.VisitsDone
+                            </span>
+                        </p>
+                        <p style="text-align:left;">
+                            Orders
+                            <span style="float:right;">
+                                @info.Orders
+                            </span>
+                        </p>
+                        <p style="text-align:left;">
+                            Invoice
+                            <span style="float:right;">
+                                @info.Invoice
+                            </span>
+                        </p>
+                    }
+                        
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        
+    </div>
+    <div>
+        @if (formDefinition != null && formDefinition.Children.Count > 0)
+        {
+            
+            <UIBuilder FormObject="formDefinition"
+                       DataObject="request"
+                       InteractionLogics="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"
+                       @ref="_refBuilder" />
+           
+        }
+        <MudGrid Class="my-0 mt-5 w-100">
+            <MudItem xs="12" sm="6" md="4" >
+                @if (billCoverage != null && billCoverage.Count() > 0)
+                {
+                <MudPaper Class="align-center justify-center mud-width-full mud-height-full pa-8" Elevation="3">
+                    <ApexChart TItem="BillCoverage"
+                               Title="Effective Coverage"
+                               Options="EffectiveCoverageChartOptions">
+                                  <ApexPointSeries SeriesType=SeriesType.RadialBar 
+                                                    TItem="BillCoverage" 
+                                                    Items="billCoverage"
+                                                    XValue="@(e=>e.PercentageCovered)"
+                                                    YValue="@(e=>Convert.ToDecimal(e.PercentageCovered))" />
+                        
+                    </ApexChart>
+                </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                @if (billProductivity != null && billProductivity.Count() > 0)
+                {
+                <MudPaper Class="align-center justify-center mud-width-full mud-height-full pa-8" Elevation="3">
+                    <ApexChart TItem="BillProductivity"
+                               Title="Sub Dealer Productivity"
+                               Options="SubDealerProductivityChartOptions">
+                                    <ApexPointSeries SeriesType=SeriesType.RadialBar 
+                                            TItem="BillProductivity"
+                                            Items="billProductivity"
+                                            XValue="@(e=>e.PercentageCovered)"
+                                            YValue="@(e=>Convert.ToDecimal(e.PercentageCovered))"/>
+
+                    </ApexChart>
+                </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+            </MudItem>
+            
+            <MudItem xs="12" sm="6" md="4">
+                @if(AchievementValues!=null && AchievementValues.Count()>0){
+                <MudPaper Class="align-center justify-center mud-width-full mud-height-full pa-8" Elevation="3">
+                    <ApexChart TItem="AchievementValue"
+                               Title="Overall Sales Achievement Value"
+                               Options="OveralSalesAchievementChartOptions">
+
+                        <ApexPointSeries TItem="AchievementValue"
+                                         Items="AchievementValues"
+                                         SeriesType="SeriesType.Donut"
+                                         Name=""
+                                         XValue="@(e => e.AchievementLabel)"
+                                         YValue="@(e => Convert.ToDecimal(e.Value))" />
+                    </ApexChart>
+                </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+                
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                @if(CompositionValues!=null && CompositionValues.Count()>0){
+                <MudPaper Class="align-center justify-center mud-width-full mud-height-full pa-8 " Elevation="3">
+                    <ApexChart TItem="CompositionValue"
+                               Title="Sales Achievement Composition"
+                               Options="SalesCompositionChartOptions">
+
+                        <ApexPointSeries TItem="CompositionValue"
+                                         Items="CompositionValues"
+                                         SeriesType="SeriesType.Donut"
+                                         Name=""
+                                         XValue="@(e => e.CompositionLabel)"
+                                         YValue="@(e => Convert.ToDecimal(e.Value))" />
+                    </ApexChart>
+                </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+            </MudItem>
+
+        </MudGrid>
+    </div>
+
+    <div>
+        <MudGrid Class="d-flex flex-row gap-4 mt-10">
+            <MudItem>
+                
+                <MudSelect T="string" Label="Item Category" Variant="Variant.Text" ValueChanged="OnCategoryChanged">
+                    @if (Categories != null)
+                    {
+                        foreach (String Category in Categories)
+                        {
+                            <MudSelectItem Value=Category />
+                        }
+                    }
+                    
+                </MudSelect>
+            </MudItem>
+            <MudItem>
+                <MudButton Variant="Variant.Filled" Color="MudBlazor.Color.Primary" OnClick="OnClickCategoryLoadButton">Load</MudButton>
+            </MudItem>
+        </MudGrid>
+        <MudGrid Class="my-0 mt-5 w-100">
+            <MudItem xs="12" sm="6" md="8">
+                @if (SubCategoryInfo != null && SubCategoryInfo.Count() > 0)
+                {
+                <MudPaper Class="align-center justify-center mud-width-full mud-height-full pa-8" Elevation="3">
+                    <ApexChart TItem="SubCategoryForUI"
+                               Title="Items sold"
+                               Options="SubCategoryChartOptions"
+                               > 
+                                @foreach (List<SubCategoryForUI> category in SubCategoryInfo)
+                                {
+                                        
+                                            <ApexPointSeries TItem="SubCategoryForUI"
+                                                    Items= "category"
+                                                    SeriesType="SeriesType.Bar"
+                                                    Name=@category.ElementAt(0).SubCategoryName
+                                                    XValue="@(e => e.XValue)"
+                                                    YValue= "@(e=>Convert.ToDecimal(e.SalesQty))"
+                                                    DataPointMutator=SetGoals />
+                                }
+                    </ApexChart>
+                    </MudPaper>
+                }
+                else if( showLoadingSignForItemCategoryCharts)
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="align-center justify-center mud-width-full pa-8" Elevation="3">
+
+                    </MudPaper>
+                }
+            </MudItem>
+            <MudItem xs="12" sm="6" md="4">
+                @if (CategoryCompositionValues != null && CategoryCompositionValues.Count() > 0)
+                {
+                <MudPaper Class="align-center justify-center mud-width-full pa-8" Elevation="3">
+                    <ApexChart TItem="CompositionValue"
+                               Title="Category Wise Sales Achievement"
+                               Options="CategoryWiseAchievmentChartOptions">
+
+                        <ApexPointSeries TItem="CompositionValue"
+                                         Items="CategoryCompositionValues"
+                                         SeriesType="SeriesType.Donut"
+                                         Name=""
+                                         XValue="@(e => e.CompositionLabel)"
+                                         YValue="@(e => Convert.ToDecimal(e.Value))" />
+                    </ApexChart>
+                </MudPaper>
+                }
+                else if ( showLoadingSignForItemCategoryCharts)
+                {
+                    <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                        <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+                    </MudPaper>
+                }
+                else
+                {
+                    <MudPaper Class="align-center justify-center mud-width-full pa-8" Elevation="3">
+                        
+                    </MudPaper>
+                }
+            </MudItem>
+        </MudGrid>
+    </div>
+</div>
+<MudPopover Open="@_isOpen" Fixed="true" Class="px-4 pt-4 " OverflowBehavior=OverflowBehavior.FlipOnOpen>
+    <div class="d-flex flex-column">
+        @if (routeTable != null)
+        {
+            <MudTable Height="300px" Items="@routeTable.Info" Hover="true" Breakpoint="Breakpoint.Sm" OnRowClick="RowClickEvent" T="SummaryInfo">
+                        <HeaderContent>
+                            <MudTh>Route</MudTh>
+                            <MudTh>Target visits</MudTh>
+                            <MudTh>Visits done</MudTh>
+                            <MudTh>Orders</MudTh>
+                            <MudTh>Invoices</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Route">@context.RouteOrShop</MudTd>
+                            <MudTd DataLabel="Target visits">@context.VisitsPlanned</MudTd>
+                            <MudTd DataLabel="Visits done">@context.VisitsDone</MudTd>
+                            <MudTd DataLabel="Orders">@context.Orders</MudTd>
+                            <MudTd DataLabel="Invoices">@context.Invoice</MudTd>
+                        </RowTemplate>
+                    </MudTable>
+        }
+        else 
+        {
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+            </MudPaper>
+        }
+        <MudButton OnClick="@ToggleOpen" Class="justify-end mt-4" Color="MudBlazor.Color.Error">Close</MudButton>
+    </div>
+</MudPopover>
+<MudPopover Open="@_isOpenShopsPopup" Fixed="true" Class="px-4 pt-4 " OverflowBehavior=OverflowBehavior.FlipOnOpen>
+    <div class="d-flex flex-column">
+        @if (shopsTable != null)
+        {
+            <MudTable Height="300px" Items="@shopsTable.Info" Hover="true" Breakpoint="Breakpoint.Sm">
+                <HeaderContent>
+                    <MudTh>Shop</MudTh>
+                    <MudTh>Visits done</MudTh>
+                    <MudTh>Orders</MudTh>
+                    <MudTh>Invoices</MudTh>
+                </HeaderContent>
+                <RowTemplate>
+                    <MudTd DataLabel="Shop">@context.RouteOrShop</MudTd>
+                    <MudTd DataLabel="Visits done">@context.VisitsDone</MudTd>
+                    <MudTd DataLabel="Orders">@context.Orders</MudTd>
+                    <MudTd DataLabel="Invoices">@context.Invoice</MudTd>
+                </RowTemplate>
+            </MudTable>
+        }
+        else
+        {
+            <MudPaper Class="d-flex align-center justify-center mud-width-full py-md-8">
+                <MudProgressCircular Color=MudBlazor.Color.Default Indeterminate="true" />
+            </MudPaper>
+        }
+        <MudButton OnClick="@ToggleOpenShopDetails" Class="justify-end mt-4" Color="MudBlazor.Color.Error">Close</MudButton>
+    </div>
+</MudPopover>
+
+
+

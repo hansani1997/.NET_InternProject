@@ -1,0 +1,251 @@
+﻿@page "/report/report_dashboard"
+@using bluelotus360.com.razorComponents.Components.ReportDashboard;
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+    @if (isDashboardVisible)
+    {
+   
+            @*shortcut section*@
+
+            @if (ShortcutSection.IsVisible)
+            {
+                @if(Childlist!=null && Childlist.SubMenus.Count>0){
+                <h3>Favourites</h3>        
+                <MudItem xs="12" Class="mx-4">
+                    <MudGrid Class="pin-wrapper mt-5">
+                        @if (Childlist != null)
+                        {
+                            <PinSelection ElementKey="@elementKey" PinnedMenus="@Childlist" OnAfterPinnedMenuClick="OnAfterPinnedMenuClick" />
+                        }
+
+               
+
+                    </MudGrid>
+                </MudItem>
+                }
+
+            }
+
+        @*Frequently accessed section*@
+        @if (RecentlyAccessedSection.IsVisible)
+        {
+            <h3 style="margin: 20px 0;">Recently Accessed</h3>
+       
+            <RecentlyAccessed />
+
+
+        }
+
+        @*Module section*@
+
+        @if (ModulesSection.IsVisible)
+        {
+       
+                <h3 style="margin: 20px 0;">Report Modules</h3>
+                <ReportModels Childlist="@ChildModulelist" OnReportCardClicked="@HandleReportCardClicked" />
+       
+
+            
+        }
+
+
+
+    }
+
+}
+
+@if (isSubModuleVisible){
+
+
+    @foreach (var title in ChildModulelist)
+    {
+        @if (subModuleParentKey == title.ObjKy)
+        {
+
+
+            <div>
+
+                <div style="display: flex; align-items: center;">
+                    @*<MudIconButton OnClick="SubListBack"
+                           Class="rpt-icon-button"
+                       Icon="@Icons.Material.TwoTone.ArrowBackIos"
+                           Variant="Variant.Outlined"
+                           Color="Color.Primary"
+                           Size="Size.Medium" />*@
+
+                    <MudIconButton Color="Color.Default"
+                       Icon="@Icons.Material.TwoTone.ArrowBackIos"
+                       OnClick="SubListBack"
+                       Size="Size.Medium" />
+
+                    <MudText Typo="Typo.h3" style="margin-left: 20px;">
+                        <h3>@title.ObjCaptn</h3>
+                    </MudText>
+                </div>
+
+
+                <MudTextField xs="12" md="6" lg="4" xl="3" Immediate="true"
+                             
+                                  @bind-Value="filterText"
+                                  @oninput="()=>SearchSubTitles(title)"
+                                  Placeholder="Search"
+                                  Adornment="Adornment.Start"
+                                  AdornmentIcon="@Icons.Material.Filled.Search"
+                                  IconSize="Size.Medium"
+                                  Class="mt-1 mb-4">
+                </MudTextField>
+            </div>
+
+           
+
+            <div>
+
+                @if (Childsublist.Count > 0)
+                {
+                    
+
+                    <MudGrid>
+                        @foreach (var subtitle in Childsublist.Where(s => s.ObjCaptn.Contains(filterText, StringComparison.InvariantCultureIgnoreCase)))
+                        {
+                            <MudItem xs="12" md="6" lg="4" xl="3" @onclick="@(async()=> await SubMenuButtonClicked(subtitle))">
+                                <MudCard Class="report-shortcut-card">
+                                    <MudCardContent>
+                                        <h3 class="mb-0">@subtitle.ObjCaptn</h3>
+                                    </MudCardContent>
+                                </MudCard>
+                            </MudItem>
+                        }
+                    </MudGrid>
+                }
+            </div>
+
+        }
+    }
+
+
+}
+
+
+@if (isParameterVisible)
+{
+    @*<MudPaper Elevation="2">
+        <MudForm Model="@formModel" OnValidSubmit="@OnValidSubmit">
+            <MudGrid>
+                @foreach (var field in visibleFields)
+                {
+                    <MudItem xs="12" md="6" lg="4">
+                        <MudText Label="@field.ObjectCaption" @bind-Value="@GetFieldValue(field)">
+                            @if (field.IsMust == 1)
+                            {
+                                <span style="color: red;">*</span>
+                            }
+                        </MudText>
+                    </MudItem>
+                }
+            </MudGrid>
+            <MudButton Type="submit" Variant="Variant.Filled" Color="Color.Primary">Submit</MudButton>
+        </MudForm>
+    </MudPaper>*@
+    <MudGrid >
+        <MudItem Class="mx-5 fixed-button-bar2">
+            <MudButtonGroup Color="Color.Primary" Variant="Variant.Outlined">
+                    <MudIconButton OnClick="ParameterListBack"
+                               Class="rpt-icon-button"
+                               Icon="@Icons.Material.TwoTone.ArrowBackIos"
+                               Variant="Variant.Outlined"
+                               Color="Color.Primary"
+                               Size="Size.Medium" />
+
+                    <MudIconButton OnClick="@(()=> OnShowReportClick())"
+                               Class="rpt-icon-button"
+                               Icon="@Icons.Material.Filled.Print"
+                               Variant="Variant.Outlined"
+                               Color="Color.Primary"
+                               Size="Size.Medium" />
+
+                </MudButtonGroup>
+
+        </MudItem>
+
+        @if (DynamicComponent != null && DynamicComponent.Children.Count > 0)
+        {
+            <UIRenderere FromSection="DynamicComponent"
+                 DataObject="new object()"
+                 InteractionLogics="@_interactionLogic"
+                 ObjectHelpers="@_objectHelpers"
+                 DynamicBindings="_dynamicBindings" />
+        }
+    </MudGrid>
+
+    
+    
+
+
+
+    
+
+   
+   
+    
+ 
+
+
+      
+}
+
+
+@if (isReportVisible)
+{
+    @if (isReportVisible)
+    {
+        <div class="report-pop-up @(isReportVisible ? "":"d-none")">
+            <MudGrid>
+                <MudItem xs=12 class="price-list-wrap">
+                    <BLReportViewer ReportSetting="_reportOption"
+                            CloseReportDelegate="@(()=>{isReportVisible=false;})" />
+                </MudItem>
+            </MudGrid>
+            <hr />
+        </div>
+    }
+
+
+}
+
+<style>
+    .fixed-button-bar2 {
+        position: fixed;
+        width: 100%;
+        left: 52px;
+        background: #ffffff;
+        top: 52px;
+        z-index: 1000;
+        border-bottom-width: 2px;
+        border-bottom-style: solid;
+        border-bottom-color: #dbdbdb;
+        border-radius: 0px;
+    }
+
+    @@media screen and (max-width: 960px){
+        .fixed-button-bar2 + div {
+            margin-top: 50px !important;
+        }
+
+        .fixed-button-bar2{
+            left: 0;
+        }
+    }
+
+@@media (max-width: 600px){
+        .fixed-button-bar2 + div {
+            margin-top: 20px !important;
+            margin-bottom: 10px;
+        }
+}
+
+.fixed-button-bar2 + div {
+    margin-top: 50px !important;
+}
+
+</style>

@@ -1,0 +1,112 @@
+﻿@page "/HumanResource/LeaveRequest_Mobile"
+@using BlueLotus360.CleanArchitecture.Domain.Entities.HR;
+
+@if (formDefinition != null && formDefinition.Children.Count > 0){
+    @if (showAlert)
+    {
+            <BLAlert CloseAlert="(()=>showAlert=false)" AlertContent="@alertContent" AlertStatus="@Servrity" />
+    }
+    @if (isProcessing)
+    {
+         <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+    }
+
+    <MudGrid>
+        <MudContainer>
+            <MudGrid Class="@(GridShow?"d-flex mt-3":"d-none")">
+                <MudItem xs="12" >
+                    <MudButtonGroup Class="fixed-button-bar" Style="padding:20px">
+                        <MudIconButton Icon="@Icons.TwoTone.Send" OnClick="Apply" Variant="Variant.Outlined" Color="Color.Primary"></MudIconButton>
+                    </MudButtonGroup>
+                      <MudDataGrid T="LeaveDetails" MultiSelection="true" Items="@_levDetails" SortMode="SortMode.Multiple" Filterable="true" >
+                          <Columns>
+                            <SelectColumn T="LeaveDetails" />
+                            <TemplateColumn T="LeaveDetails" Field="@nameof(LeaveDetails.LeaveType)" Title="Leave type" />
+                             <TemplateColumn T="LeaveDetails" Field="EftvDt" Title="From Date" >
+                               @* <CellTemplate>
+                                    @Convert.ToDateTime(context.Item.EftvDt).ToString("yyyy/MM/dd")
+                                </CellTemplate>*@
+                            </TemplateColumn>
+                            <TemplateColumn T="LeaveDetails" Field="ToD" Title="To Date">
+                                @*<CellTemplate>
+                                    @Convert.ToDateTime(context.Item.ToD).ToString("yyyy/MM/dd")
+                                </CellTemplate>*@
+                            </TemplateColumn>
+                            <TemplateColumn T="LeaveDetails" Field="@nameof(LeaveDetails.Taken)" Title="Days/Hours" />
+                            <TemplateColumn T="LeaveDetails" Field="@nameof(LeaveDetails.IsCd)" Title="Type">
+                                <CellTemplate>
+                                    @if(context.Item.IsCd == 0)
+                                    {
+                                        <span>Day</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Hour</span>
+                                    }
+                                </CellTemplate>
+                            </TemplateColumn>
+                            <TemplateColumn T="LeaveDetails" Field="@nameof(LeaveDetails.Status)" Title="Status" />
+                            <TemplateColumn T="LeaveDetails" Field="@nameof(LeaveDetails.LevReason)" Title="Leave Reason" />
+                          </Columns>
+                          <PagerContent>
+                              <MudDataGridPager T="LeaveDetails" />
+                          </PagerContent>
+                      </MudDataGrid>
+                </MudItem>
+            </MudGrid>
+            <MudGrid Class="@(GridShow?"d-none":"d-flex")">
+                <MudItem xs="12" Class="ml-3 mt-3" >
+                    <MudButtonGroup Color="Color.Primary" Class="fixed-button-bar" Variant="Variant.Outlined" Style="padding-top:20px;padding-left:20px;padding-bottom:10px">
+                        <MudIconButton Icon="@Icons.TwoTone.ArrowBack" OnClick="GoBack"></MudIconButton>
+                        <MudIconButton Icon="@Icons.TwoTone.Send" OnClick="LeaveApply" ></MudIconButton>
+                    </MudButtonGroup >
+                </MudItem>
+                <MudItem xs="12" md="6" Style="padding:10px">
+                    <UIBuilder FormObject="formDefinition"
+                       DataObject="_leaveReq"
+                       InteractionLogics="_interactionLogic"
+                       ObjectHelpers="_objectHelpers"
+                       @ref="_refBuilder" />
+                </MudItem>
+                 <MudItem xs="12" md="6">
+                    <MudDataGrid T="LeaveSummary" MultiSelection="true" Items="@_leaveReq.LeaveSummary" SortMode="SortMode.Multiple" Filterable="true">
+                        <ToolBarContent>
+                            <MudText Typo="Typo.h6">Leave Summary</MudText>
+                        </ToolBarContent>
+                        <Columns >
+                            <TemplateColumn T="LeaveSummary" Field="@nameof(LeaveSummary.LeaveType)" Title="Leave Type" />
+                            <TemplateColumn T="LeaveSummary" Field="@nameof(LeaveSummary.Elagible)" Title="Eligible" />
+                            <TemplateColumn T="LeaveSummary" Field="@nameof(LeaveSummary.Taken)" Title="Already Taken" />
+                            <TemplateColumn T="LeaveSummary" Field="@nameof(LeaveSummary.Bal)" Title="Balance">
+                                <CellTemplate>
+                                    @if(context.Item.Bal <= 0)
+                                    {
+                                        <span>0</span>
+                                    }
+                                    else
+                                    {
+                                        <span>@context.Item.Bal</span>
+                                    }
+                                </CellTemplate>
+                            </TemplateColumn>
+                            <TemplateColumn T="LeaveSummary" Field="@nameof(LeaveSummary.IsCd01)" Title="Day/Hour">
+                                <CellTemplate>
+                                    @if (context.Item.IsCd01 == 0)
+                                    {
+                                        <span>Day</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Hour</span>
+                                    }
+                                </CellTemplate>
+                            </TemplateColumn>
+                        </Columns>
+                    </MudDataGrid>
+                </MudItem>
+            </MudGrid>
+        </MudContainer>
+    </MudGrid>
+}else{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons... </MudAlert>
+}

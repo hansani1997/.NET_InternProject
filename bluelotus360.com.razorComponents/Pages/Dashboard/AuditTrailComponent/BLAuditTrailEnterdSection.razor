@@ -1,0 +1,14 @@
+﻿<MudItem xl=12 Class=@Class>
+    <MudCard Elevation="0">
+        <MudCardContent>
+            <MudGrid>
+                @if (FormObject != null)
+                {
+                    <MudItem xs="12" sm="FormObject.Width" md="FormObject.Width" Class="@FormObject.ParentCssClass">
+                        <UIRenderere FromSection="FormObject" DataObject="DataObject" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                    </MudItem>
+                }
+            </MudGrid>
+        </MudCardContent>
+    </MudCard>
+</MudItem>

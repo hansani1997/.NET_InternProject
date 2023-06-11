@@ -1,0 +1,150 @@
+﻿@page "/Process/ToDoDesktop"
+@using BL10.CleanArchitecture.Domain.Entities.ProjectManagement;
+
+@if(formDefinition != null && formDefinition.Children.Count > 0)
+{
+    <MudItem xs="12" md="12">
+        <MudCard Style="margin:5px; !important">
+            <UIRenderere FromSection="_headerSection" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+        </MudCard>
+        <MudCard>
+            <MudGrid>
+                <MudItem md="2">
+                    <MudButtonGroup Class="todo-button-group" Color="Color.Primary" Variant="Variant.Outlined">
+                        <MudIconButton Icon="fa-solid fa-border-all" ></MudIconButton>
+                        <MudIconButton Icon="fa-solid fa-table-list" ></MudIconButton>
+                        <MudIconButton Icon="fa-solid fa-calendar-days"></MudIconButton>
+                        @* <MudIconButton Icon="fa-solid fa-list"></MudIconButton>*@
+                       @* <MudIconButton Icon="fa-solid fa-angles-down"></MudIconButton>*@
+
+                    </MudButtonGroup>
+                </MudItem>
+                <MudItem md="8">
+                <UIRenderere FromSection="_headerSectionExtended" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                </MudItem>
+                <MudItem md="2">
+                    <UIRenderere FromSection="ToDoButtonSec" DataObject="new object()" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                </MudItem>
+            </MudGrid>
+        </MudCard>
+    </MudItem>
+
+    <MudDropContainer T="Process" @ref="_dropContainer" Items="@ListOfTasks" ItemsSelector="@((item,column) => item.ApproveStatus.CodeName == column)" ItemDropped="TaskUpdated" Class="d-flex flex-row mt-4">
+	<ChildContent>
+     
+		@foreach (var item in ListOfBoards)
+		{
+           
+                    <MudPaper Elevation="0" Width="1600px" MinHeight="400px" Class="pa-3 ma-2 d-flex flex-column mud-background-gray rounded-lg" Style="overflow-x:scroll">
+                        <MudToolBar DisableGutters="true">
+                            <MudText Typo="Typo.subtitle1"><b>@item.CdExtraInformation1</b></MudText>
+                            <MudSpacer />
+
+                        </MudToolBar>
+                        <MudDropZone T="Process" Identifier="@item.CodeName" Class="mud-height-full" />
+                    </MudPaper>
+           
+			
+		}
+       
+	</ChildContent>
+    
+	<ItemRenderer>
+		
+                
+                   
+                        <MudCard Style="margin:3% !important; border-radius:10px !important">
+                            <MudCardHeader>
+                                <CardHeaderContent>
+                                    @if (context.Priority.CodeName == "High")
+                                    {
+                            <MudText><b>@context.TaskId</b><MudChip Variant="Variant.Text" style="margin-left:5%" Color="Color.Error">@context.Priority.CodeName</MudChip></MudText>
+                                    }
+                        else if (context.Priority.CodeName == "Medium")
+                                    {
+                            <MudText><b>@context.TaskId</b><MudChip Variant="Variant.Text" style="margin-left:5%" Color="Color.Success">@context.Priority.CodeName</MudChip></MudText>
+                                    }
+                        else if (context.Priority.CodeName == "Low")
+                                    {
+                            <MudText><b>@context.TaskId</b><MudChip Variant="Variant.Text" style="margin-left:5%" Color="Color.Warning">@context.Priority.CodeName</MudChip></MudText>
+                                    }
+                                    else
+                                    {
+                            <MudText Typo="Typo.h5"><b>@context.TaskId</b></MudText>
+                                    }
+
+                                </CardHeaderContent>
+                                <CardHeaderActions>
+                                    <MudIconButton Icon="fa-solid fa-ellipsis-vertical"  Color="Color.Primary" />
+                                </CardHeaderActions>
+                            </MudCardHeader>
+                            <MudCardContent Style="padding: 5px !important">
+                                <MudItem xs="12" Style="padding: 5px !important">
+                        <MudText Typo="Typo.h5">@context.TaskName</MudText>
+                                </MudItem>
+
+                                <MudCard>
+                                    <MudCardHeader>
+                                        <CardHeaderContent>
+                                <MudAvatar Size="Size.Small" Color="Color.Warning" Variant="Variant.Filled">@context.Lead.AddressSName</MudAvatar>
+                                <MudAvatar Size="Size.Small" Color="Color.Success" Variant="Variant.Filled">@context.CurrentResponsible.AddressSName</MudAvatar>
+                                        </CardHeaderContent>
+                                    </MudCardHeader>
+
+                                </MudCard>
+
+                                <MudItem xs="12">
+                                    <MudCard>
+                                        <MudCardContent Style="background-color:#183153 !important; border-radius:10px !important">
+                                            <div class="d-flex">
+                                                <MudItem xs="6">
+                                        @if (context.IsPlaying)
+                                                    {
+                                                        <MudIconButton Icon="fa-solid fa-stop fa-sm" Style="color:white" ></MudIconButton>
+                                                    }
+                                                    else
+                                                    {
+                                                        <MudIconButton Icon="fa-solid fa-play fa-sm" Style="color:white" ></MudIconButton>
+                                                    }
+
+                                                </MudItem>
+                                                <MudItem xs="6">
+                                        <MudText Typo="Typo.h5" Style="color:white">@context.ElapsedTime</MudText>
+                                                </MudItem>
+                                            </div>
+
+                                            @*<MudIconButton Icon="fa-solid fa-pause fa-sm" Style="color:white"></MudIconButton>
+                                            @*<MudIconButton Icon="fa-solid fa-stop fa-sm" Style="color:white"></MudIconButton>*@
+                                            @* <MudIconButton Icon="fa-solid fa-xmark fa-sm" Style="color:white"></MudIconButton>*@
+
+
+
+                                        </MudCardContent>
+                                    </MudCard>
+                                </MudItem>
+
+                            </MudCardContent>
+
+                            <MudCardActions Style="padding:2% !important">
+                                <MudItem xs="12" Style="padding: 5px !important">
+                                    <MudDivider></MudDivider>
+                                    <MudItem Style="margin-top:1% !important">
+                                        <MudText Typo="Typo.h5">Budgeted Hours: @context.TotalBudgetTime</MudText>
+                                    </MudItem>
+
+                                    <MudItem Style="margin-top:1% !important">
+                            <MudText Typo="Typo.h5">Actual Hours: @context.ActualQuantity</MudText>
+                                    </MudItem>
+
+
+                                </MudItem>
+                            </MudCardActions>
+                        </MudCard>
+                    
+               
+      
+	</ItemRenderer>
+</MudDropContainer>
+
+
+}

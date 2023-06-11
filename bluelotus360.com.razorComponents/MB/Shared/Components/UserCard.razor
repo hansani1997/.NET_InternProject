@@ -1,0 +1,28 @@
+﻿<MudCard Elevation="0" Square="true" Class="@($"{Class}")" >
+    <MudCardHeader Class="pb-1 pt-1">
+        <CardHeaderContent>
+            <div class="d-flex align-items-center">
+                <div class="d-flex flex-column">
+                    <MudText Typo="Typo.body2">@FirstName @SecondName</MudText>
+                    @*<MudText>@CompanyName</MudText>*@
+                    @if (!string.IsNullOrEmpty(CompanyName))
+                    {
+                        <MudText Typo="Typo.caption">@CompanyName</MudText>
+                    }
+                    
+                </div>
+                <div class="d-flex ml-2">
+                    @if (string.IsNullOrEmpty(ImageDataUrl))
+                    {
+                        <MudAvatar Color="Color.Primary">@FirstLetterOfName</MudAvatar>
+                    }
+                    else
+                    {
+                        <MudAvatar Image="@ImageDataUrl" Style="height:50px; width:50px;"> </MudAvatar>
+                    }
+                </div>
+            </div>
+        </CardHeaderContent>
+        
+    </MudCardHeader>
+</MudCard>

@@ -1,0 +1,133 @@
+﻿@using BL10.CleanArchitecture.Domain.Entities.WorkShopManagement
+<div class="container">
+    <div class="d-flex flex-column text-center">
+        <span class="font-weight-bold">@(DataObject.OrderPrefix.CodeName + DataObject.OrderNumber)</span>
+        <span class="font-weight-bold">@($"[{DataObject.OrderStatus.Code}] {DataObject.OrderLocation.CodeName}")</span>
+        
+        <table class="table mt-3">
+            <tbody>
+                <tr>
+                    <td class="text-left">Job Category</td>
+                    <td class="text-right">@(DataObject.OrderCategory1.CodeName ?? "")</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Payment Mode</td>
+                    <td class="text-right">@(DataObject.OrderPaymentTerm.CodeName ?? "")</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Started</td>
+                    <td class="text-right">@(DataObject.OrderDate.ToString("dd/MM/yyyy"))</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Finished</td>
+                    <td class="text-right">@(DataObject.DeliveryDate.ToString("dd/MM/yyyy"))</td>
+                </tr>
+                <tr>
+                    <td class="text-left">Vehicle Reg No</td>
+                    <td class="text-right">@(DataObject.SelectedVehicle.VehicleRegistration.ItemCode ?? "")</td>
+                </tr>
+                <tr >
+                    <td class="text-left">Customer</td>
+                    <td class="text-right">@(DataObject.SelectedVehicle.RegisteredCustomer.AddressName ?? "")</td>
+                </tr>
+                <tr >
+                    <td class="text-left">Booked Service</td>
+                    <td class="text-right">N/A</td>
+                </tr>
+                <tr >
+                    <td class="text-left">Completed</td>
+                    <td class="text-right">@(!DataObject.OrderStatus.Code.Equals("WIP") ? "Yes" : "No")</td>
+                </tr>
+            </tbody>
+            
+        </table>
+        
+
+    </div>
+    <div class="d-flex justify-content-center gap-4 mt-4 mb-4">
+        <div class=""><MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="UpdatePlaningDate" Disabled="IsButtonDisabled">Update Deadline</MudButton></div>
+        <div class=""><MudButton Variant="Variant.Filled" Color="Color.Primary">Print Job Card</MudButton></div>
+    </div>
+    <div class="d-flex justify-content-center "><MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="CloseWorkOrder" Disabled="IsButtonDisabled">Close WorkOrder</MudButton></div>
+</div>
+
+<PlaningDatePopUp OnCloseButtonClick="@(()=>{isPopUpShown=false;})"
+                  WindowIsVisible="isPopUpShown"
+                  DataObject="@DataObject"
+                  PopUI="PlaningSection"
+                  ObjectKey="@ObjectKey" />
+
+<MudMessageBox @ref="mbox" Title="Warning" CancelText="No">
+    <MessageContent>
+        Are you sure,you want to close this Work Order-@(DataObject.OrderPrefix.CodeName + DataObject.OrderNumber)?
+    </MessageContent>
+    <YesButton>
+        <MudButton Variant="Variant.Filled" Color="Color.Error" >Yes</MudButton>
+    </YesButton>
+</MudMessageBox>
+
+@code {
+
+    [Parameter] public BLUIElement PlaningSection{ get; set; }
+    [Parameter] public WorkOrder DataObject { get; set; }
+    [Parameter] public long ObjectKey { get; set; }
+    [Parameter] public EventCallback<int> Activate { get; set; }
+    [Parameter] public EventCallback DisableTabs { get; set; }
+
+    MudMessageBox mbox { get; set; }
+    bool isPopUpShown;
+    private bool IsButtonDisabled;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        IsButtonDisabled = DataObject.OrderStatus.Code.Equals("Closed");
+
+    }
+    private async void CloseWorkOrder()
+    {
+        bool? result = await mbox.Show();
+
+        if (result!=null)
+        {
+
+            this.appStateService.IsLoaded = true;
+            DataObject.OrderStatus = new CodeBaseResponse() { OurCode = "Closed" };
+            DataObject.FormObjectKey = ObjectKey;
+            await _workshopManager.EditWorkOrder(DataObject);
+
+            if (DisableTabs.HasDelegate)
+            {
+                DataObject.WorkOrderClear();
+                await DisableTabs.InvokeAsync();
+            }
+            if (Activate.HasDelegate)
+            {
+                await Activate.InvokeAsync(0);
+            }
+
+            this.appStateService.IsLoaded = false;
+            StateHasChanged();
+
+            _snackBar.Configuration.PositionClass = Defaults.Classes.Position.TopRight;
+            _snackBar.Add("WorkOrder is Closed Successfully", Severity.Error);
+        }
+        else
+        {
+            mbox.Close();
+        }
+
+
+    }
+
+    private async void UpdatePlaningDate()
+    {
+        isPopUpShown = true;
+        StateHasChanged();
+    }
+}
+
+<style>
+    .container{
+        margin-top:100px;
+    }
+</style>

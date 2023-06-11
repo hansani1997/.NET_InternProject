@@ -1,0 +1,130 @@
+﻿
+<style>
+    .column {
+        flex: 50%;
+        padding: 5px;
+        }
+        .rowTable {
+        display: flex;
+        }
+        table {
+          width: 100%;
+        }
+        .heading{
+            background-color: #E1E7EE;
+        }
+        .font{
+            color: #053B71;
+            font-family: 'Inter';
+            ont-style: normal;
+            font-weight: 700;
+            font-size: 18px;
+            line-height: 20px;
+        }
+        td{
+            width:min-content
+        }
+</style>
+
+<MudGrid>
+            <div class="col-12">
+                <div class="bk-k-lable p-2 my-2 heading font"><span>VEHICLE</span></div>
+            </div>
+
+            <div class="row rowTable col-sm-12">
+
+                <div class="column px-15">
+                    <table>
+                        <tr>
+                            <td>Registration No</td>
+                            <td>: @bookingDetails.TabDetails.VehicleID</td>
+                        </tr>
+                        <tr>
+                            <td>Category</td>
+                            <td>: @bookingDetails.TabDetails.Category</td>
+                        </tr>
+                        <tr>
+                            <td>Sub-category</td>
+                            <td>: @bookingDetails.TabDetails.SubCategory</td>
+                        </tr>
+                        <tr>
+                            <td>Make</td>
+                            <td>: @bookingDetails.TabDetails.Make</td>
+                        </tr>
+                        <tr>
+                            <td>Model Name</td>
+                            <td>: @bookingDetails.TabDetails.Model</td>
+                        </tr>
+                        <tr>
+                            <td>Fuel type</td>
+                            <td>: @bookingDetails.TabDetails.Fuel</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="column px-15">
+                    <table>
+                        <tr>
+                            <td>Engine No</td>
+                            <td>: @bookingDetails.TabDetails.EngineNumber</td>
+                        </tr>
+                        <tr>
+                            <td>Chassis No</td>
+                            <td>: @bookingDetails.TabDetails.ChassiNumber</td>
+                        </tr>
+                        <tr>
+                            <td>Date Delivered</td>
+                            <td>: @bookingDetails.TabDetails.DeliveryDate</td>
+                        </tr>
+                        <tr>
+                            <td>Warranty Status</td>
+                            <td>: </td>
+                        </tr>
+                        <tr>
+                            <td>Maintenance Package</td>
+                            <td>: </td>
+                        </tr>
+                        <tr>
+                            <td>Previous Mileage</td>
+                            <td>: @bookingDetails.TabDetails.PreMilage Km</td>
+                        </tr>
+                    </table>
+                </div>
+
+            </div>
+
+            <div class="col-12">
+                <div class="bk-k-lable p-2 my-2 heading font">CUSTOMER</div>
+            </div>
+            <div class="row rowTable col-sm-12">
+                <div class="column px-15">
+                    <table>
+                        <tr>
+                            <td>Customer</td>
+                            <td>: @bookingDetails.TabDetails.CustomerName</td>
+                        </tr>
+                        <tr>
+                            <td>NIC Number</td>
+                            <td>: @bookingDetails.TabDetails.NIC</td>
+                        </tr>
+                        <tr>
+                            <td>Mobile</td>
+                            <td>: @bookingDetails.TabDetails.MobileBusiness</td>
+                        </tr>
+                    </table>
+                </div>
+
+                <div class="column px-15">
+                    <table>
+                        <tr>
+                            <td>Address</td>
+                            <td>: @bookingDetails.TabDetails.Address</td>
+                        </tr>
+                        <tr>
+                            <td>E-mail</td>
+                            <td>: @bookingDetails.TabDetails.EmailBusiness</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+</MudGrid>

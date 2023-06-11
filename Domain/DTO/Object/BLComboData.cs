@@ -1,0 +1,931 @@
+﻿using BL10.CleanArchitecture.Domain.DTO;
+using BL10.CleanArchitecture.Domain.DTO.Object;
+using BlueLotus360.CleanArchitecture.Domain.Entities;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace BlueLotus360.CleanArchitecture.Domain.DTO.Object
+{
+
+
+    public class BaseResponse
+    {
+        public bool IsDefault { get; set; }
+
+        public bool IsMust { get; set; }
+
+        public static bool IsValidData(BaseResponse response)
+        {
+            if (response == null)
+            {
+                return false;
+            }
+
+            if (response.GetType() == typeof(CodeBaseResponse))
+            {
+                return (response as CodeBaseResponse).CodeKey > 10;
+            }
+
+
+            if (response.GetType() == typeof(ItemResponse))
+            {
+                return (response as ItemResponse).ItemKey > 10;
+            }
+
+
+            if (response.GetType() == typeof(AddressResponse))
+            {
+                return (response as AddressResponse).AddressKey > 10;
+            }
+
+
+            if (response.GetType() == typeof(AccountResponse))
+            {
+                return (response as AccountResponse).AccountKey > 10;
+            }
+
+            if (response.GetType() == typeof(UnitResponse))
+            {
+                return (response as UnitResponse).UnitKey > 10;
+            }
+            if (response.GetType() == typeof(TaskResponse))
+            {
+                return (response as TaskResponse).TaskKey > 10;
+            }
+
+
+            return false;
+
+        }
+        public static long GetKeyValue(BaseResponse response)
+        {
+            if (response == null)
+            {
+                return 1;
+            }
+
+            if (response is CodeBaseResponse)
+            {
+                return (response as CodeBaseResponse).CodeKey;
+            }
+            if (response is AddressResponse)
+            {
+                return (response as AddressResponse).AddressKey;
+            }
+            if (response is AccountResponse)
+            {
+                return (response as AccountResponse).AccountKey;
+            }
+            if (response is UnitResponse)
+            {
+                return (response as UnitResponse).UnitKey;
+            }
+            if (response is ItemResponse)
+            {
+                return (response as ItemResponse).ItemKey;
+            }
+
+            if (response is ProjectResponse)
+            {
+                return (response as ProjectResponse).ProjectKey;
+            }
+
+            if (response is TaskResponse)
+            {
+                return (response as TaskResponse).TaskKey;
+            }
+
+            return 1;
+        }
+
+
+        public IDictionary<string, object> AddtionalData { get; set; }
+
+        public BaseResponse()
+        {
+            AddtionalData = new Dictionary<string, object>();
+        }
+
+        public string? Base64ImageDocument { get; set; } = "";
+        
+    }
+    public class ComboRequestDTO
+    {
+        public long RequestingElementKey { get; set; } = 1;
+        public string RequestingURL { get; set; } = "";
+        public IDictionary<string, object> AddtionalData { get; set; } = new Dictionary<string, object>();
+
+        public ComboRequestDTO()
+        {
+            AddtionalData = new Dictionary<string, object>();
+
+        }
+
+        public string SearchQuery { get; set; } = "";
+
+        public bool CancelRead { get; set; }
+        public int EntityKey { get; set; } = 1;
+
+    }
+
+    public class CodeBaseResponse : BaseResponse
+    {
+        private object value1;
+        private object value2;
+        private object value3;
+
+        public CodeBaseResponse(object value1, object value2, object value3)
+        {
+            this.value1 = value1;
+            this.value2 = value2;
+            this.value3 = value3;
+        }
+
+        public CodeBaseResponse()
+        {
+        }
+		public CodeBaseResponse(int CodeKey)
+		{
+			this.CodeKey = CodeKey;
+		}
+		public int CodeKey { get; set; } = 1;
+        //public string CodeName { get; set; } = "";
+        public string ConditionCode { get; set; } = "";
+        public string CodeName { get; set; } = "-";
+        public string OurCode { get; set; } = "";
+
+
+        public override string ToString()
+        {
+            if (CodeKey == 1)
+            {
+                return "-";
+            }
+            if (CodeName != null)
+            {
+                return this.CodeName;
+            }
+            return "-";
+
+        }
+
+        public string Code { get; set; } = "";
+
+        public int Count { get; set; } = 0;
+
+        public void SeperateServiceType()
+        {
+            if (CodeKey == 443470)
+            {
+                AddtionalData["IsKiloWash"] = true;
+                AddtionalData["IsCommon"] = false;
+            }
+            else if (CodeKey == 1 || CodeKey == 431996 || CodeKey == 432173 || CodeKey == 435650)
+            {
+                AddtionalData["IsCommon"] = true;
+                AddtionalData["IsKiloWash"] = false;
+            }
+            else
+            {
+                AddtionalData["IsCommon"] = false;
+                AddtionalData["IsKiloWash"] = false;
+            }
+        }
+
+    }
+    public class AddressResponse : BaseResponse
+    {
+        public long AddressKey { get; set; } = 1;
+
+        public string AddressName { get; set; } = "-";
+
+        public override string ToString()
+        {
+            if (AddressKey==1)
+            {
+                return "-";
+            }
+            if (AddressName!=null)
+            {
+                return this.AddressName;
+            }
+            return "-";
+        }
+
+
+        public string AddressID { get; set; } = "";
+        public string AddressSName { get; set; } = "";
+        public string Alias { get; set; } = "";
+
+    }
+
+    public class ItemResponse : BaseResponse
+    {
+        public long ItemKey { get; set; } = 1;
+        public string ItemName { get; set; } = "-";
+
+        public decimal Rate { get; set; } = 0;
+        public int LineNumber { get; set; } = 0;
+        public string ItemCode { get; set; } = "";
+
+        public string ItemNameOnly { get; set; } = "";  // Added
+
+        public string ItemCodeOnly { get; set; } = "";  // Added
+        public override string ToString()
+        {
+            if (ItemKey == 1)
+            {
+                return "-";
+
+            }
+            if (ItemName != null)
+            {
+                return ItemName;
+            }
+            return "-";
+        }
+
+        public CodeBaseResponse ItemCategory1 { get; set; }=new CodeBaseResponse();
+        public CodeBaseResponse ItemCategory2 { get; set; } = new CodeBaseResponse();
+
+        public CodeBaseResponse ItemType { get; set; } = new CodeBaseResponse();
+
+        public ItemResponse()
+        {
+            ItemType=new CodeBaseResponse();
+        }
+
+
+        public bool IsCompensationItem()
+        {
+
+
+           return  BaseResponse.IsValidData(ItemType) &&  ItemType.Code.Equals("CMPMS", StringComparison.InvariantCultureIgnoreCase);
+          
+        }
+
+        public bool IsServiceItem()
+        {
+
+
+            return BaseResponse.IsValidData(ItemType) && ItemType.Code.Equals("ServiceItem", StringComparison.InvariantCultureIgnoreCase);
+
+        }
+
+        public bool IsWeightItem()
+        {
+            return BaseResponse.IsValidData(ItemType) && ItemType.Code.Equals("WI", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public bool HasUptoTenWeight()
+        {
+            return !string.IsNullOrEmpty(ItemCodeOnly) && ItemCodeOnly.Equals("WGT-003", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+
+        public bool IsTangibleItem()
+        {
+            var v= !(IsCompensationItem() || IsServiceItem());
+            return v;
+        }
+
+    }
+
+    public class ItemCodeResponse : ItemResponse
+    {
+        public int UnitKey { get; set; } = 1;
+
+        public string UnitName { get; set; } = "";
+
+        public string ItemCodeName { get; set; } = "";
+
+        public decimal TransactionRate { get; set; }
+
+        public decimal DiscountPercentage { get; set; }
+
+        public decimal VAT { get; set; }
+
+        public decimal NBT { get; set; }
+
+        public decimal WHT { get; set; }
+
+        public decimal SVAT { get; set; }
+
+    }
+
+
+    public class UnitResponse : BaseResponse
+    {
+        public long UnitKey { get; set; } = 1;
+
+        public string UnitName { get; set; } = "-";
+
+        public override string ToString()
+        {
+
+            return this.UnitName;
+        }
+
+       
+
+    }
+
+    
+    public class UIInterectionArgs<T> : EventArgs
+    {
+        public string ObjectPath { get; set; }
+
+        public string Caller { get; set; }
+
+        public T DataObject { get; set; }
+
+        public object sender { get; set; }
+
+        public bool CancelChange { get; set; }
+        public bool OverrideValue { get; set; }
+
+        public T OverriddenValue { get; set; }
+        public BLUIElement InitiatorObject { get; set; }
+
+        public bool DelegateExecuted { get; set; }
+
+
+        public EventArgs e { get; set; }
+
+
+
+
+    }
+
+    public class AccountResponse : BaseResponse
+    {
+        public long AccountKey { get; set; } = 1;
+
+        public string AccountName { get; set; } = "-";
+        public string AccountCode { get; set; } = "";
+
+        public override string ToString()
+        {
+            if(AccountKey==1){
+                return "-";
+            }
+            if (AccountName!=null)
+            {
+                return this.AccountName;
+            }
+            return "-";
+           
+        }
+    }
+
+
+    public class ProjectResponse : BaseResponse
+    {
+        public long ProjectKey { get; set; } = 1;
+
+        public string ProjectName { get; set; } = "-";
+
+        public string ProjectId { get; set; } = "-";
+
+        public override string ToString()
+        {
+            return this.ProjectName;
+        }
+        public DateTime ProjectStartDate { get; set; } = DateTime.Now;
+        public DateTime ProjectEndDate { get; set; } = DateTime.Now;
+        public DateTime ExpiryDate { get; set; } = DateTime.Now;
+        public string Alias { get; set; } = "";
+
+    }
+
+
+
+    public class ItemRateResponse : BaseEntity
+    {
+        public decimal TransactionRate { get; set; }
+        public decimal DiscountPercentage { get; set; }
+        public decimal ItemTaxType1 { get; set; }
+        public decimal ItemTaxType2 { get; set; }
+        public decimal ItemTaxType3 { get; set; }
+        public decimal ItemTaxType4 { get; set; }
+        public decimal ItemTaxType5 { get; set; }
+        public decimal Rate { get; set; }
+        public int UnitKey { get; set; }
+
+        public string AddressTaxType1 { get; set; }
+
+        public ItemResponse RateItem { get; set; }
+        //
+        public decimal SplitLength { get; set; }
+        public decimal MarkUpPercentage { get; set; }
+        public decimal MinimumSalesPrice { get; set; }
+        public decimal Weight { get; set; }
+        public decimal Length { get; set; }
+        public CodeBaseResponse ItemCategory7 { get; set; }
+    }
+
+    public class PriceListResponse
+    {
+        public long ItemKey { get; set; } = 1;
+
+        public string ItemName { get; set; }
+        public string ItemCode { get; set; }
+        public string EAN { get; set; }
+
+        public UnitResponse PackUnit { get; set; }
+
+        public UnitResponse LooseUnit { get; set; }
+        public decimal LooseUnitPrice { get; set; }
+        public decimal PackUnitPrice { get; set; }
+
+        public decimal PackSize { get; set; }
+
+        public ProjectResponse PriceListProject { get; set; }
+
+        public bool CanUsePackUnit()
+        {
+            return PackUnit != null && PackUnit.UnitKey > 10 && PackSize > 0 && PackUnitPrice > 0;
+        }
+        public bool CanUseLooseUnit()
+        {
+            return LooseUnit != null && LooseUnit.UnitKey > 10;
+        }
+
+        public bool CanAddToTransaction()
+        {
+            return (CanUseLooseUnit() || CanUsePackUnit());
+
+        }
+
+
+        public decimal? GetPriceByUnit(UnitResponse unit)
+        {
+            decimal? rate = null;
+            if (unit != null && unit.UnitKey > 10)
+            {
+
+                if (unit.UnitKey == PackUnit.UnitKey && CanUsePackUnit())
+                {
+                    rate = PackUnitPrice;
+                }
+                if (unit.UnitKey == LooseUnit.UnitKey && CanUseLooseUnit())
+                {
+                    rate = LooseUnitPrice;
+                }
+
+                if (rate == 0)
+                {
+                    rate = Math.Max(PackUnitPrice, LooseUnitPrice);
+                }
+
+            }
+
+
+            return rate;
+
+        }
+
+
+        public IList<UnitResponse> GetComboResponseByPriceList()
+        {
+            bool DefaultSet = false;
+            IList<UnitResponse> list = new List<UnitResponse>();
+
+            list.Add(new UnitResponse());
+
+            if (PackUnit.UnitKey > 10)
+            {
+                if (PackUnit.UnitKey == DefaultUnitKey)
+                {
+                    PackUnit.IsDefault = true;
+                    DefaultSet = true;
+                }
+                list.Add(PackUnit);
+            }
+
+            if (LooseUnit.UnitKey > 10)
+            {
+                if (LooseUnit.UnitKey == DefaultUnitKey)
+                {
+                    LooseUnit.IsDefault = true;
+                    DefaultSet = true;
+                }
+                list.Add(LooseUnit);
+            }
+
+
+            if (!DefaultSet && list.Count > 1)
+            {
+                list[1].IsDefault = true;
+            }
+
+            return list;
+        }
+
+
+        public long DefaultUnitKey { get; set; } = 1;
+
+
+
+
+
+    }
+
+    //public class UnitComboResponse : BaseResponse
+    //{
+    //    public long UnitKey { get; set; } = 1;
+
+    //    public string UnitName { get; set; } = "-";
+
+    //}
+
+    public class PriceListRequest
+    {
+        public long ElementKey { get; set; } = 1;
+        public long PreviousKey { get; set; } = 1;
+        public long TransactiionTypeKey { get; set; } = 1;
+        public long AddressKey { get; set; } = 1;
+        public long Code1Key { get; set; } = 1;
+        public long ProjectKey { get; set; } = 1;
+        public string SearchQuery { get; set; } = "";
+    }
+
+    public class AccPaymentMappingRequest
+    {
+        public CodeBaseResponse Location { get; set; }
+        public CodeBaseResponse PayementTerm { get; set; }
+        public bool LoadAll { get; set; }
+        public long ELementKey { get; set; } = 1;
+
+    }
+
+
+    public class AccPaymentMappingResponse
+    {
+        public AccountResponse Account { get; set; }
+        public CodeBaseResponse PayementMode { get; set; }
+
+        public AccPaymentMappingResponse()
+        {
+            Account = new AccountResponse();
+            PayementMode = new CodeBaseResponse();
+        }
+
+    }
+
+    public class StockAsAtRequest
+    {
+        public long ItemKey { get; set; }
+        public long LocationKey { get; set; }
+        public long ElementKey { get; set; } = 1;
+        public long ProjectKey { get; set; } = 1;
+        public int TrnTypKy { get; set; } = 1;
+        public int IsuPrjKy { get; set; } = 1;
+        public int IsuLocKy { get; set; } = 1;
+        public int TrnUnitKy { get; set; } = 1;
+
+    }
+
+    public class StockAsAtResponse
+    {
+        public long ItemKey { get; set; }
+        public decimal StockAsAt { get; set; }
+        public bool IsLocked { get; set; }
+        public bool IsAlwMinusQty { get; set; }
+    }
+
+
+
+    public class FindTransactionResponse
+    {
+        public IList<FindTransactionLineItem> LineItems { get; set; }
+
+
+        public FindTransactionResponse()
+        {
+            IList<FindTransactionLineItem> LineItems = new List<FindTransactionLineItem>();
+        }
+    }
+
+
+    public class FindTransactionLineItem
+    {
+        public long TransactionKey { get; set; }
+        public DateTime TransactionDate { get; set; }
+        public string Prefix { get; set; } = "";
+        public string TransactionNumber { get; set; } = "";
+        public string DocumentNumber { get; set; } = "";
+        public string YourReference { get; set; } = "";
+        public CodeBaseResponse Location { get; set; } = new CodeBaseResponse();
+        public AddressResponse Address { get; set; } = new AddressResponse();
+        public decimal Amount { get; set; }
+        public int IsApprove { get; set; } = 1;
+
+    }
+
+    public class TransactionFindRequest
+    {
+
+        private DateTime? fromDate = new DateTime(1990, 1, 1);
+        public long TransactionKey { get; set; } = 1;
+        public DateTime? FromDate
+        {
+            get
+            {
+                return fromDate;
+            }
+            set
+            {
+                fromDate = value;
+            }
+        }
+        public DateTime? ToDate { get; set; } = new DateTime(2990, 1, 1);
+        public CodeBaseResponse Prefix { get; set; } = new();
+        public CodeBaseResponse ApproveStatus { get; set; } = new();
+        public string? TransactionNumber { get; set; }
+        public string? DocumentNumber { get; set; }
+        public string? YourReference { get; set; }
+        public CodeBaseResponse Location { get; set; } = new();
+        public AddressResponse Address { get; set; } = new();
+        public ProjectResponse Project { get; set; } = new();
+        public AccountResponse Suuplier { get; set; } = new();
+        public ItemResponse Item { get; set; } = new();
+        public int IsRecurrence { get; set; } = 0;
+        public int IsPrinted { get; set; } = 0;
+        public long ElementKey { get; set; } = 1;
+
+        public CodeBaseResponse PaymentTerm { get; set; }
+
+        public decimal Amount { get; set; }
+        public CodeBaseResponse TransactionType { get; set; }
+        public TransactionFindRequest()
+        {
+            Prefix= new();
+            ApproveStatus= new();   
+            Location= new();
+            Address = new();
+            Project= new(); 
+            Suuplier= new();    
+            Item= new();    
+            PaymentTerm= new(); 
+            TransactionType= new(); 
+        }
+
+    }
+
+    public class TransactionOpenRequest
+    {
+        public long TransactionKey { get; set; } = 1;
+
+        public long ElementKey { get; set; } = 1;
+
+    }
+
+    public class RecieptDetailRequest
+    {
+        public long TransactionKey { get; set; } = 1;
+        public long ElementKey { get; set; } = 1;
+
+
+    }
+    public class RecieptDetailResponse
+    {
+        public string? TransactionType { get; set; }
+        public string? TransactionNumber { get; set; }
+        public decimal InvoiceAmaount { get; set; }
+        public decimal SetOffAmount { get; set; }
+        public decimal TotalSetOffAmount { get; set; }
+        public decimal BalanceAmount { get; set; }
+        public long CreditAccountTransactioKey { get; set; } = 1;
+        public long DebitAccountTransactioKey { get; set; } = 1;
+        public CodeBaseResponse PayementTerm { get; set; }
+        public AddressResponse RepAddress { get; set; }
+        public int LineNumber { get; set; }
+
+        public RecieptDetailResponse()
+        {
+            PayementTerm = new CodeBaseResponse();
+            RepAddress= new AddressResponse();
+        }
+
+    }
+
+    public class AccoutRecieptPayment
+    {
+        public string TransactionTypeCode { get; set; } = "RECP";
+        public long AccountTransactionKey { get; set; } = 1;
+        public CodeBaseResponse PaymentTerm { get; set; }
+        public long DebitAccountKey { get; set; } = 1;
+        public long DebitAddressKey { get; set; } = 1;
+        public string DocumentNumber { get; set; } = "";
+        public DateTime? PaymentDocDate { get; set; } = DateTime.Now;
+        public DateTime TransactionDate { get; set; } = DateTime.Now;
+        public decimal Amount { get; set; }
+        public long ElementKey { get; set; } = 1;
+
+
+
+    }
+
+
+
+    public class Document : BaseEntity
+    {
+        private int documentKey;
+        private int companyKey;
+        private string description="";
+        private string keyword = "";
+        private string path = "";
+        private string filename = "";
+        private string versionNumber = "";
+        private DateTime nextActionDate;
+        private int projectKey;
+        private CodeBaseResponse documentType;
+        private CodeBaseResponse category;
+        private long projectStatusKey;
+
+        private int transactionKey;
+        private string extention = "";
+        private int employeeCodeKey;
+        private int employeeCodeDtKey;
+
+        private int buKey;
+        private User uploadedBy;
+        public int DocumentKey { get => documentKey; set => documentKey = value; }
+        public int CompanyKey { get => companyKey; set => companyKey = value; }
+        public string Description { get => description; set => description = value; }
+        public string Keyword { get => keyword; set => keyword = value; }
+        public string Path { get => path; set => path = value; }
+        public string Filename { get => filename; set => filename = value; }
+        public string VersionNumber { get => versionNumber; set => versionNumber = value; }
+        public DateTime NextActionDate { get => nextActionDate; set => nextActionDate = value; }
+
+        public CodeBaseResponse Category { get => category; set => category = value; }
+        public long ProjectStatusKey { get => projectStatusKey; set => projectStatusKey = value; }
+        public CodeBaseResponse DocumentType { get => documentType; set => documentType = value; }
+        public int TransactionKey { get => transactionKey; set => transactionKey = value; }
+        public int OrderKey { get; set; }
+        public int ItemKey { get; set; }
+        public int ProjectKey { get => projectKey; set => projectKey = value; }
+        public int AddressKey { get; set; }
+        public int ItemTranKey { get; set; }
+        public int ProcessDetKey { get; set; }
+        public int OrderDetailKey { get; set; }
+        public string Extention { get => extention; set => extention = value; }
+        public int CdKey { get; set; }
+
+        public long FileSize { get; set; }
+
+
+
+        public int EmployeeCodeKey { get => employeeCodeKey; set => employeeCodeKey = value; }
+        public int EmployeeCodeDtKey { get => employeeCodeDtKey; set => employeeCodeDtKey = value; }
+        public int BuKey { get => buKey; set => buKey = value; }
+        public User UploadedBy { get => uploadedBy; set => uploadedBy = value; }
+    }
+    public class BinaryDocument : Document
+    {
+        public byte[] DocumentArray { get; set; }
+    }
+
+    public class Base64Document : Document
+    {
+        public string Base64Source { get; set; } = "";
+
+        public string GetURL()
+        {
+            if (!string.IsNullOrEmpty(this.Base64Source))
+            {
+                return $"data:image/png;base64, {this.Base64Source}";
+            }
+            else
+            {
+                return "";
+            }
+        }
+
+    }
+
+
+
+    public class AddressCreateResponse : BaseResponse
+    {
+        public AddressResponse AddressResponse { get; set; }
+
+        public bool IsSuccess { get; set; }
+
+        public string Message { get; set; }
+
+
+    }
+
+
+    public class CompletedUserAuth
+    {
+        public User AuthenticatedUser { get; set; }
+        public Company AuthenticatedCompany { get; set; }
+
+        public CompletedUserAuth()
+        {
+            this.AuthenticatedCompany = new Company();
+            this.AuthenticatedCompany.CompanyKey = 1;
+            this.AuthenticatedUser = new User();
+            this.AuthenticatedUser.UserKey = 1;
+        }
+    }
+
+    public class User
+    {
+        public long UserKey { get; set; }
+        public string UserName { get; set; } = "";
+        public string Password { get; set; } = "";
+        public string UserID { get; set; } = "";
+    }
+
+    public class Company
+    {
+        public int CompanyKey { get; set; }
+
+        public string CompanyName { get; set; } = "";
+
+        public string CompanyCode { get; set; } = "";
+    }
+
+
+    public class ItemTransactionCode
+    {
+        public long ItemTransactionCodeKey { get; set; } = 1;
+
+        public long ItemTransactionKey { get; set; } = 1;
+
+        public long ControlKey { get; set; } = 1;
+
+        public long CodeBaseKey { get; set; } = 1;
+
+
+
+    }
+
+
+    public class ItemTransactionSerialRequest
+    {
+        public long ItemTransactionKey { get; set; }
+        public int ObjectKey { get; set; } = 1;
+    }
+
+    //lnd
+    public class CodeBaseResponseExtended : CodeBaseResponse
+    {
+        public decimal CodeNumber1 { get; set; } = 0;
+        public decimal CodeNumber9 { get; set; } = 0;
+        public string CdExtraInformation1 { get; set; } = "";
+
+    }
+
+    public class PaymentModeWiseAmount
+    {
+        public CodeBaseResponse PaymentMode { get; set; }
+        public decimal Amount { get; set; }
+        public string PayementDocumentNumber { get; set; }
+        public DateTime? PayementDocumentDate { get; set; }
+
+    }
+
+    public class PayementModeReciept
+    {
+        public IList<PaymentModeWiseAmount> Payements { get; set; }
+        public DateTime PayementDate { get; set; }
+        public long TransactionKey { get; set; } = 1;
+        public string OurCode { get; set; } = "";
+        public long ElementKey { get; set; } = 1;
+        public long InitiatorElementKey { get; set; } = 1;
+        public PayementModeReciept()
+        {
+            Payements = new List<PaymentModeWiseAmount>();
+        }
+    }
+
+    public class TaskResponse:BaseResponse
+    {
+        public long TaskKey { get; set; } = 1;
+        public string? TaskName { get; set; } = "";
+        public string? TaskId { get; set; } = "";
+        public override string ToString()
+        {
+            return this.TaskName;
+        }
+        public long ParentTaskKey { get; set; } = 1;
+    }
+
+    public class ItemRetrivalDTO : BaseDTO
+    {
+        public long ItemCat7Key { get; set; } = 1;
+        public long LocationKey { get; set; } = 1;
+        public long FormObjectKey { get; set; } = 1;
+        public string? SearchQuery { get; set; } = "";
+    }
+}

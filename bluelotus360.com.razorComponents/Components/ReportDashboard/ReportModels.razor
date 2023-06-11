@@ -1,0 +1,76 @@
+﻿@if (Childlist != null)
+{
+<MudGrid>
+    @foreach (var title in Childlist)
+    {
+        <MudItem xs="12" md="6" lg="4" xl="3">
+            <MudCard @onclick="() => ModuleOnClick(title)" Class="report-shortcut-card" Style="border-color: #183153;">
+                <MudCardContent >
+                    <h3 class="mb-0">@title.ObjCaptn</h3>
+                </MudCardContent>
+            </MudCard>
+        </MudItem>
+            @*@if (ExpandedTitle == title.ObjCaptn)
+            {
+                <MudDialog @bind-IsVisible="visible" Options="dialogOptions" Style="overflow:auto">
+                   
+                    <TitleContent>
+
+                        <div style="display: flex; align-items: center;">
+                            <MudIconButton OnClick="Submit"
+                               Class="rpt-icon-button"
+                               Icon="@Icons.Material.Filled.ArrowBack"
+                               Variant="Variant.Outlined"
+                               Color="Color.Primary"
+                               Size="Size.Medium" />
+                            <MudText Typo="Typo.h6" style="margin-left: 20px;">
+                                <h3>@title.ObjCaptn</h3>
+                            </MudText>
+                        </div>
+                            
+                            
+                            <MudTextField Immediate="true" 
+                                Style="flex:0.5;width: 50%"
+                              @bind-Value="filterText"
+                              @oninput="()=>SearchSubTitles(title)" 
+                                Placeholder="Search" 
+                                Adornment="Adornment.Start" 
+                                AdornmentIcon="@Icons.Material.Filled.Search" 
+                                IconSize="Size.Medium" 
+                                Class="mt-0"
+                                >
+                            </MudTextField>
+                        
+                    </TitleContent>
+                    <DialogContent >
+                       
+                        @if (Childsublist.Count > 0)
+                        {
+
+                            <MudGrid>
+                                @foreach (var subtitle in Childsublist.Where(s => s.ObjCaptn.Contains(filterText)))
+                                {
+                                    <MudItem xs="12" md="6" lg="4" xl="3" @onclick="@(async()=> await NavigateToNewTab(subtitle.ReportPath))">
+                                        <MudCard Class="report-shortcut-card">
+                                            <MudCardContent >
+                                                <h3 class="mb-0">@subtitle.ObjCaptn</h3>
+                                            </MudCardContent>
+                                        </MudCard>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+                        }
+                    </DialogContent>
+                   
+                </MudDialog>
+            }*@
+       
+    }
+</MudGrid>
+
+}
+
+
+
+
+

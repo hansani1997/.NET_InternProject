@@ -1,0 +1,59 @@
+﻿<h5>Job History</h5>
+<div>
+    <table class="table table-hover @((DataObject.SelectedVehicle.JobHistory != null && DataObject.SelectedVehicle.JobHistory.Count()>0)?"table-bordered":"")">
+        <thead>
+            <tr>
+                <th>Job type</th>
+                <th>Work Order No</th>
+                <th>Start date</th>
+                <th>Status</th>
+                <th>End Date</th>
+                <th>View</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (isloading)
+            {
+                <tr>
+                    <td></td>
+                    <td colspan="4" class="text-center">
+                        <MudProgressCircular Color="Color.Primary" Style="height:70px;width:70px;" Indeterminate="true" />
+                    </td>
+                    <td></td>
+                </tr>
+
+            }
+            else
+            {
+                if (DataObject.SelectedVehicle.JobHistory != null && DataObject.SelectedVehicle.JobHistory.Count > 0)
+                {
+                    @foreach (var workorder in DataObject.SelectedVehicle.JobHistory.TakeLast(5))
+                    {
+                        <tr>
+                            <td>@workorder.OrderType.CodeName</td>
+                            <td>@workorder.OrderNumber</td>
+                            <td>@workorder.OrderDate.ToString("dd/MM/yyyy")</td>
+                            <td>@workorder.OrderStatus.CodeName</td>
+                            <td>@workorder.OrderFinishDate.ToString("dd/MM/yyyy")</td>
+                            <td class="text-center"><MudIconButton Icon="@Icons.TwoTone.RemoveRedEye" OnClick="@(()=>{OpenWorkOrder(workorder.OrderKey,workorder.TrnKy);})" /></td>
+                        </tr>
+                    }
+                }
+                else
+                {
+                    <tr>
+                        <td></td>
+                        <td colspan="4" class="text-center">
+                            <span>No Data to show</span>
+                        </td>
+                        <td></td>
+                    </tr>
+                }
+                
+                
+            }
+           
+
+        </tbody>
+    </table>
+</div>

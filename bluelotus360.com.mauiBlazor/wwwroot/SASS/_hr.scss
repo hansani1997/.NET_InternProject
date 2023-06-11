@@ -1,0 +1,161 @@
+﻿@import "_Variables.scss";
+//@import "_variablesDark.scss";
+
+.in-button {
+    background: $color-primary;
+    color: $color-primary !important;
+    /*border: 1px solid var(--mud-palette-primary) !important;*/
+    border-width: $border-width-default;
+    border-style: $border-style-default;
+    border-color: $color-primary;
+}
+
+.out-button {
+    color: $palette-black;
+    border-width: $border-width-default;
+    border-style: $border-style-default;
+    border-color: $palette-light-yellow;
+    background: $palette-light-yellow
+}
+
+/*pending leave request*/
+.filterbtn {
+    background: $color-primary;
+    color: $color-primary !important;
+    /*border: 1px solid var(--mud-palette-primary) !important;*/
+    border-width: $border-width-default;
+    border-style: $border-style-default;
+    border-color: $color-primary;
+}
+
+.p-lev-vi-sum {
+    color: #141516;
+    border-width: $border-width-default;
+    border-style: $border-style-default;
+    border-color: $palette-light-yellow;
+    background: $palette-light-yellow;
+
+    span {
+        overflow: hidden;
+        width: 70px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        display: inline-block;
+    }
+}
+
+.expandClick {
+    max-width: 66.6667% !important;
+    flex: 0 0 66.6667% !important;
+}
+
+.collapseClick {
+    max-width: 100% !important;
+    flex: 0 0 100% !important;
+}
+
+#filter-section {
+    @include border;
+    border-color: $palette-gray;
+    padding: 40px 16px;
+    /*max-width:25%;*/
+    margin: 16px;
+}
+
+#grid-section {
+    /*max-width: 75%;*/
+}
+
+.short-leave-hdr strong {
+    color: $palette-white;
+}
+
+//Geo Attendance Mobile
+.date-card {
+    @include border;
+    border-color: $color-primary;
+    margin: 5px;
+    padding: 5px
+}
+
+.its-day{
+    font-size: 22px;
+}
+
+.display-date {
+    @include typography;
+    font-size: 48px !important;
+    color: $color-primary-text;
+}
+
+.employee-detail-card {
+    background-color: $color-primary !important;
+    border-radius: $border-radius-default;
+    padding: 22px;
+    margin: 5px
+}
+
+.table-summary {
+    background-color: $color-primary;
+    opacity: 0.2;
+    color: $color-light-text !important;
+    border-radius: $border-radius-default;
+    padding: 20px;
+    margin: 5px;
+}
+// This part moved to stylesheet.scss to avoid bring overriden from other btn classes
+/*//Swisstek DSR Geo Attendance
+
+.day-start-end {
+    padding: 18px 104px;
+    background: $color-secondary;
+    border-radius: $border-radius-default;
+    color: $color-light-text;
+}
+
+.dsr-simple-table table * tr th {
+    background-color: $color-primary !important;
+    color: $color-light-text !important;
+    border-radius: $border-radius-table !important;
+    font-weight: 600;
+}
+
+.dsr-simple-table table * tr > td, .dsr-simple-table table * tr th {
+    border-color: $border-color-default;
+    border-radius: 0 !important;
+}*/
+
+@media(max-width:960px) {
+    #filter-section, #grid-section {
+        max-width: 100%;
+    }
+
+    .expandClick {
+        max-width: 100% !important;
+        flex: 0 0 100% !important;
+    }
+}
+
+@media(max-width: 600px) {
+    .its-day {
+        font-size: 16px;
+    }
+
+    .display-date {
+        font-size: 24px !important;
+    }
+
+    .calendar-svg {
+        width: 50px;
+        height: 50px;
+    }
+
+    .date-card {
+        margin: 0px;
+    }
+
+    .employee-detail-card {
+        margin: 0px;
+        padding: 18px;
+    }
+}

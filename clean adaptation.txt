@@ -1,0 +1,10 @@
+Consider separating the UI and infrastructure layers into separate projects to increase their independence and maintainability.
+
+Ensure that your dependencies flow in the correct direction, from the outer layers to the innermost layers.
+
+Consider using dependency injection to manage dependencies and make your code more testable and flexible.
+
+Ensure that you have clear boundaries between your layers to avoid coupling and maintain code readability.
+
+Consider adding unit tests to ensure that each layer and component of your project works correctly and independently.
+

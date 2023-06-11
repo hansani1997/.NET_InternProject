@@ -1,0 +1,49 @@
+﻿@using BlazorBarcodeScanner.ZXing.JS
+
+<div class="d-flex emc">
+
+
+
+
+    <BlazorBarcodeScanner.ZXing.JS.BarcodeReader Title=""
+                                                 StartCameraAutomatically="true"
+                                                 ShowStart="false"
+                                                 ShowReset="false"
+                                                 ShowToggleTorch="false"
+                                                 ShowVideoDeviceList="false"
+                                                 ShowResult="false"
+                                                 VideoWidth="640"
+                                                 VideoHeight="360"
+                                                 OnBarcodeReceived="LocalReceivedBarcodeText"
+                                                 @ref="_reader" />
+</div>
+
+
+<style>
+
+    .d-flex.emc
+    {
+        width: 100%;
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        right: 0;
+    }
+
+    .zxing-container
+    {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        overflow: hidden;
+    }
+
+    .emc video
+    {
+        width: 100%;
+        height: 100%;
+    }
+</style>

@@ -1,0 +1,44 @@
+﻿@using BlueLotus360.Com.UI.Definitions.MB.Shared.Components.Popups;
+<MudDialog>
+    <DialogContent>
+
+        <MudGrid>
+            <MudItem xs="12" sm="12">
+                <MudPaper Class="pa-4" Elevation="0">
+                    <MudForm>
+                        @if (IsLoading)
+                        {
+
+                            <div class="rip-wrap">
+                                <div class="lds-ripple">
+                                    <div>
+                                    </div><div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="d-flex align-center justify-space-between mt-1">
+                                <MudTextField T="string" Label="Scan Barcode" ReadOnly="false" Format="N2"
+                                          ValueChanged="OnValueChange" />
+                            </div>
+                        }
+
+
+                    </MudForm>
+
+                    <TransactionViewer Transaction="loaded_Transaction"   
+                        InvoiceResponse="resp"
+                        @ref="_viewer" />
+
+                </MudPaper>
+            </MudItem>
+        </MudGrid>
+
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancel">Cancel</MudButton>
+        <MudButton Color="Color.Primary" OnClick="Submit">Ok</MudButton>
+    </DialogActions>
+</MudDialog>

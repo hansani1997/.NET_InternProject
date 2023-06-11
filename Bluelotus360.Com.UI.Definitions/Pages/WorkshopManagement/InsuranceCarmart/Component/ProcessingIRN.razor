@@ -1,0 +1,77 @@
+﻿
+<div class="col-12 row">
+    <h5>IRN :</h5><h5 class="text-warning">Processing</h5>
+</div>
+
+<div id="irn-Processing-view" class="col-12 d-none">
+	<MudTable Items="@ProcessingIRNs" Hover="true" Breakpoint="Breakpoint.Sm">
+		<HeaderContent>
+			<MudTh></MudTh>
+			<MudTh>Service Advisor</MudTh>
+			<MudTh>IRN NO</MudTh>
+			<MudTh>Vehicle No</MudTh>
+			<MudTh>Branch</MudTh>
+			<MudTh>IRN Type</MudTh>
+			<MudTh>Creation Date & Time</MudTh>
+			<MudTh>Actions</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+			<MudTd Style=@($"background:{RowColor};")></MudTd>
+			<MudTd DataLabel="ServiceAdvisor">@(context.OrderRepAddress.AddressName ?? "")</MudTd>
+				<MudTd DataLabel="IRNNO">@(context.OrderNumber ?? "")</MudTd>
+				<MudTd DataLabel="VehicleNo">@(context.SelectedVehicle.VehicleRegistration.ItemCode ?? "")</MudTd>
+				<MudTd DataLabel="Branch">@(context.BussinessUnit.CodeName)</MudTd>
+				<MudTd DataLabel="IRNType">@(context.OrderType.CodeName ?? "")</MudTd>
+				<MudTd DataLabel="CreationDateAndTime">@(context.OrderDate)</MudTd>
+				<MudTd>
+
+					<MudIconButton Icon="@Icons.TwoTone.OpenInFull" OnClick="@(()=>{context.IsRowVisible=!context.IsRowVisible;})"></MudIconButton>
+					<MudIconButton Icon="@Icons.TwoTone.Edit" OnClick="OnProcessingIRNEditClick"></MudIconButton>
+					<MudIconButton Icon="@Icons.TwoTone.Delete" OnClick="OnProcessingIRNDeleteClick"></MudIconButton>
+
+				</MudTd>
+			</RowTemplate>
+			<ChildRowContent>
+				@if (context.IsRowVisible)
+			{
+				<MudTr>
+					<td colspan="4">
+						<MudCard Elevation="0">
+							<MudCardHeader>
+								<CardHeaderContent>
+									<MudText Typo="Typo.body1">Insurence: <strong>@(context.Insurance.ItemName ?? "")</strong></MudText>
+								</CardHeaderContent>
+							</MudCardHeader>
+							<MudCardContent Class="pa-0">
+								<MudTable Items="@context.OrderItems" Context="ParticularsContext" Hover="true" Breakpoint="Breakpoint.Sm" Elevation="0">
+									<RowTemplate>
+										<MudTd DataLabel="Service Or Material">@(ParticularsContext.TransactionItem.ItemName ?? "")</MudTd>
+											<MudTd DataLabel="Amount">@ParticularsContext.TransactionRate</MudTd>
+										</RowTemplate>
+									</MudTable>
+								</MudCardContent>
+							</MudCard>
+						</td>
+					</MudTr>
+			}
+		</ChildRowContent>
+	</MudTable>
+
+</div>
+
+<div id="irn-Processing-edit" class="col-12 d-none">
+	@*<MudTable Items="@DataObject.IRNDetail" Hover="true" Breakpoint="Breakpoint.Sm">
+		<HeaderContent>
+			<MudTh>Qty</MudTh>
+			<MudTh>Particulars</MudTh>
+			<MudTh></MudTh>
+			<MudTh></MudTh>
+			<MudTh>Catergory</MudTh>
+			<MudTh>Prev.Amt</MudTh>
+			<MudTh>Req.Amt</MudTh>
+		</HeaderContent>
+		<RowTemplate>
+
+		</RowTemplate>
+	</MudTable>*@
+</div>

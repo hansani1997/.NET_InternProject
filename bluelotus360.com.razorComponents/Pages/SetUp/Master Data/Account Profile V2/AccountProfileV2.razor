@@ -1,0 +1,308 @@
+﻿@page "/Account/AccountProfileSimpleV2"
+@using BlueLotus360.CleanArchitecture.Domain.Entities.AccountProfile;
+@inject IJSRuntime JS
+
+@if (formDefinition != null && formDefinition.Children.Count() > 0)
+{
+    <UIRenderere FromSection="topButtonGroup"
+                 DataObject="accountDetailsTabInsertRequest"
+                 InteractionLogics="_interactionLogic"
+                 ObjectHelpers="_objectHelpers"/>
+
+    @*<div class="@(showstab?"":"d-none")">*@
+       <MudCard Elevation="0" Class="@(showstab? "mt-12":"d-none")" Outlined="false">
+
+        @if ((breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Md) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Sm) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Xl) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Lg))
+        {
+
+            <MudCard Elevation="0" Class="mt-10">
+                <MudCardContent>
+                    <MudTabs  Elevation="0" Border="true" HideSlider="true" Rounded="true" Color="Color.Default" ApplyEffectsToContainer="true" PanelClass="pa-6" KeepPanelsAlive="true">
+                        <MudText Typo="Typo.h4" Style="margin-bottom:10px">Primary Information</MudText>
+                        
+        
+                        @foreach (var tab in tabSection.Children)
+                        {
+                            @if (tab.ElementType != null && tab._internalElementName.Equals("Tab_AccountDetails") && tab.IsVisible)
+                            {
+                                 <MudTabPanel Text=@tab.ElementCaption>
+                                    @foreach (var ui in tab.Children)
+                                    {
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            @foreach (var insideui in ui.Children)
+                                            {
+                                                @*if (insideui.ElementType != null && insideui.ElementType.Equals("Heading4") && insideui.IsVisible)
+                                                {
+                                                    <MudItem xs="12" sm="insideui.Width" md="insideui.Width">
+                                                        <UIRenderere FromSection="insideui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                    </MudItem>
+                                                }*@
+                                                if (insideui.ElementType != null && insideui.ElementType.Equals("SectnFrmtGrp") && insideui.IsVisible)
+                                                {
+                                                    <MudItem xs="12" sm="insideui.Width" md="insideui.Width">
+                                                        <UIRenderere FromSection="insideui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                    </MudItem>
+                                                }
+                                            }
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.CssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+                                    }
+                                </MudTabPanel>
+
+                           
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Tab_ContactDetails"))
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+
+                                    }
+
+                                </MudTabPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Tab_AddressDetails"))
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+
+                                    }
+
+                                </MudTabPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Tab_OtherDetails"))
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+
+                                    }
+                                    <div style="padding-top:10px">
+                                        <BLTable FormObject="otherGrid"
+                                            DataObject="othergridDetails.ToList()"
+                                             InteractionLogics="_interactionLogic"
+                                             ObjectHelpers="_objectHelpers"
+                                             Height="400px"
+                                             VersionNumber=1
+                                            @ref="_blOtherTb" />
+                                    </div>
+
+                                </MudTabPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Tab_AdvAnlMultiSelect"))
+                            {
+                                <MudTabPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                             <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+
+                                    }
+                                    <div style="padding-top:10px">
+                                        <BLTable FormObject="adlAvlGrid"
+                                            DataObject="adlAvlgridDetails.ToList()"
+                                             InteractionLogics="_interactionLogic"
+                                             ObjectHelpers="_objectHelpers"
+                                             Height="400px"
+                                             VersionNumber=1
+                                            @ref="_blAdlAvlTb" />
+                                    </div>
+
+                                </MudTabPanel>
+                            }
+                            else { }
+                        }
+                    </MudTabs>
+                </MudCardContent>
+            </MudCard>
+        }
+        else
+        {
+            <MudCard Elevation="0" Class="">
+                <MudCardContent Style="margin-top:100px">
+                    <MudExpansionPanels MultiExpansion="true" Elevation="2" Style="background-color:#E7F1FF">
+                        @foreach (var tab in tabSection.Children)
+                        {
+                            @if (tab.ElementType != null && tab._internalElementName.Equals("Tab_AccountDetails") && tab.IsVisible)
+                            {
+
+                                <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+                                    <MudText Typo="Typo.h4">Primary Information</MudText>
+
+                                    @foreach (var ui in tab.Children)
+                                        {
+                                            if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                            {
+                                                @foreach (var insideui in ui.Children)
+                                                {
+                                                    if (insideui.ElementType != null && insideui.ElementType.Equals("Heading6") && insideui.IsVisible)
+                                                    {
+                                                        <MudItem xs="12" sm="insideui.Width" md="insideui.Width">
+                                                        <UIRenderere FromSection="insideui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    }
+
+                                                if (insideui.ElementType != null && insideui.ElementType.Equals("SectnFrmtGrp") && insideui.IsVisible)
+                                                    {
+                                                        <MudItem xs="12" sm="insideui.Width" md="insideui.Width">
+                                                        <UIRenderere FromSection="insideui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                        </MudItem>
+                                                    }
+                                                }
+                                                <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.CssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                                </MudItem>
+                                            }
+                                        }
+                                </MudExpansionPanel>
+
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Tab_ContactDetails"))
+                            {
+                                <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+
+                                    }
+                                </MudExpansionPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Tab_AddressDetails"))
+                            {
+                                <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+
+                                    }
+
+                                </MudExpansionPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Tab_OtherDetails"))
+                            {
+                                <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+
+                                    }
+                                    <div style="padding-top:10px">
+                                        <BLTable FormObject="otherGrid"
+                                             DataObject="othergridDetails.ToList()"
+                                             InteractionLogics="_interactionLogic"
+                                             ObjectHelpers="_objectHelpers"
+                                             Height="400px"
+                                             VersionNumber=1
+                                             @ref="_blOtherTb" />
+                                    </div>
+
+                                </MudExpansionPanel>
+                            }
+                            else if (tab.ElementType != null && tab._internalElementName.Equals("Tab_AdvAnlMultiSelect"))
+                            {
+                                <MudExpansionPanel Text=@tab.ElementCaption Class=@tab.CssClass>
+
+                                    @foreach (var ui in tab.Children)
+                                    {
+
+                                        if (ui.ElementType != null && ui.ElementType.Equals("TabSectnFrmtGrp") && ui.IsVisible)
+                                        {
+                                            <MudItem xs="12" sm="ui.Width" md="ui.Width" Class="@ui.ParentCssClass">
+                                                <UIRenderere FromSection="ui" DataObject="accountDetailsTabInsertRequest" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                                            </MudItem>
+                                        }
+
+                                    }
+                                    <div style="padding-top:10px">
+                                        <BLTable FormObject="adlAvlGrid"
+                                             DataObject="adlAvlgridDetails.ToList()"
+                                             InteractionLogics="_interactionLogic"
+                                             ObjectHelpers="_objectHelpers"
+                                             Height="400px"
+                                             VersionNumber=1
+                                             @ref="_blAdlAvlTb" />
+                                    </div>
+                                </MudExpansionPanel>
+                            }
+                            else { }
+                        }
+                    </MudExpansionPanels>
+                </MudCardContent>
+            </MudCard>
+        }
+        
+
+    </MudCard>
+
+    @if (Showtable && mainGridSection!=null)
+    {
+        <BLTable FormObject="mainGridSection"
+         DataObject="new List<AccountProfileResponse>()"
+         InteractionLogics="_interactionLogic"
+         ObjectHelpers="_objectHelpers"
+         Height="550px"
+         VersionNumber=2
+         IsServerFilterEnabled=true
+         @ref="_blMainTb" />
+    }
+
+}
+else
+{
+        <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

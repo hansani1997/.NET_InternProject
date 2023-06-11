@@ -1,0 +1,43 @@
+﻿<MudDialog>
+	<TitleContent>
+		<MudText Typo="Typo.h6" Class="dc1">
+			<MudIcon Icon="@Icons.Material.Filled.Add" Class="mr-3 mb-n1" />
+			LeaveSummary
+		</MudText>
+	</TitleContent>
+
+	<DialogContent>
+		<MudContainer Style="overflow-y: scroll;padding:16px;" Class="dc2">
+			
+			 <MudTable Items="@LeaveRequest.LeaveSummary" Hover="true" Breakpoint="Breakpoint.Sm"  LoadingProgressColor="Color.Info">
+
+                                        <HeaderContent>
+                                            <MudTh>Leave Type</MudTh>
+                                            <MudTh>Eligible</MudTh>
+                                            <MudTh>Already Taken</MudTh>
+                                            <MudTh>Balance</MudTh>
+                                            <MudTh>Day/Hour</MudTh>
+                                        </HeaderContent>
+                                        <RowTemplate>
+                                            <MudTd DataLabel="Leave Type">@context.LeaveType</MudTd>
+                                            <MudTd DataLabel="Eligible">@context.Elagible</MudTd>
+                                            <MudTd DataLabel="Already Taken">@context.Taken</MudTd>
+                                            <MudTd DataLabel="Balance" >@((context.Bal>0)?context.Bal:0)</MudTd>
+                                            <MudTd DataLabel="Day/Hour">@(context.IsCd01==0 ? "Day":"Hour")</MudTd>
+                                        </RowTemplate>
+
+                                        <PagerContent>
+                                            <MudTablePager />
+                                        </PagerContent>
+            </MudTable>
+		</MudContainer>
+
+	</DialogContent>
+
+
+
+</MudDialog>
+
+
+
+

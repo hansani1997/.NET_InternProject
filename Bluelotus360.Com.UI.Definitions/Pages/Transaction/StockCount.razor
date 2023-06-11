@@ -1,0 +1,130 @@
+﻿@using BlueLotus360.Com.UI.Definitions.MB.Shared.Components
+@page "/transaction/stockcountm/"
+
+<UserMessageDialog Messages="@validator.UserMessages" @ref="_refUserMessage" /> 
+
+<MudPaper Elevation="0" Class="pa-4 fix-to-h">
+
+
+<div class="detail-wrapper">
+    <div class="header-section">
+   @if(UIDefinition!=null){
+                                              
+                      <UIBuilder FormObject="UIDefinition"        DataObject="transaction"     InteractionLogics="_interactionLogic"        ObjectHelpers="_objectHelpers"       Class="no-flex-break  fixed-header" />
+
+
+   }
+    </div>
+   
+       @if (ReportShown){
+                <div class="bl-pop-up @(ReportShown ? "":"d-none")">
+                    <MudGrid>
+                        <MudItem xs=12 class="price-list-wrap">
+                           <BLReportViewer ReportSetting="_dayEndReportOption" 
+                           CloseReportDelegate="HideAllPopups"
+                                />
+                        </MudItem>
+                    </MudGrid>
+                    <hr />
+                </div>
+            }
+
+    @if (FindTransactionShown)
+    {
+        <div class="bl-pop-up @(FindTransactionShown ? "":"d-none")">
+
+            <BlueLotus360.Com.UI.Definitions.MB.Shared.Popups.SalesPopups.FindTransaction UIElement="findTrandsactionUI"
+                         OnCloseButtonClick="HideAllPopups"
+                         OnOpenClick="LoadTransaction" />
+
+
+
+        </div>
+
+    }
+     <hr />
+    <div class="detailsection">
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+ <MudSimpleTable Hover="true" Dense="true" FixedHeader="true" Style="height:300px;width:100%">
+    <thead>
+        <tr>
+          <td>Item Code</td>
+          <td>Unit</td>
+          <td>Rate</td>
+          <td>Qty</td>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var row in transaction.InvoiceLineItems)
+        {
+            <tr>
+                <td>@row.TransactionItem.ItemName</td>
+                <td>@row.TransactionUnit.UnitName</td>
+                <td>@row.TransactionRate.ToString("N2")</td>
+                <td>@row.TransactionQuantity.ToString("N2")</td>
+            </tr>
+           
+        }
+    </tbody>
+</MudSimpleTable>
+    
+
+        </MudHidden>
+
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true">
+                <MudGrid>
+        
+            <MudItem xs=12>
+                <div class="tdef">
+
+
+                    <MudTable Items="@transaction.InvoiceLineItems.Where(x=>x.IsActive==1)" Hover="true" Breakpoint="Breakpoint.Sm"
+                              LoadingProgressColor="Color.Info" CustomFooter="true" Dense="true" FixedHeader="true" FixedFooter="true" Height="@_tableHeight" @ref="_table">
+                        <HeaderContent>
+                            <MudTh>Item Code</MudTh>
+                            <MudTh>Unit</MudTh>
+                            <MudTh>Rate</MudTh>
+                            <MudTh>Qty</MudTh>
+                         
+                            <MudTh Style="text-align:right">Action</MudTh>
+                        </HeaderContent>
+
+                        <RowTemplate>
+                            <MudTh>@context.TransactionItem.ItemName</MudTh>
+                            <MudTh>@context.TransactionUnit.UnitName</MudTh>
+                            <MudTh>@context.Rate.ToString("N2")</MudTh>
+                            <MudTh>@context.TransactionQuantity.ToString("N2")</MudTh>
+                            <MudTd Style="text-align:right" DataLabel="Actions">
+                                <div class="" Style="text-align:right">
+                                    <MudIconButton Icon="@Icons.Material.Filled.Edit" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2 mr-2" Color="Color.Info" OnClick="()=>OnItemEditClick(context)" />
+                                    <MudIconButton Icon="@Icons.Material.Filled.Delete" Variant="Variant.Outlined" Size="Size.Small" Class="ma-2" Color="Color.Error" OnClick="()=>OnOrderItemDelete(context)" />
+                                </div>
+
+
+                            </MudTd>
+                        </RowTemplate>
+
+                        <FooterContent>
+
+                            @*<MudTFootRow Class="bold-text bg-tr-g1">
+                            <MudTd colspan="3">Total</MudTd>
+
+                            <MudTd Style="text-align:right">@transaction.GetTransactionRateTotal().ToString("N2")</MudTd>
+                            <MudTd Style="text-align:right">@transaction.GetQuantityTotal().ToString("N2")</MudTd>
+                            <MudTd></MudTd>
+                            <MudTd Style="text-align:right">@transaction.GetOrderDiscountTotal().ToString("N2")</MudTd>
+                            <MudTd Style="text-align:right">@transaction.GetOrderTotalWithDiscounts().ToString("N2")</MudTd>
+                            <MudTd></MudTd>
+                            </MudTFootRow>*@
+                        </FooterContent>
+                    </MudTable>
+                </div>
+            </MudItem>
+        </MudGrid>
+
+        </MudHidden>
+    </div>
+
+</div>
+
+</MudPaper>

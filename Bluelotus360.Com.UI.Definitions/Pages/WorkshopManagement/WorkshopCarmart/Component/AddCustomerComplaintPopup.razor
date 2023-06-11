@@ -1,0 +1,35 @@
+﻿@using Telerik.Blazor
+
+<TelerikWindow Modal="true" @bind-Visible="@WindowIsVisible"
+               Centered="true"
+               CloseOnOverlayClick="false" Class="pop-up-z-index">
+
+    <WindowActions>
+        @if (!HideMinMax)
+        {
+            <WindowAction Name="Minimize" />
+            <WindowAction Name="Maximize" />
+        }
+        <WindowAction Name="Close" Hidden="false" OnClick="OnCloseClick" />
+    </WindowActions>
+    <WindowTitle>
+       + Add Customer Complains/Requests/Services
+    </WindowTitle>
+    <WindowContent>
+        <UIRenderere FromSection="@PopUI"
+                     DataObject="WorkOrder"
+                     InteractionLogics="InteractionLogic"
+                     ObjectHelpers="ObjectHelpers" />
+        <div class="mt-3">
+            <CustomerComplainSection CustomerComplains="@WorkOrder.CustomerComplains" SelectedItems="@SelectedItems" @ref=cusComplainsSection />
+
+            <div class="d-flex justify-content-center">
+                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnFinishClick">Finish</MudButton>
+            </div>
+        </div>
+
+    </WindowContent>
+</TelerikWindow>
+
+
+   

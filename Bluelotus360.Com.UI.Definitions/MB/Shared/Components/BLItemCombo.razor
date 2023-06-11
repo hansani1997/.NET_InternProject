@@ -1,0 +1,21 @@
+﻿
+<MudItem xs="12" Class=@css_class md="@UIElement.Width">
+    @if (ItemRes == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        <MudAutocomplete T="ItemResponse"
+                     Label="@UIElement.ElementCaption" SearchFunc="@OnComboSearch"
+                     Class="@UIElement.CssClass"
+                     Value="selecteditemResponse"
+                     ValueChanged="OnComboValueChanged" Text="@GetComboDisplayText()"
+                     Variant="UIDefaults.DefaultControlVariants" DebounceInterval="700" 
+                     ResetValueOnEmptyText="true"
+                     AdornmentIcon="@IconSvgCode"
+                     Placeholder="@((UIElement.DefaultValue??""))"
+                     @ref="@_refItemCombo"
+                     />
+    }
+</MudItem>

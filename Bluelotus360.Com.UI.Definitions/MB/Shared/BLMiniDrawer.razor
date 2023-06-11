@@ -1,0 +1,142 @@
+﻿@*@inject Microsoft.Extensions.Localization.IStringLocalizer<MainLayout> _localizer*@
+@implements IDisposable
+@using BlueLotus360.CleanArchitecture.Domain.Entities;
+@using BlueLotus360.Com.UI.Definitions.MB.Shared.Components.TelerikComponents;
+
+<MudAppBar Elevation="1">
+    <MudToolBar DisableGutters="true" Class="bl-mud-toolbar-mob">
+
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+            <MudIconButton Icon="@Icons.Material.Outlined.Menu" Color="Color.Primary" OnClick="@((e) => DrawerToggle())" />
+        </MudHidden>
+
+    </MudToolBar>
+    @*<MudIcon Icon="@CustomIcons.BlazorHero" Size="Size.Large" ViewBox="0 0 500 500" Class="ml-4"/>*@
+
+
+    <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+        <MudSpacer />
+    </MudHidden>
+    <div class="top-appbar-title">
+        <MudText id="" Class="ml-3" Typo="Typo.h6" Color="Color.Dark">
+            @*@AppSettings._AppBarName*@
+            @appStateService._AppBarName
+        </MudText>
+    </div>
+
+    <MudSpacer />
+    <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true" Class="">
+        @*<div style="flex:0.45;">
+            <MudTextField @bind-Value="Search"
+                          Variant="Variant.Outlined" Adornment="Adornment.Start"
+                          AdornmentIcon="@Icons.Outlined.Search" AdornmentColor="Color.Primary"
+                          Margin="Margin.Dense" Placeholder="Search Menu" Class="top-searchbar" />
+        </div>*@
+        @if (NavMenus != null)
+        {
+            <div style="flex:0.45;">
+                <BLTelMenuSearchCombo ComboDataObject="@NavMenus" OnComboChanged="MenuSearchComboChanged"/>
+            </div>
+        }
+    </MudHidden>
+
+
+    <MudMenu Direction="_rightToLeft ? Direction.Right : Direction.Left" OffsetX="true" Dense="true" Class="mt-1 ml-4">
+        <ActivatorContent>
+            <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true">
+                @if (string.IsNullOrEmpty(ImageDataUrl))
+                {
+                    <MudAvatar Color="Color.Primary">@FirstLetterOfName</MudAvatar>
+                }
+                else
+                {
+                    <MudAvatar Image="@ImageDataUrl" Style="height:50px; width:50px;"> </MudAvatar>
+                }
+
+            </MudHidden>
+
+            <MudHidden Breakpoint="Breakpoint.SmAndDown">
+                <UserCard Class="mt-n2 pa-2" />
+
+            </MudHidden>
+
+        </ActivatorContent>
+        <ChildContent>
+            
+            <MudListItem>
+                <MudPaper Class="pa-4" Elevation="0">
+                    <MudStack Row="true">
+                        @if (string.IsNullOrEmpty(ImageDataUrl))
+                        {
+                            <MudAvatar Color="Color.Primary">@FirstLetterOfName</MudAvatar>
+                        }
+                        else
+                        {
+                            <MudAvatar Image="@ImageDataUrl" Style="height:50px; width:50px;"> </MudAvatar>
+                        }
+                        <MudDivider Vertical="true" FlexItem="true"/>
+                        <MudStack Class="avatar-drop-down" Justify="Justify.Center" Spacing="0">
+                            <MudTooltip Text="@FirstName"><MudText Typo="Typo.body1">@FirstName</MudText></MudTooltip>
+                            <MudTooltip Text="@CompanyName"><MudText Typo="Typo.body2">@CompanyName</MudText></MudTooltip>
+                        </MudStack>
+                    </MudStack>
+                </MudPaper>
+                
+            </MudListItem>
+            <MudDivider Class="mb-2" />@*
+            <MudListItem Text="Account" Href="/account" Icon="@Icons.Material.Outlined.Person" />*@
+            <MudListItem Text="Logout" Icon="@Icons.Material.Filled.Logout" OnClick="Logout" />
+        </ChildContent>
+    </MudMenu>
+</MudAppBar>
+
+<MudPaper Style="overflow:auto; position:relative;height:100vh;">
+    <MudDrawerContainer Class="mud-height-full">
+        <MudHidden Breakpoint="Breakpoint.MdAndUp" Invert="true" Class="">
+
+            <MudDrawer @bind-Open="_drawerOpen" Elevation="1" Fixed="false" ClipMode="DrawerClipMode.Always" Variant="@DrawerVariant.Mini" OpenMiniOnHover="true">
+                <MudDrawerHeader>
+
+                </MudDrawerHeader>
+                @if (NavMenus != null)
+                {
+                    <MiniNavMenu DrawerToggle="DrawerToggle" Menus="@NavMenus"/>
+                }
+
+            </MudDrawer>
+        </MudHidden>
+
+        <MudHidden Breakpoint="Breakpoint.SmAndDown" Invert="true" Class="mobile-layout">
+            <MudDrawer @bind-Open="_drawerOpen" Elevation="1"  Variant="@DrawerVariant.Temporary" Style="top:50px;">
+                <div class="custom-drawer-header"></div>
+                @if (NavMenus!=null)
+                {
+                    <NavMenu Menus="@NavMenus"/>
+                }
+                
+            </MudDrawer>
+        </MudHidden>
+
+        <MudMainContent>
+            <MudContainer MaxWidth="MaxWidth.False" Class="mt-4 px-3 px-md-9">
+                
+
+                    <Loading/>
+                    <CascadingValue Value="@NavMenus" Name="NavMenus">
+						<CascadingValue Value="@PinnedMenus" Name="PinnedMenus">
+                            @ChildContent
+                        </CascadingValue>
+					</CascadingValue>
+                <MudScrollToTop TopOffset="100" Style="z-index:2001;">
+                    <MudFab Color="Color.Primary" Icon="@Icons.TwoTone.KeyboardArrowUp" />
+                </MudScrollToTop>
+
+            </MudContainer>
+
+        </MudMainContent>
+    </MudDrawerContainer>
+</MudPaper>
+
+
+
+@*https://demos.telerik.com/blazor-ui/drawer/hierarchical-drawer*@

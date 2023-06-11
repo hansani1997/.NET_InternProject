@@ -1,0 +1,120 @@
+﻿@page "/"
+
+    <MudGrid Class="mt-lg-2 ">
+
+       <MudItem xs="12" md="9" Class="px-2">
+
+@*            <MudItem xs="12" Class="@(showReminderAlert?"px-2 mb-2 top-reminder":"d-none")">
+                <MudAlert Severity="Severity.Normal" NoIcon="true" ShowCloseIcon="true" CloseIconClicked="(() => CloseMe(true))">
+                    <MudChip  Style="@($"background-color:#B22424;")"></MudChip>Reminders
+                    <MudText>BL Scrum Meeting at 8.30am</MudText>
+                </MudAlert>
+            </MudItem>*@
+
+            <MudItem xs="12">
+             <MudCarousel Class="mud-width-full bl-carousel" ShowArrows="@true" ShowBullets="@true" AutoCycle="@true" TData="object">
+                  <BulletTemplate Context="selected">
+                        <div Class="mud-button-root mud-icon-button mud-icon-button-color-inherit mud-ripple mud-ripple-icon">
+                            <span class="mud-icon-button-label">
+                                <MudIcon Icon="@(selected ? Icons.TwoTone.RadioButtonChecked: Icons.TwoTone.RadioButtonUnchecked)" Color="@Color.Inherit" />
+                            </span>
+                        </div>
+                  </BulletTemplate>
+                  <ChildContent>
+                     <MudCarouselItem Transition="transition" Class="carousel-bg">
+                         <div class="d-flex justify-content-center align-items-center" style="height:100%;">
+                            <img src="\img\Carousel-img-1.png" class="carousel-img" style="height:100%;width:100%" />
+                        </div>
+                    </MudCarouselItem>
+                    <MudCarouselItem Transition="transition" Color="Color.Primary">
+                        <div class="d-flex justify-content-center align-items-center" style="height:100%;">
+                            <img src="\img\Carousel-img-2.png" class="carousel-img" style="height:100%;width:100%" />
+                        </div>
+                    </MudCarouselItem>
+                 </ChildContent>
+             </MudCarousel>
+            </MudItem>
+
+            <MudItem xs="12" Class="mx-4" >
+              <MudGrid Class="pin-wrapper mt-3">
+                @if (ChildMenu != null)
+                {
+                    <PinSelection ElementKey="@elementKey" PinnedMenus="@ChildMenu"/>
+                } 
+     
+                  @*<MudItem xs="12" Class="dshbrd-section  d-none">
+                      <DashboardsSection/>
+                  </MudItem>*@
+                
+              </MudGrid>
+            </MudItem>
+
+       </MudItem>
+
+       <MudItem xs="12" md="3" Class="px-5">
+           <MudGrid>          
+                <MudItem xs="6" md="12" Class="mt-6 mt-md-2">
+                     <MudCard Elevation="0" Class="my-items-card">
+                        <MudCardHeader>
+                         
+                            <CardHeaderContent>
+                                <b>My Notes</b>
+                               
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" />
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        
+                        <MudCardContent>
+                            <MudSkeleton Width="30%" Height="42px;" />
+                            <MudSkeleton Width="80%" />
+                            <MudSkeleton Width="100%" />
+                        </MudCardContent>
+                        <MudCardActions>
+                            @*<a style="color: #063b71ff ;">View All</a>*@
+                            <MudSkeleton Width="64px" />
+                            <MudSkeleton Width="105px" />
+                        </MudCardActions>
+                    </MudCard>
+                </MudItem >
+                
+                <MudItem xs="6" md="12" Class="mt-6 mt-md-2 ">
+
+                    <MudCard Elevation="0" Class="my-todo-card">
+                        <MudCardHeader>
+                         
+                            <CardHeaderContent>
+
+                                <b>My To-Dos</b>
+                               
+                            </CardHeaderContent>
+                            <CardHeaderActions>
+                                <MudFab Color="Color.Primary" StartIcon="@Icons.Material.Filled.Add" Size="Size.Small" />
+                            </CardHeaderActions>
+                        </MudCardHeader>
+                        
+                        <MudCardContent>
+                            <div class="todo-empty">
+                                <img src="/img/no-to-do.svg"/>
+                                @*<b>No To-Dos</b>
+                                <span>You currently have no To-Dos</span>*@
+                                
+                            </div>
+                            <MudSkeleton Width="30%" Height="42px;" />
+                            <MudSkeleton Width="80%" />
+                            <MudSkeleton Width="100%" />
+                        </MudCardContent>
+                    
+                    </MudCard>
+            
+                </MudItem >
+
+                @*<MudItem xs="12" Class="bl-home-calander">
+                    <MudDatePicker PickerVariant="PickerVariant.Static" Rounded="true" Elevation="1" Date="@(DateTime.Now)" />
+                </MudItem>*@
+
+           </MudGrid>
+       </MudItem>
+
+     </MudGrid>

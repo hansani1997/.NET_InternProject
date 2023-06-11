@@ -1,0 +1,108 @@
+﻿@page "/Payment/JournalV4"
+@using BL10.CleanArchitecture.Domain.DTO.RequestDTO;
+@using MudBlazor
+
+@if (formDefinition != null && formDefinition.Children.Count > 0){
+  
+        <MudGrid>
+            <MudItem xs="12">
+                @if (buttonSection != null && buttonSection.Children.Count() > 0)
+                {
+                    <UIRenderere FromSection="buttonSection" DataObject="_journal" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                }
+
+            </MudItem>
+            <MudItem xs="12" md="12">
+                @if (tranNumSection != null && tranNumSection.Children.Count() > 0)
+                {
+                <UIRenderere FromSection="tranNumSection" DataObject="_journal" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                }
+            </MudItem>
+            <MudItem xs="12" md="12" id="filter-section" Class="" Style="display:none;">
+                @if (filterSection != null && filterSection.Children.Count() > 0)
+                {
+                    <UIRenderere FromSection="filterSection" DataObject="_findDto" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                }
+
+            </MudItem>
+            <MudItem xs="12" md="12"  Class="mt-md-12">
+                
+                    
+                        @if (headerSection != null && headerSection.Children.Count() > 0)
+                        {
+                            <UIRenderere FromSection="headerSection" DataObject="_journal.SelectedSingleEntry" InteractionLogics="_interactionLogic" ObjectHelpers="_objectHelpers" />
+                        }
+                    
+                  
+                    @if (journalLiteGrid != null && _journal.AccTrnSingleEntries != null)
+                    {
+                        <BLTable FormObject="journalLiteGrid"
+                               DataObject="_journal.AccTrnSingleEntries.Where(x=>x.IsActive==1).ToList()"
+                               InteractionLogics="_interactionLogic"
+                               ObjectHelpers="_objectHelpers"
+                               Height="253px"
+                               @ref="_blTb" />
+                    }
+              
+
+            </MudItem>
+
+        </MudGrid>
+
+    <MudDialog  @bind-IsVisible="IsFilterResponsePopShown" 
+                Options="dialogOptions" 
+                Style="max-height:true;max-width:true" 
+                OnBackdropClick="OnCloseClick" 
+                Class="pop-up-z-index" >
+       
+          <DialogContent>
+            <div>
+                @if (_filterDetails != null)
+                {
+
+                    <MudTable T="JournalLiteFindResponseDTO" Items="@_filterDetails" FixedHeader="true" Height="100px" Filter="new Func<JournalLiteFindResponseDTO,bool>(FilterFunc1)" @bind-SelectedItem="selectedItem1" RowsPerPage="10" @ref="@_table" OnRowClick="OnRowDoubleClickHandler">
+                        <ToolBarContent>
+                            <MudSpacer />
+                            <MudTextField @bind-Value="searchString1" Placeholder="Search" Adornment="Adornment.Start" AdornmentIcon="@Icons.Material.Filled.Search" IconSize="Size.Medium" Class="mt-0"></MudTextField>
+                        </ToolBarContent>
+                        <HeaderContent>
+                            <MudTh>Entered User</MudTh>
+                            <MudTh>Transaction No</MudTh>
+                            <MudTh>Entered Date</MudTh>
+                        </HeaderContent>
+                        <RowTemplate>
+                            <MudTd DataLabel="Entered User">@context.UserId</MudTd>
+                            <MudTd DataLabel="Transaction No">@context.TransactionNumber</MudTd>
+                            <MudTd DataLabel="Entered Date">@context.InsertDate</MudTd>
+                        </RowTemplate>
+                        <PagerContent>
+                            <MudPagination SelectedChanged="PageChanged" Count="@((_table.GetFilteredItemsCount() + _table.RowsPerPage - 1) / _table.RowsPerPage)" Class="pa-4" />
+                        </PagerContent>
+                    </MudTable>
+
+                }
+
+           </div>
+      
+         </DialogContent>
+
+    </MudDialog>
+
+    @if (journalReportShown)
+    {
+        
+        <div class="report-pop-up @(journalReportShown ? "":"d-none")">
+
+            <BLReportViewer ReportSetting="_journalRerportOption" CloseReportDelegate="@(()=>{journalReportShown=false;})" />
+
+            <hr />
+        </div>
+    }
+
+}
+
+else
+
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitions...</MudAlert>
+}

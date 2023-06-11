@@ -1,0 +1,92 @@
+﻿<div class="pa-2">
+
+    <MudPaper Elevation="3" Outlined="true">
+        <MudToolBar Class="px-0">
+            <MudIconButton Icon="@Icons.Material.TwoTone.ArrowBackIos" Color="Color.Inherit" Disabled="IsOrderBeingSaved" aria-label="back" OnClick="GoBackToListView" />
+            <MudText Typo="Typo.h6" Class="pa-2">
+                Order Details -  @_orderState.CurrentOrder.OrderNumber
+            </MudText>
+
+        </MudToolBar>
+        @*<MudGrid>
+            <MudItem xs="10" sm="11">
+                <MudText Typo="Typo.h6" Class="pa-2">
+                    Order Details -  @_orderState.CurrentOrder.OrderNumber
+                </MudText>
+            </MudItem>
+            <MudItem xs="2" sm="1" Class="right">
+                <MudIconButton Color="Color.Primary" Variant="Variant.Filled" Icon="@Icons.Material.Filled.ArrowBack" Disabled="IsOrderBeingSaved" aria-label="delete" OnClick="GoBackToListView">
+
+                </MudIconButton>
+            </MudItem>
+        </MudGrid>*@
+      
+        <MudDivider />
+        <MudGrid Class="pa-2">
+            <MudItem md="2" xl="1" Class="bold">Date</MudItem>
+            <MudItem md="2" xl="1">@_orderState.CurrentOrder.OrderDate.ToString("dd/MMM/yyyy")</MudItem>
+
+            <MudItem md="2" xl="1" Class="bold">Customer</MudItem>
+            <MudItem md="2" xl="1">@_orderState.CurrentOrder.OrderCustomer.AddressName</MudItem>
+
+            <MudItem md="2" xl="1" Class="bold">Payment Term</MudItem>
+            <MudItem md="2" xl="1">@_orderState.CurrentOrder.OrderPaymentTerm.CodeName</MudItem>
+
+            <MudItem md="2" xl="1" Class="bold">Total Tax</MudItem>
+            <MudItem md="2" xl="1" Class="right">@_orderState.CurrentOrder.GetTotalTaxType1().ToString("N2")</MudItem>
+
+            <MudItem md="2" xl="1" Class="bold">Total Discount</MudItem>
+            <MudItem md="2" xl="1" Class="right">@_orderState.CurrentOrder.GetOrderDiscountTotal().ToString("N2")</MudItem>
+
+            <MudItem md="2" xl="1" Class="bold">Order Total</MudItem>
+            <MudItem md="2" xl="1" Class="right">@_orderState.CurrentOrder.GetOrderTotalWithDiscounts().ToString("N2")</MudItem>
+        </MudGrid>
+    </MudPaper>
+    <div class="pa-1"></div>
+    <MudPaper>
+        <MudTable Items="@_orderState.CurrentOrder.OrderItems" FixedHeader="true" Class="fix-table-h-cart">
+            <HeaderContent>
+                <MudTh>#</MudTh>
+                <MudTh>Item</MudTh>
+                <MudTh Class="right">Rate</MudTh>
+                <MudTh Class="right" Style="width:100px">Dis (%)</MudTh>
+                <MudTh Class="right">Qty</MudTh>
+
+                <MudTh Class="right">Sub Total</MudTh>
+                <MudTh Class="right">Discount</MudTh>
+                <MudTh Class="right">Line Total</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="#" Class="command-column-cell">
+                    <img src="@("https://bluelotus360.co/3pl/SGF/PRD/"+context.TransactionItem.ItemCode+".png")" width="100%"/>
+                    @*<MudImage Fluid="true"
+                              Src="@("https://bluelotus360.co/3pl/SGF/PRD/"+context.TransactionItem.ItemCode+".png")"
+                              Elevation="0"
+                              Class="max-h-50" />*@
+                </MudTd>
+                <MudTd DataLabel="Item">@context.TransactionItem.ItemName</MudTd>
+                <MudTd DataLabel="Trn Rate" Class="right">@context.TransactionRate</MudTd>
+                <MudTd DataLabel="Dis(%)" Class="right"><MudNumericField T="decimal" @bind-Value="@context.DiscountPercentage" Min="0" Max="100"></MudNumericField></MudTd>
+                <MudTd DataLabel="Qty" Class="right">@context.TransactionQuantity</MudTd>
+                <MudTd DataLabel="SubTotal" Class="right">@context.LineTotalWithoutDiscount.ToString("N2")</MudTd>
+                <MudTd DataLabel="Discount" Class="right">@context.DiscountAmount.ToString("N2")</MudTd>
+                <MudTd DataLabel="Line Total" Class="right">@context.GetLineTotalWithDiscount().ToString("N2")</MudTd>
+            </RowTemplate>
+        </MudTable>
+    </MudPaper>
+    <div class="pa-1"></div>
+    <MudPaper>
+        <MudGrid>
+            <MudItem md="8" xs="0" Class="d-none d-md-flex"></MudItem>
+            <MudItem md="2" xs="6" Class="pa-0"><MudButton Variant="Variant.Filled" Color="Color.Primary"  Disabled="IsOrderBeingSaved" FullWidth="true" OnClick="OnSaveButtonClick">Save</MudButton></MudItem>
+            <MudItem md="2" xs="6" Class="pa-0"><MudButton Variant="Variant.Filled" Color="Color.Warning" FullWidth="true" OnClick="ClarCart" Disabled="IsClearDisabled">Clear Cart</MudButton></MudItem>
+
+        </MudGrid>
+    </MudPaper>
+</div>
+
+<style>
+    .mud-input-control > .mud-input-control-input-container > div.mud-input.mud-input-text {
+        margin-top: -9px;
+    }
+</style>

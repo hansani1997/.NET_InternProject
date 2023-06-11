@@ -1,0 +1,13 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Components.Routing;
+
+<MudNavMenu>
+	<MudNavLink Href="/" Match="NavLinkMatch.Prefix" Icon="fa-solid fa-house">Home</MudNavLink>
+	<SideMenu Menu="Menus" IconDictionary="icon_dict" />
+    <MudNavLink Href="/waitList" Match="Microsoft.AspNetCore.Components.Routing.NavLinkMatch.Prefix" Icon="fa-solid fa-arrows-rotate">Wait List</MudNavLink>
+    @if (_iModeDetection.isDebugMode())
+    {
+        <MudNavLink Href="/cachedList" Match="Microsoft.AspNetCore.Components.Routing.NavLinkMatch.Prefix" Icon="fa-solid fa-arrows-rotate">Cached List</MudNavLink>
+    }
+</MudNavMenu>
+

@@ -1,0 +1,24 @@
+﻿:root {
+    --bl-gray: #EEEEEE;
+    --primary-blue: #063b71ff;
+}
+.bk-k-lable {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 100%;
+}
+.pop-up-z-index{
+    z-index:30002!important;
+}
+.k-dialog-titlebar {
+    background-color: var(--primary-blue);
+}
+.k-dialog-titlebar-error .k-dialog-titlebar {
+    background-color: #ff6358 !important;
+}
+.k-pager-numbers .k-link.k-state-selected, .k-pager-numbers .k-link.k-selected {
+    color: #ffffff;
+    background-color: var(--primary-blue);
+}
+

@@ -1,0 +1,28 @@
+﻿<style>
+    .switch-container {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .switch-icon {
+        margin-top: 2px;
+    }
+</style>
+
+@*<MudItem xs="@FromSection.GetXsWidth()" sm="@FromSection.GetSmWidth()" lg=@FromSection.GetLgWidth() xl=@FromSection.GetXlgWidth() md="@FromSection.Width" Class="@css_class">*@
+<MudItem xs="6" sm="6" lg=@FromSection.GetLgWidth() xl=@FromSection.GetXlgWidth() md="@FromSection.Width" Class="@css_class">
+   <div class="switch-container">
+        <p>@FromSection.ElementCaption</p>
+        <div class="switch-icon">
+        <MudSwitch T="bool"
+                   Checked="IsSwitchOn"
+                   Class=@swt_css
+                   CheckedChanged="SwitchValueChanged"
+                   Disabled="IsSwitchDisable"
+                   Color="Color.Primary"
+                   UnCheckedColor="Color.Dark">
+        </MudSwitch>
+        </div>
+   </div>
+
+</MudItem>

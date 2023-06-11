@@ -1,0 +1,75 @@
+﻿
+<style>
+    .column {
+        flex: 50%;
+        padding: 5px;
+    }
+
+    .rowTable {
+        display: flex;
+    }
+
+    table {
+        width: 100%;
+    }
+
+    .rowTable table tr td {
+        width: 50%;
+    }
+
+    .heading {
+        background-color: #E1E7EE;
+    }
+
+    .font {
+        color: #053B71;
+        font-family: 'Inter';
+        font-style: normal;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 20px;
+    }
+
+    td {
+        width: min-content
+    }
+</style>
+
+<MudGrid Class="mt-2">
+
+<div class="col-12">
+    <div class="bk-k-lable p-2 my-2 heading font">CUSTOMER</div>
+</div>
+<div class="row rowTable col-sm-12">
+    <div class="column px-15">
+        <table>
+            <tr>
+                <td>Customer</td>
+                <td>: @SelectedVehicle.RegisteredCustomer.AddressName</td>
+            </tr>
+            <tr>
+                <td>NIC Number</td>
+                    <td>: @SelectedVehicle.RegisteredCustomer.NIC</td>
+            </tr>
+            <tr>
+                <td>Mobile</td>
+                    <td>: @SelectedVehicle.RegisteredCustomer.AddressID</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="column px-15">
+        <table>
+            <tr>
+                <td>Address</td>
+                    <td>: @($"{SelectedVehicle.RegisteredCustomer.Street} ,{SelectedVehicle.RegisteredCustomer.City},{SelectedVehicle.RegisteredCustomer.Country}")</td>
+            </tr>
+            <tr>
+                <td>E-mail</td>
+                    <td>: @SelectedVehicle.RegisteredCustomer.Email</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</MudGrid>

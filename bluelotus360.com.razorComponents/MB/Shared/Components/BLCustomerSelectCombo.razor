@@ -1,0 +1,19 @@
+﻿<MudItem xs="12" Class="@css_class" md="@UIElement.Width" >
+    @if (AddressResponse == null)
+    {
+        <MudSkeleton Animation="Animation.Wave" Width="100%" />
+    }
+    else
+    {
+        <MudAutocomplete T="AddressResponse"
+                     Label="@UIElement.ElementCaption"
+                     Class="@UIElement.CssClass"
+                     SearchFunc="@OnComboSearch"
+                     ValueChanged="OnComboValueChanged"
+                     Value="selectedAddress"
+                     Disabled="@(!isEditable)"
+                     Variant="Variant.Outlined"
+                     Margin="Margin.Dense"
+                     DebounceInterval="300" />
+    }
+</MudItem>

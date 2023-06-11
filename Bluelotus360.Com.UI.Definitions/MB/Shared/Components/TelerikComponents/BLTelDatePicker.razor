@@ -1,0 +1,27 @@
+﻿
+<MudItem xs="12" class=@css_class md="@UIElement.Width">
+
+
+    <div class="w-100">
+        <div class="col-12">
+            <TelerikTooltip TargetSelector=".tooltip-target" />
+            <div class="bk-k-lable tooltip-target" title="@UIElement.ElementCaption">@UIElement.ElementCaption</div>
+        </div>
+        <div class="col-12">
+            <TelerikDatePicker Format="dd/MMMM/yyyy"
+                               Min="DateTime.MinValue"
+                               Value="@dateValue"
+                               ValueChanged="@((DateTime? value)=>OnDateChange(value))"
+                               Class="@date_pic_css"
+                               Enabled=@IsEnabled>
+            </TelerikDatePicker>
+
+        </div>
+    </div>
+
+
+
+
+</MudItem>
+
+

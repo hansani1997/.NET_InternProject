@@ -1,0 +1,18 @@
+﻿@typeparam T
+
+	@foreach (var formsection in FormObject.Children)
+    {
+		if (formsection.ElementType != null && formsection.ElementType.Equals("Grid"))
+		{
+			 <MudItem xs="12" sm="12" md="@formsection.Width" >
+
+			      <UIGrid FormObject="formsection" 
+                          DataObject="DataObject" 
+                          InteractionLogics="InteractionLogics" 
+                          ObjectHelpers="ObjectHelpers" 
+						  Height="@Height"
+                          @ref="_refGrid" />
+
+			  </MudItem>
+		}
+	}

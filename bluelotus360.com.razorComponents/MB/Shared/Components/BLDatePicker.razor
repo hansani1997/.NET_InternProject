@@ -1,0 +1,12 @@
+﻿<MudItem  Class=@css_class xs="@UIElement.GetXsWidth()" sm="@UIElement.GetSmWidth()" md="@UIElement.GetMdWidth()" lg=@UIElement.GetLgWidth() xl=@UIElement.GetXlgWidth()>
+    <MudDatePicker Label="@UIElement.ElementCaption"
+                   AutoClose="true"
+                   @bind-Date="DateValue"
+                   Class="@UIElement.CssClass"
+                   DateFormat="dd/MMM/yyyy"
+                   Variant="UIDefaults.DefaultControlVariants"
+                   @ref="_picker"
+                   Disabled="!UIElement.IsEnable"
+                   Editable="@editable"
+                   Placeholder=" " />
+</MudItem>

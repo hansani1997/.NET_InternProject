@@ -1,0 +1,20 @@
+﻿<div class="tab-scroll">
+    <MudTabs Class="carmart-top-tab" KeepPanelsAlive="true">
+        <MudTabPanel Text="Job Card">
+        <JobCardSubTab DataObject="@DataObject" PlaningSection="@PlaningSection"
+                           ObjectKey="UIScope.ElementKey" Activate="Activate" DisableTabs="DisableTabs" />
+    </MudTabPanel>
+        <MudTabPanel Text="Vehicle & customer" >
+        <VehicleCustomerDetailsSubTab DataObject="@DataObject"/>
+    </MudTabPanel>
+        <MudTabPanel Text="Customer Request" >
+
+            <CustomerRequestSubTab CustomerRequests="@DataObject" 
+                               PopUpUI="@CustomerNotes" 
+                               ObjectKey="UIScope.ElementKey"/>
+        </MudTabPanel>
+        <MudTabPanel Text="Job Timeline">
+        <TimeLineSubTab/>
+    </MudTabPanel>
+    </MudTabs>
+</div>

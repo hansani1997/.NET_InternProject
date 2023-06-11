@@ -1,0 +1,54 @@
+﻿@page "/Project/ProjectProfileMobile/"
+
+@if (formDefinition != null && formDefinition.Children.Count > 0)
+{
+
+    <div class="@(isTableLoading?"":"d-none")"> 
+      
+            <MudProgressLinear Color="MudBlazor.Color.Primary" Indeterminate="true" Class="my-7" />
+    </div>
+
+
+    <div class="@(ShowUpdateDetails?"":"d-none")">
+
+            <BLProjectProfileUpdateBasicDetails
+                    FormObject="upmodalUIElement"
+                    DataObject="updateRequest"
+                    InteractionLogics="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    @ref="_bLProjectProfileUpdateBasicDetails" />
+        </div>
+
+
+    <div class="@(ShowInsertDetails?"":"d-none")">
+
+        <BLProjectProfileInsertBasicDetails
+                    FormObject="inmodalUIElement"
+                    DataObject="insertRequest"
+                    InteractionLogics="_interactionLogic"
+                    ObjectHelpers="_objectHelpers"
+                    @ref="_bLProjectProfileInsertBasicDetails" />
+
+    </div>
+
+    @if (showsgrid) {
+        <UIBuilder FormObject="formDefinition"
+                   DataObject="transaction"
+                   InteractionLogics="_interactionLogic"
+                   ObjectHelpers="_objectHelpers"
+                   @ref="_refBuilder" />
+
+
+                   <BLTelGrid FormObject="gridUIElement" 
+                        DataObject="gridDetails" 
+                        InteractionLogics="_interactionLogic" 
+                        ObjectHelpers="_objectHelpers" 
+						Height="400px"
+                        @ref="_blTb" />
+    }
+
+}
+else
+{
+    <MudAlert Severity="Severity.Info" Variant="Variant.Outlined">Please wait while we fetch form definitons...</MudAlert>
+}

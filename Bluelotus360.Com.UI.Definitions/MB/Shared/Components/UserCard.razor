@@ -1,0 +1,19 @@
+﻿
+<MudCard Elevation="0" Square="true" Class="@Class">
+    <MudCardHeader Class="pb-1 pt-1" >
+        <CardHeaderAvatar>
+            @if (string.IsNullOrEmpty(ImageDataUrl))
+            {
+                <MudAvatar Color="Color.Primary">@FirstLetterOfName</MudAvatar>
+            }
+            else
+            {
+                <MudAvatar Image="@ImageDataUrl" Style="height:50px; width:50px;"> </MudAvatar>
+            }
+        </CardHeaderAvatar>
+        <CardHeaderContent>
+            <MudText Typo="Typo.body2">@FirstName @SecondName</MudText>
+            <MudText Typo="Typo.caption">@CompanyName</MudText>
+        </CardHeaderContent>
+    </MudCardHeader>
+</MudCard>

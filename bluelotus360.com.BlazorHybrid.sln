@@ -1,0 +1,87 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.0.31611.283
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bluelotus360.com.razorComponents", "bluelotus360.com.razorComponents\bluelotus360.com.razorComponents.csproj", "{C5A615D7-D387-43BE-BF10-F754ED5696E2}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bluelotus360.com.mauiBlazor", "bluelotus360.com.mauiBlazor\bluelotus360.com.mauiBlazor.csproj", "{C74E189A-9725-4575-95E1-1C28A7A62B9F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bluelotus360.Com.MauiSupports", "bluelotus360.Com.MauiSupports\bluelotus360.Com.MauiSupports.csproj", "{5A889B4C-A89A-495C-ABF6-2111B676F29F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{C31AA837-BB18-468F-B8A1-F60C3AF6F10F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bluelotus360.Com.commonLib", "bluelotus360.Com.commonLib\bluelotus360.Com.commonLib.csproj", "{A72532F7-C32C-4A79-A8A8-F03D4850A7C2}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7929EE8F-82F8-4BDD-A669-CB1EFE7C2111}"
+	ProjectSection(SolutionItems) = preProject
+		TextFile1.txt = TextFile1.txt
+	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{DF026B20-3E13-443A-A5C2-BF4245CEFA28}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{F907A266-D950-4E0E-985B-39A4A8269B5A}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{698999E4-3825-4BD8-A550-7FB2CE9F1661}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "google.PlayCore", "google.PlayCore\google.PlayCore.csproj", "{00AC0F9F-432D-4027-AEBB-955D1450E298}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "bluelotus360.com.wasmBlazor", "bluelotus360.com.wasmBlazor\bluelotus360.com.wasmBlazor.csproj", "{D145ACAB-7E87-41DB-A916-52F77AC7F9B3}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C5A615D7-D387-43BE-BF10-F754ED5696E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C5A615D7-D387-43BE-BF10-F754ED5696E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C5A615D7-D387-43BE-BF10-F754ED5696E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C5A615D7-D387-43BE-BF10-F754ED5696E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C74E189A-9725-4575-95E1-1C28A7A62B9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C74E189A-9725-4575-95E1-1C28A7A62B9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C74E189A-9725-4575-95E1-1C28A7A62B9F}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{C74E189A-9725-4575-95E1-1C28A7A62B9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C74E189A-9725-4575-95E1-1C28A7A62B9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C74E189A-9725-4575-95E1-1C28A7A62B9F}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{5A889B4C-A89A-495C-ABF6-2111B676F29F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5A889B4C-A89A-495C-ABF6-2111B676F29F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5A889B4C-A89A-495C-ABF6-2111B676F29F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5A889B4C-A89A-495C-ABF6-2111B676F29F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A72532F7-C32C-4A79-A8A8-F03D4850A7C2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A72532F7-C32C-4A79-A8A8-F03D4850A7C2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A72532F7-C32C-4A79-A8A8-F03D4850A7C2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A72532F7-C32C-4A79-A8A8-F03D4850A7C2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DF026B20-3E13-443A-A5C2-BF4245CEFA28}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DF026B20-3E13-443A-A5C2-BF4245CEFA28}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DF026B20-3E13-443A-A5C2-BF4245CEFA28}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DF026B20-3E13-443A-A5C2-BF4245CEFA28}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F907A266-D950-4E0E-985B-39A4A8269B5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F907A266-D950-4E0E-985B-39A4A8269B5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F907A266-D950-4E0E-985B-39A4A8269B5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F907A266-D950-4E0E-985B-39A4A8269B5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{698999E4-3825-4BD8-A550-7FB2CE9F1661}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{698999E4-3825-4BD8-A550-7FB2CE9F1661}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{698999E4-3825-4BD8-A550-7FB2CE9F1661}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{698999E4-3825-4BD8-A550-7FB2CE9F1661}.Release|Any CPU.Build.0 = Release|Any CPU
+		{00AC0F9F-432D-4027-AEBB-955D1450E298}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{00AC0F9F-432D-4027-AEBB-955D1450E298}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{00AC0F9F-432D-4027-AEBB-955D1450E298}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{00AC0F9F-432D-4027-AEBB-955D1450E298}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D145ACAB-7E87-41DB-A916-52F77AC7F9B3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D145ACAB-7E87-41DB-A916-52F77AC7F9B3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D145ACAB-7E87-41DB-A916-52F77AC7F9B3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D145ACAB-7E87-41DB-A916-52F77AC7F9B3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{DF026B20-3E13-443A-A5C2-BF4245CEFA28} = {C31AA837-BB18-468F-B8A1-F60C3AF6F10F}
+		{F907A266-D950-4E0E-985B-39A4A8269B5A} = {C31AA837-BB18-468F-B8A1-F60C3AF6F10F}
+		{698999E4-3825-4BD8-A550-7FB2CE9F1661} = {C31AA837-BB18-468F-B8A1-F60C3AF6F10F}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		        SolutionGuid = {61F7FB11-1E47-470C-91E2-47F8143E1572}
+		SolutionGuid = {04FEFE27-CC84-4CF6-9D4C-1B21D6BB8E20}
+	EndGlobalSection
+EndGlobal

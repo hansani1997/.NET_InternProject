@@ -1,0 +1,46 @@
+﻿
+<MudItem Class="d-flex justify-space-between">
+    <MudHidden Breakpoint="Breakpoint.SmAndDown">
+        @if (Params.HasBackButton)
+        {
+            <div class="d-inline-flex align-center gap-2">
+                <MudIconButton Icon="@Icons.Material.TwoTone.ArrowBackIos" Href="@Params.GetBackwardURL()" /> <strong>@Params.BackButton</strong>
+            </div>
+        }
+        @if (Params.HasForwardButton)
+        {
+            <div class="d-inline-flex align-center gap-2">
+                <strong>@Params.ForwardButton</strong> <MudIconButton Icon="@Icons.Material.TwoTone.ArrowForwardIos" Href="@Params.GetForwardURL()" />
+            </div>
+        }
+    </MudHidden>
+</MudItem>
+    
+<MudItem Class="posifixed">
+    <MudHidden Breakpoint="Breakpoint.MdAndUp">
+
+        @if (Params.HasForwardButton)
+        {
+            <MudStack Class="mb-4">
+                <MudButton Class="bl-btn-primary"  Href="@Params.GetForwardURL()">@($"Go to {Params.ForwardButton}")</MudButton>
+            </MudStack>
+        }
+        @if (Params.HasBackButton)
+        {
+            <MudStack>
+                <MudButton Class="bl-btn-secondary" Href="@Params.GetBackwardURL()">@($"Back to {Params.BackButton}")</MudButton>
+            </MudStack>
+        }
+    </MudHidden>
+</MudItem>
+    
+    
+    
+    
+
+
+
+@code {
+
+    [Parameter] public BackForwardParams Params{ get; set; }
+}

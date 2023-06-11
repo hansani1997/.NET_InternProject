@@ -1,0 +1,116 @@
+﻿//Fonts
+$font-path: "../fonts/";
+
+//Color
+$color-primary: var(--mud-palette-primary);
+$color-secondary: var(--mud-palette-secondary);
+$ui-background-color: #ffffff;
+$appbar-background-color: var(--mud-palette-appbar-background);
+$color-primary-text: #212121 /*var(--mud-palette-primary-text)*/;
+$color-secondary-text: #585858 /*var(--mud-palette-secondary-text)*/;
+$color-light-text: #ffffff;
+$color-error: var(--mud-palette-error); /*#f44336ff*/
+$alert-background-color: #f2f2f2;
+$color-icon-default: #585858;
+$color-orange: #ff6358;
+$color-company-avatars: #FFD43B; 
+$palette-white: var(--mud-palette-white);
+$palette-off-white: #fefefe;
+$palette-black: var(--mud-palette-black);
+$palette-green: #00ff00;
+$palette-gray: #EEEEEE;
+$palette-dark-gray: #363936d6; /*111*/
+$palette-gray-2: #656565;
+$palette-red: #ff0000;
+$palette-light-yellow: lightyellow;
+$palette-burly-wood: burlywood;
+$color-background-color: var(--mud-palette-background);
+$color-table-lines: var(--mud-palette-table-lines);
+
+
+//typography
+$typography-default-family: var(--mud-typography-default-family);
+$typography-default-size: 14px /*var(--mud-typography-default-size)*/;
+$typography-button-size: var(--mud-typography-button-size);
+$typography-default-lineheight: var(--mud-typography-default-lineheight);
+$letter-spacing: 0.02px;
+$text-transform: var(--mud-typography-button-text-transform);
+$typography-form-name-size: 20px;
+$typography-h3-size: 22px;
+$typography-h4-size: 18px;
+$typography-h5-size: 14px;
+$typography-h6-size: 12px;
+$typography-default-size-mobile: 16px;
+
+//Font weight
+$bold: bold;
+$bolder: bolder;
+$medium: normal;
+$regular: lighter;
+$thin: 100;
+
+//border
+$border-style-default: solid;
+$border-style-dashed: dashed;
+$border-style-groove: groove;
+$border-width-default: 2px;
+$border-radius-default: var(--mud-default-borderradius);
+$border-radius-sections: 10px;
+$border-color-default: #dbdbdb;
+$border-radius-table: 8px;
+$border-width-small: 1px;
+$border-width-mini: 0.5px;
+
+//shadow effects
+$box-shadow: 0 3px 1px -2px rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 1px 5px 0 rgb(0 0 0 / 12%);
+
+//transitions
+$transition1: background-color 250ms cubic-bezier(.4,0,.2,1) 0ms,box-shadow 250ms cubic-bezier(.4,0,.2,1) 0ms,border 250ms cubic-bezier(.4,0,.2,1) 0ms;
+
+//Button sizes
+$button-group-height-width: 32px;
+
+//input field
+$input-field-height: 20px;
+$input-lines: var(--mud-palette-lines-inputs);
+$login-input-color: rgb(255, 255, 255, 0.2);
+$input-field-font-color: #dbdbdb;
+$login-input-field-height: 37px;
+
+//icons
+$input-icon-default-size: 16px;
+$side-menu-icon-size: 17px;
+$notification-icon-size: 24px;
+$button-group-icon-size: 16px;
+$avatar-height-width: 30px;
+$adornment-icon-size: 16px;
+
+//Scrollbar
+$scrollbar-thumb-border-radius: 2px;
+
+//Carousel
+$carousel-width: 500px;
+$carousel-height: 150px;
+
+//appbar
+$appbar-min-height: var(--mud-appbar-min-height);
+
+//outline
+$outline-style-default: solid;
+$outline-style-dotted: dotted;
+$outline-width-default: 1px;
+
+@mixin border() {
+    border-style: $border-style-default;
+    border-width: $border-width-default;
+    border-radius: $border-radius-default;
+}
+
+@mixin typography() {
+    font-family: $typography-default-family;
+    font-size: $typography-default-size;
+    font-weight: $regular;
+    line-height: $typography-default-lineheight;
+    letter-spacing: $letter-spacing;
+    text-transform: none;
+}

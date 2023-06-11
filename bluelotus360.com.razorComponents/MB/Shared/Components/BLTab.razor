@@ -1,0 +1,86 @@
+﻿@inject IJSRuntime JS
+
+@if ((breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Md) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Sm) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Xl) || (breakpointMargin.BreakpointMargin == MudBlazor.Breakpoint.Lg))
+{
+    <MudCard Elevation="0" Class="">
+        <MudCardContent>
+
+
+                @if (FormObject != null && FormObject.Children.Count() > 0)
+                {
+                    <MudTabs Elevation="2" Border="true" HideSlider="true" Rounded="true" Color="Color.Default" ApplyEffectsToContainer="true" PanelClass="pa-6" KeepPanelsAlive="true" Outlined="true">
+                        @foreach (var child in FormObject.Children)
+                        {
+                            @if (child.ElementType != null && child.ElementType.Equals("Tab") && child.IsVisible)
+                            {
+
+                                <MudTabPanel Text=@child.ElementCaption Class=@child.CssClass>
+
+                                   @* <MudItem xs="12" sm="child.Width" md="child.Width" Class="@child.ParentCssClass">
+                                        <UIRenderere FromSection="child" DataObject="DataObject" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                    </MudItem>*@
+
+                                     @foreach (var tab in child.Children)
+                                     {
+                                        if (tab.ElementType != null && tab.ElementType.Equals("TabSectnFrmtGrp"))
+                                         {
+                                             <MudItem xs="12" sm="tab.Width" md="tab.Width" Class="@tab.ParentCssClass">
+                                                 <UIRenderere FromSection="tab" DataObject="DataObject" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                             </MudItem>
+                                         }
+                                        
+                                     }
+
+                                </MudTabPanel>
+
+                            }
+                        }
+                    </MudTabs>
+                }
+
+        
+
+
+        </MudCardContent>
+    </MudCard>
+
+
+
+} 
+
+else
+{
+    <MudCard Elevation="0" Class="">
+        <MudCardContent>
+
+            @if (FormObject != null && FormObject.Children.Count() > 0)
+            {
+
+                <MudExpansionPanels MultiExpansion="true" Elevation="2" Style="background-color:#E7F1FF">
+                    @foreach (var child in FormObject.Children)
+                    {
+                        @if (child.ElementType != null && child.ElementType.Equals("Tab") && child.IsVisible)
+                        {
+                             <MudExpansionPanel Text=@child.ElementCaption Class=@child.CssClass>
+                                
+                                        @foreach (var tab in child.Children)
+                                        {
+                                            @if (tab.ElementType != null && tab.ElementType.Equals("TabSectnFrmtGrp"))
+                                            {
+                                                    <MudItem xs="12" sm="tab.Width" md="tab.Width" Class="@tab.ParentCssClass">
+                                                        <UIRenderere FromSection="tab" DataObject="DataObject" InteractionLogics="InteractionLogics" ObjectHelpers="ObjectHelpers" />
+                                                    </MudItem>
+                                            }
+                                        }
+                               
+                </MudExpansionPanel>
+    
+                        }
+
+                    }
+                </MudExpansionPanels>
+        
+            }
+        </MudCardContent>
+    </MudCard>
+}

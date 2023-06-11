@@ -1,0 +1,177 @@
+﻿
+
+<div class="tab-scroll">
+    @if(UIScope!=null && DataObject!=null)
+    {
+        <ValidationPopUp ValidationMessages="validator.UserMessages.UserMessages" @ref="_refUserMessage" />
+
+        <div class="top-button-bar mt-3">
+            <MudIconButton Icon="@Icons.TwoTone.ArrowBack"
+                       Variant="Variant.Outlined"
+                       Color="Color.Primary" Size="Size.Small" OnClick="OnBack" Disabled="@isBackButtonDisabled" />
+        </div>
+        <div id="overview-section3" class="col-12 my-2 d-none">
+            <UIRenderere FromSection="@BranchSection"
+                         DataObject="DataObject"
+                         InteractionLogics="InteractionLogic"
+                         ObjectHelpers="ObjectHelpers" />
+        </div>
+        <div class="row">
+            <div id="overview-section1" class="col-12">
+                <UIRenderere FromSection="@SerachSection"
+                         DataObject="DataObject"
+                         InteractionLogics="InteractionLogic"
+                         ObjectHelpers="ObjectHelpers" />
+
+                <AddNewCustomer @ref="_refnewCustomer" OnCustomerCreated="OnCustomerCreateSuccess" />
+            </div>
+        </div>
+        <div id="overview-section2" class="col-12">
+            <ul class="mt-6">
+                @if (SelectedVehicleList != null && SelectedVehicleList.Count() > 0)
+                {
+                    @foreach (var itm in SelectedVehicleList)
+                    {
+                        <li class="search-detail-list-item row my-2" @onclick="@(()=>{LoadCusVehicleDetails(itm);})">
+                            <div class="col-12 col-md-3">
+                                <strong>@itm.VehicleRegistration.ItemCode</strong>
+                                <br>
+                                <div class="d-flex">
+                                    <span class="text-truncate">Warranty Status:</span><p class="text-truncate">@itm.VehicleWarrannty.WarranrtyStatus</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="d-flex">
+                                    <span class="text-truncate">Chasis No:</span><p class="text-truncate">@itm.SerialNumber.SerialNumber</p>
+                                </div>
+
+                                <div class="d-flex">
+                                    <span class="text-truncate">Maintenance Package:</span><p class="text-truncate">@itm.MaintenancePackage</p>
+                                </div>
+
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="d-flex">
+                                    <span class="text-truncate">Make:</span><p class="text-truncate">@itm.Brand</p>
+                                </div>
+
+                                <div class="d-flex">
+                                    <span class="text-truncate">Previous Mileage:</span><p class="text-truncate">@itm.PreviousMilage</p>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-3">
+                                <div class="d-flex">
+                                    <span class="text-truncate">Model:</span><p class="text-truncate">@itm.Model</p>
+                                </div>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        </div>
+        <div id="overview-section4" class="col-12 veh-cus-info d-none">
+            <div class="d-flex text-center justify-content-between align-items-baseline">
+                <div></div>
+                <h5>@((pagePosition == 3) ? $"Work Order({DataObject.OrderCategory1.CodeName})-{DataObject.OrderPrefix.CodeName + DataObject.OrderNumber}" : "Vehicle & Customer Information")</h5>
+                <div>
+                    @*<MudButton Class="@((pagePosition==3) ?"primary-btn my-2":"d-none")">Update</MudButton>*@
+                </div>
+
+            </div>
+            <VehicleSummaryTable SelectedVehicle="DataObject.SelectedVehicle" />
+            <CustomerSummerytable SelectedVehicle="DataObject.SelectedVehicle" />
+            <div class="@((pagePosition==3) ?"d-none":"text-center")">
+                <MudButton Class="primary-btn my-2" OnClick="ShowCreateNewIRN"> Create New IRN </MudButton>
+            </div>
+        </div>
+
+        <div id="overview-section5" class="col-12 job-history d-none">
+            <IRNJobHistory DataObject="DataObject" ObjectKey="@UIScope.ElementKey" LoadWorkOrder="LoadWorkorder" />
+            @*<JobHistory JobgHistory="DataObject.SelectedVehicle.JobHistory" ObjectKey="@UIScope.ElementKey" LoadWorkOrder="LoadWorkorder" />*@
+        </div>
+        <div id="overview-section6" class="col-12 create-new-work-order d-none">
+            <div><h5>create new IRN</h5></div>
+            <div class="row mt-6">
+                <div class="col-6">
+                    <div class="order-creation-section">
+
+                        <div class="ma-3 d-flex flex-column">
+                            <UIRenderere FromSection="@CreateNewIRNSection"
+                                     DataObject="DataObject"
+                                     InteractionLogics="InteractionLogic"
+                                     ObjectHelpers="ObjectHelpers" />
+                            <table class="table w-100">
+                                <tbody>
+                                    <tr>
+                                        <td>Branch</td>
+                                        <td>:@DataObject.OrderLocation.Code</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Vehicle No</td>
+                                        <td>:@DataObject.SelectedVehicle.VehicleRegistration.ItemCode</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Customer</td>
+                                        <td>:@DataObject.SelectedVehicle.RegisteredCustomer.AddressName</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Service Advisor</td>
+                                        <td>:@(auth.AuthenticatedUser.UserID??"")</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="footer-button-section">
+                            <div class="d-flex justify-content-end ma-3 gap-3">
+                                <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="OnProceedToCreateNewIRN">Proceed</MudButton>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="image-section">
+                        <ImageSlider />
+                    </div>
+                    <MudDivider></MudDivider>
+                    <div class="d-flex justify-content-center mt-2">
+
+                        <MudButton Variant="Variant.Filled"
+                               Color="Color.Primary"
+                               StartIcon="@Icons.Filled.CloudUpload"
+                               for="fileInput112" OnClick="ShowUploadPopUp">
+                            Upload your images
+                        </MudButton>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <AddProjectNamePopUp OnCloseButtonClick="HideAllPopups"
+                         WindowIsVisible="IsAddProjectNamePopUopShown"
+                         WorkOrder="@DataObject"
+                         ObjectKey="UIScope.ElementKey"
+                         AddCustomerComplainPopUpShow="CreateNewIRNOrderSuccessfullPopUpShow" />
+
+        <UnClosedProjectDetailsPopUp OnCloseButtonClick="HideAllPopups"
+                                 DataObject="@DataObject"
+                                 WindowIsVisible="IsProjectListPopUpShown"
+                                 ProjectList="@ProjectList"
+                                 AddCustomerComplainPopUpShow="CreateNewIRNOrderSuccessfullPopUpShow" />
+
+        <MudDialog @bind-IsVisible="IsCrateNewIRNSuccessfullPopUpShown">
+
+            <DialogContent>
+
+                <div class="d-flex flex-column justify-content-center">
+                    <span>Created Successfully</span>
+                    <span>IRN No:@DataObject.OrderNumber</span>
+                    <MudButton Variant="Variant.Filled" Color="Color.Primary" OnClick="IRNDetailShow">OK</MudButton>
+                </div>
+
+
+            </DialogContent>
+
+        </MudDialog>
+
+    }
+</div>

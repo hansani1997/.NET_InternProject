@@ -1,0 +1,158 @@
+﻿ <MudItem Style="margin-top:2%">
+<MudDialog @bind-IsVisible="WindowIsVisible" Options="dialogOptions">
+    
+    <TitleContent>
+            @if(selectedOrder != null)
+            {
+                <h3>@selectedOrder.OrderReference</h3>
+                <h3>@selectedOrder.Customer.Phone - @selectedOrder.Customer.Address</h3>
+            }
+            
+    </TitleContent>
+    <DialogContent>
+        <MudItem Style="margin-top:2%">
+   @*     <MudTable Items="@_Order.Take(1)" Hover="true"
+                  Bordered="true"
+                  Striped="true"
+                  Dense="true"
+                  FixedHeader="true">
+            <HeaderContent>
+                <MudTh>Order Reference</MudTh>
+                <MudTh>Order Type</MudTh>
+                <MudTh>Placed At</MudTh>
+                <MudTh>Current Status</MudTh>
+            </HeaderContent>
+        <RowTemplate>
+                <MudTd DataLabel="Order Reference">@selectedOrder.OrderReference</MudTd>
+                <MudTd DataLabel="Order Type">@selectedOrder.Platforms.AccountName</MudTd>
+                <MudTd DataLabel="Placed At">@selectedOrder.OrderDate</MudTd>
+                <MudTd DataLabel="Current Status">@selectedOrder.OrderStatus.CodeName</MudTd>
+        </RowTemplate>
+        </MudTable>
+
+        <MudTable Items="@_Order.Take(1)" Hover="true"
+                  Bordered="true"
+                  Striped="true"
+                  Dense="true"
+                  FixedHeader="true">
+            <HeaderContent>
+                <MudTh>Customer Address</MudTh>
+                <MudTh>Customer Mobile</MudTh>
+                <MudTh>Payment type</MudTh>
+            </HeaderContent>
+            <RowTemplate>
+                <MudTd DataLabel="Customer Address">@selectedOrder.Customer.Address</MudTd>
+                <MudTd DataLabel="Order Type">@selectedOrder.Customer.Phone</MudTd>
+                <MudTd DataLabel="Payment type">@selectedOrder.PaymentType</MudTd>
+            </RowTemplate>
+        </MudTable>*@
+
+                <MudTable Items="@_Order" Hover="true"
+                          Bordered="true"
+                          Striped="true"
+                          Dense="true"
+                          FixedHeader="true"
+                          FixedFooter="true"
+                          Height="180px">
+                    <HeaderContent>
+                        <MudTh>Product</MudTh>
+                        <MudTh>Qty</MudTh>
+                        <MudTh>Amount</MudTh>
+                    </HeaderContent>
+                    <RowTemplate>
+                        
+                        <MudTd DataLabel="Product">@context.OrderItem.ItemName</MudTd>
+                        <MudTd DataLabel="Qty">@context.ItemQuantity</MudTd>
+                        <MudTd DataLabel="Amount">@context.BaseTotalPrice</MudTd>
+                        
+                       
+                        
+                    </RowTemplate>
+                    @*<FooterContent>
+                        <MudTd></MudTd>
+                        <MudTd>Total</MudTd>
+                        <MudTd>@FinalTotal</MudTd>
+                    </FooterContent>*@
+                </MudTable>
+
+                <MudTable Items="@_Order.Take(1)" Hover="true"
+                          Bordered="true"
+                          Striped="true"
+                          Dense="true"
+                          FixedHeader="true">
+                    <RowTemplate>
+                        <MudTd></MudTd>
+                        <MudTd></MudTd>
+                        <MudTd></MudTd>
+                        <MudTd Style="text-align: right">Grand Total: @FinalTotal</MudTd>
+                    </RowTemplate>
+                </MudTable>
+        </MudItem>
+
+        @*<MudSimpleTable Style="overflow-x: auto;">
+            <thead>
+                <tr>
+                    <th colspan="4">Order Reference <br /> <b>@selectedOrder.OrderReference</b> </th>
+                    <th colspan="4">Order Type <br /><b> @selectedOrder.Platforms.AccountName</b></th>
+                    <th colspan="4">Placed At <br /><b>@selectedOrder.OrderDate</b></th>
+                    <th colspan="4">Current Status <br /><b> @selectedOrder.OrderStatus.CodeName</b></th>
+                </tr>
+            </thead>
+        </MudSimpleTable>*@
+
+       @* <MudSimpleTable Style="overflow-x: auto;">
+            <thead>
+                <tr>
+
+                    <th colspan="4">Customer <br /> <b>@selectedOrder.Customer.Name</b> <br /><b>@selectedOrder.Customer.Phone</b><br /><b>@selectedOrder.Customer.Address</b></th>
+                    <th colspan="4">Payment type <br /><b>@selectedOrder.PaymentType</b> </th>
+                </tr>
+            </thead>
+        </MudSimpleTable>*@
+
+    @*    <MudSimpleTable FixedHeader="true" Style="height:180px">
+            <thead>
+                <tr>
+
+                    <th><b>Product</b></th>
+                    <th class="right"><b>Quantity</b></th>
+                    <th class="right"><b>Total</b></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var order in _Order)
+                {
+                    <tr>
+                        <td>@order.OrderItem.ItemName</td>
+                        <td class="right">@order.ItemQuantity</td>
+                        <td class="right">@order.BaseTotalPrice</td>
+                    </tr>
+                }
+
+            </tbody>
+        </MudSimpleTable>
+
+        <MudSimpleTable Style="background:lightgrey ">
+            <thead>
+                <tr>
+                    <th colspan="4"><b>Sub Total</b> </th>
+                    <th colspan="1">@subTotal</th>
+                    <th colspan="4"><b>Total</b></th>
+                    <th colspan="2">@FinalTotal</th>
+                </tr>
+                <tr>
+                    <th colspan="4"><b>Discount</b> </th>
+                    <th colspan="1">@selectedOrder.DiscountAmount</th>
+                </tr>
+                <tr>
+                    <th colspan="4"><b>Delivery Charge</b> </th>
+                    <th colspan="1">@selectedOrder.DeliveryCharges</th>
+                </tr>
+            </thead>
+        </MudSimpleTable>*@
+    </DialogContent>
+    @*<DialogActions>
+    <MudButton OnClick="OnCloseClick">Cancel</MudButton>
+    </DialogActions>*@
+</MudDialog>
+</MudItem>
